@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{admin/admin-fragments :: head('Dashboard')}"></head>
+<body>
+<div class="admin-layout">
+    <div th:replace="~{admin/admin-fragments :: sidebar('dashboard')}"></div>
+
+    <main class="admin-main">
+        <div class="admin-topbar">
+            <h1>Dashboard</h1>
+            <a th:href="@{/admin/articles/new}" class="btn btn-primary">+ New Article</a>
+        </div>
+
+        <div class="stat-grid">
+            <div class="stat-card">
+                <div class="num" th:text="${totalArticles}">0</div>
+                <div class="label">Total Articles</div>
+            </div>
+            <div class="stat-card">
+                <div class="num" th:text="${publishedArticles}">0</div>
+                <div class="label">Published</div>
+            </div>
+            <div class="stat-card">
+                <div class="num" th:text="${totalCategories}">0</div>
+                <div class="label">Categories</div>
+            </div>
+        </div>
+
+        <div class="admin-card">
+            <h3 style="margin-top:0;">Recent Articles</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Status</th>
+                        <th>Views</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="art : ${recentArticles}">
+                        <td th:text="${art.title}">Title</td>
+                        <td th:text="${art.category?.name} ?: '—'">Cat</td>
+                        <td>
+                            <span class="badge published" th:if="${art.published}">Published</span>
+                            <span class="badge draft" th:unless="${art.published}">Draft</span>
+                        </td>
+                        <td th:text="${art.views}">0</td>
+                        <td th:text="${#temporals.format(art.createdAt, 'MMM dd, yyyy')}">Date</td>
+                        <td>
+                            <a th:href="@{/admin/articles/edit/{id}(id=${art.id})}" class="btn btn-secondary btn-sm">Edit</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div style="margin-top: 16px;">
+                <a th:href="@{/admin/articles}" class="btn btn-secondary">View All Articles</a>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>

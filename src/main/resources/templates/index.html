@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Home')}"></head>
+<body>
+
+<th:block th:replace="~{fragments :: header(${categories}, ${featured})}"></th:block>
+
+<div class="container">
+
+  <!-- ── Hero: big featured + aside list ─────────── -->
+  <div class="hero-section" th:if="${!featured.isEmpty()}">
+    <div class="hero-grid">
+      <div class="hero-main">
+        <a th:href="@{/article/{slug}(slug=${featured[0].slug})}">
+          <img th:src="${featured[0].imageUrl} ?: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=900&auto=format&fit=crop'"
+               th:alt="${featured[0].title}"/>
+        </a>
+        <div class="art-body">
+          <div class="art-meta" style="margin-bottom:8px;">
+            <span class="cat-tag" th:if="${featured[0].category}" th:text="${featured[0].category.name}">Category</span>
+            <span th:text="${#temporals.format(featured[0].createdAt,'MMMM dd, yyyy')}">Date</span>
+          </div>
+          <h2><a th:href="@{/article/{slug}(slug=${featured[0].slug})}" th:text="${featured[0].title}">Title</a></h2>
+          <p th:text="${featured[0].summary}">Summary</p>
+          <span class="art-meta" th:text="'By ' + ${featured[0].authorName}">Author</span>
+        </div>
+      </div>
+
+      <aside class="hero-aside">
+        <div class="hero-aside-item" th:each="art,i : ${featured}" th:if="${i.index > 0 and i.index <= 4}">
+          <a th:href="@{/article/{slug}(slug=${art.slug})}">
+            <img th:src="${art.imageUrl} ?: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=300&auto=format&fit=crop'"
+                 th:alt="${art.title}"/>
+          </a>
+          <div>
+            <div class="art-meta" style="margin-bottom:4px;">
+              <span class="cat-tag" th:if="${art.category}" th:text="${art.category.name}">Cat</span>
+            </div>
+            <h4><a th:href="@{/article/{slug}(slug=${art.slug})}" th:text="${art.title}">Title</a></h4>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- ── Category sections ─────────────────────── -->
+  <div class="cat-section" th:each="cat : ${categories}" th:if="${catArticles[cat.slug] != null and !catArticles[cat.slug].isEmpty()}">
+    <div class="section-header">
+      <h2 th:text="${cat.name}">Category</h2>
+      <a th:href="@{/category/{slug}(slug=${cat.slug})}" class="view-all">View All &rarr;</a>
+    </div>
+
+    <div class="article-grid-3">
+      <!-- First image card -->
+      <div class="art-card-img" th:if="${catArticles[cat.slug].size() > 0}">
+        <a th:href="@{/article/{slug}(slug=${catArticles[cat.slug][0].slug})}">
+          <img th:src="${catArticles[cat.slug][0].imageUrl} ?: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&auto=format&fit=crop'"
+               th:alt="${catArticles[cat.slug][0].title}"/>
+        </a>
+        <div class="art-body">
+          <h3><a th:href="@{/article/{slug}(slug=${catArticles[cat.slug][0].slug})}" th:text="${catArticles[cat.slug][0].title}">Title</a></h3>
+          <p th:text="${catArticles[cat.slug][0].summary}">Summary</p>
+          <span class="art-meta" th:text="${#temporals.format(catArticles[cat.slug][0].createdAt,'MMM dd, yyyy')}">Date</span>
+        </div>
+      </div>
+
+      <!-- Second image card -->
+      <div class="art-card-img" th:if="${catArticles[cat.slug].size() > 1}">
+        <a th:href="@{/article/{slug}(slug=${catArticles[cat.slug][1].slug})}">
+          <img th:src="${catArticles[cat.slug][1].imageUrl} ?: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&auto=format&fit=crop'"
+               th:alt="${catArticles[cat.slug][1].title}"/>
+        </a>
+        <div class="art-body">
+          <h3><a th:href="@{/article/{slug}(slug=${catArticles[cat.slug][1].slug})}" th:text="${catArticles[cat.slug][1].title}">Title</a></h3>
+          <p th:text="${catArticles[cat.slug][1].summary}">Summary</p>
+          <span class="art-meta" th:text="${#temporals.format(catArticles[cat.slug][1].createdAt,'MMM dd, yyyy')}">Date</span>
+        </div>
+      </div>
+
+      <!-- Text-only article list (3rd column) -->
+      <div class="art-list" th:if="${catArticles[cat.slug].size() > 2}">
+        <div class="art-list-item" th:each="art,i : ${catArticles[cat.slug]}" th:if="${i.index >= 2 and i.index <= 4}">
+          <div class="art-meta" style="margin-bottom:4px;">
+            <span th:text="${#temporals.format(art.createdAt,'MMM dd')}">Date</span>
+          </div>
+          <h4><a th:href="@{/article/{slug}(slug=${art.slug})}" th:text="${art.title}">Title</a></h4>
+          <p th:text="${#strings.abbreviate(art.summary, 90)}">Summary</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<th:block th:replace="~{fragments :: footer}"></th:block>
+</body>
+</html>

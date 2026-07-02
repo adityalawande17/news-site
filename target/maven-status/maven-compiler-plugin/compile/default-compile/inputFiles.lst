@@ -1,0 +1,15 @@
+C:\Users\Hp\Desktop\webdev\assignment\magazine_v2\src\main\java\com\magazine\app\MagazineApplication.java
+C:\Users\Hp\Desktop\webdev\assignment\magazine_v2\src\main\java\com\magazine\app\controller\AdminController.java
+C:\Users\Hp\Desktop\webdev\assignment\magazine_v2\src\main\java\com\magazine\app\repository\CategoryRepository.java
+C:\Users\Hp\Desktop\webdev\assignment\magazine_v2\src\main\java\com\magazine\app\service\AdminUserDetailsService.java
+C:\Users\Hp\Desktop\webdev\assignment\magazine_v2\src\main\java\com\magazine\app\service\FileStorageService.java
+C:\Users\Hp\Desktop\webdev\assignment\magazine_v2\src\main\java\com\magazine\app\model\Article.java
+C:\Users\Hp\Desktop\webdev\assignment\magazine_v2\src\main\java\com\magazine\app\config\SecurityConfig.java
+C:\Users\Hp\Desktop\webdev\assignment\magazine_v2\src\main\java\com\magazine\app\model\AdminUser.java
+C:\Users\Hp\Desktop\webdev\assignment\magazine_v2\src\main\java\com\magazine\app\controller\PublicController.java
+C:\Users\Hp\Desktop\webdev\assignment\magazine_v2\src\main\java\com\magazine\app\service\ArticleService.java
+C:\Users\Hp\Desktop\webdev\assignment\magazine_v2\src\main\java\com\magazine\app\model\Category.java
+C:\Users\Hp\Desktop\webdev\assignment\magazine_v2\src\main\java\com\magazine\app\service\CategoryService.java
+C:\Users\Hp\Desktop\webdev\assignment\magazine_v2\src\main\java\com\magazine\app\repository\ArticleRepository.java
+C:\Users\Hp\Desktop\webdev\assignment\magazine_v2\src\main\java\com\magazine\app\config\DataInitializer.java
+C:\Users\Hp\Desktop\webdev\assignment\magazine_v2\src\main\java\com\magazine\app\repository\AdminUserRepository.java

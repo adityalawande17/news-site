@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+
+<div th:fragment="head(title)">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${title} + ' | BizPulse Admin'">BizPulse Admin</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}"/>
+</div>
+
+<aside th:fragment="sidebar(active)" class="admin-sidebar">
+    <div class="brand">&#9670; BizPulse</div>
+    <a th:href="@{/admin/dashboard}" th:classappend="${active == 'dashboard'} ? ' active' : ''">&#128202; Dashboard</a>
+    <a th:href="@{/admin/articles}" th:classappend="${active == 'articles'} ? ' active' : ''">&#128196; Articles</a>
+    <a th:href="@{/admin/categories}" th:classappend="${active == 'categories'} ? ' active' : ''">&#127991; Categories</a>
+    <a th:href="@{/}" target="_blank">&#127758; View Site</a>
+    <form method="post" th:action="@{/admin/logout}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <button type="submit">&#x21B6; Logout</button>
+    </form>
+</aside>
+
+</body>
+</html>
