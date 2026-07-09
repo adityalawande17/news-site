@@ -35,6 +35,44 @@ public class Article {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    // ── Article type ────────────────────────────────
+    @Enumerated(EnumType.STRING)
+    @Column(name = "article_type")
+    private ArticleType articleType = ArticleType.NEWS;
+
+    // ── Interview-specific fields ───────────────────
+    private String intervieweeName;
+
+    private String intervieweeTitle;
+
+    private String intervieweeCompany;
+
+    private String intervieweePhoto;
+
+    // News Specific Fields
+    @Column(name = "is_breaking")
+    private Boolean breaking = false;
+
+    private String newsSource;
+
+    // ── Case Study fields ────────────────────────────────
+    private String clientName;
+    private String clientIndustry;
+
+    @Column(columnDefinition = "TEXT")
+    private String caseChallenge;
+
+    @Column(columnDefinition = "TEXT")
+    private String caseSolution;
+
+    private String caseResult;
+
+    // ── Press Release fields ─────────────────────────────
+    private String pressCompanyName;
+    private String pressContactName;
+    private String pressContactEmail;
+
+    // ── Flags ───────────────────────────────────────
     private boolean published = true;
 
     private boolean featured = false;
@@ -47,7 +85,8 @@ public class Article {
 
     public Article() {}
 
-    // Getters and setters
+    // ── Getters and Setters ─────────────────────────
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -72,6 +111,27 @@ public class Article {
     public Category getCategory() { return category; }
     public void setCategory(Category category) { this.category = category; }
 
+    public ArticleType getArticleType() { return articleType; }
+    public void setArticleType(ArticleType articleType) { this.articleType = articleType; }
+
+    public String getIntervieweeName() { return intervieweeName; }
+    public void setIntervieweeName(String intervieweeName) { this.intervieweeName = intervieweeName; }
+
+    public String getIntervieweeTitle() { return intervieweeTitle; }
+    public void setIntervieweeTitle(String intervieweeTitle) { this.intervieweeTitle = intervieweeTitle; }
+
+    public String getIntervieweeCompany() { return intervieweeCompany; }
+    public void setIntervieweeCompany(String intervieweeCompany) { this.intervieweeCompany = intervieweeCompany; }
+
+    public String getIntervieweePhoto() { return intervieweePhoto; }
+    public void setIntervieweePhoto(String intervieweePhoto) { this.intervieweePhoto = intervieweePhoto; }
+
+    public Boolean getBreaking() { return breaking; }
+    public void setBreaking(Boolean breaking) { this.breaking = breaking; }
+
+    public String getNewsSource() { return newsSource; }
+    public void setNewsSource(String newsSource) { this.newsSource = newsSource; }
+
     public boolean isPublished() { return published; }
     public void setPublished(boolean published) { this.published = published; }
 
@@ -86,4 +146,59 @@ public class Article {
 
     public LocalDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+
+    // Getter and Setter for clientName
+public String getClientName() {
+    return clientName;
+}
+
+public void setClientName(String clientName) {
+    this.clientName = clientName;
+}
+
+// Getter and Setter for clientIndustry
+public String getClientIndustry() {
+    return clientIndustry;
+}
+
+public void setClientIndustry(String clientIndustry) {
+    this.clientIndustry = clientIndustry;
+}
+
+// Getter and Setter for caseChallenge
+public String getCaseChallenge() {
+    return caseChallenge;
+}
+
+public void setCaseChallenge(String caseChallenge) {
+    this.caseChallenge = caseChallenge;
+}
+
+// Getter and Setter for caseSolution
+public String getCaseSolution() {
+    return caseSolution;
+}
+
+public void setCaseSolution(String caseSolution) {
+    this.caseSolution = caseSolution;
+}
+
+// Getter and Setter for caseResult
+public String getCaseResult() {
+    return caseResult;
+}
+
+public void setCaseResult(String caseResult) {
+    this.caseResult = caseResult;
+}
+
+public String getPressCompanyName() { return pressCompanyName; }
+public void setPressCompanyName(String pressCompanyName) { this.pressCompanyName = pressCompanyName; }
+
+public String getPressContactName() { return pressContactName; }
+public void setPressContactName(String pressContactName) { this.pressContactName = pressContactName; }
+
+public String getPressContactEmail() { return pressContactEmail; }
+public void setPressContactEmail(String pressContactEmail) { this.pressContactEmail = pressContactEmail; }
+
 }

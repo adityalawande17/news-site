@@ -1,0 +1,193 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head
+    th:replace="~{admin/admin-fragments :: head(${isEdit} ? 'Edit Video' : 'New Video')}"
+  ></head>
+  <body>
+    <div class="admin-layout">
+      <div th:replace="~{admin/admin-fragments :: sidebar('videos')}"></div>
+
+      <main class="admin-main">
+        <div class="admin-topbar">
+          <h1 th:text="${isEdit} ? 'Edit Video' : 'New Video'">Video</h1>
+          <a th:href="@{/admin/videos}" class="btn btn-secondary">
+            &larr; Back to Videos
+          </a>
+        </div>
+
+        <div class="alert alert-error" th:if="${error}" th:text="${error}">
+          Error
+        </div>
+
+        <div class="admin-card">
+          <form
+            method="post"
+            th:action="@{/admin/videos/save}"
+            enctype="multipart/form-data"
+            th:object="${video}"
+          >
+            <input type="hidden" th:field="*{id}" />
+
+            <div class="form-group">
+              <label>Title <span style="color: #c0392b">*</span></label>
+              <input
+                type="text"
+                th:field="*{title}"
+                placeholder="Video title..."
+                required
+              />
+              <span
+                style="color: #c0392b; font-size: 12.5px"
+                th:if="${#fields.hasErrors('title')}"
+                th:errors="*{title}"
+                >Error</span
+              >
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label
+                  >URL Slug
+                  <span style="color: #999; font-weight: 400">
+                    (auto-generated if empty)
+                  </span>
+                </label>
+                <input
+                  type="text"
+                  th:field="*{slug}"
+                  placeholder="my-video-slug"
+                />
+              </div>
+              <div class="form-group">
+                <label>Category</label>
+                <select name="categoryId">
+                  <option value="">— None —</option>
+                  <option
+                    th:each="cat : ${categories}"
+                    th:value="${cat.id}"
+                    th:text="${cat.name}"
+                    th:selected="${video.category != null
+                                    and video.category.id == cat.id}"
+                  >
+                    Cat
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Embed URL — most important field -->
+            <div class="form-group">
+              <label>
+                YouTube / Vimeo URL <span style="color: #c0392b">*</span>
+                <span style="color: #999; font-weight: 400">
+                  — paste the full watch URL, embed URL is auto-generated
+                </span>
+              </label>
+              <input
+                type="text"
+                th:field="*{embedUrl}"
+                placeholder="https://www.youtube.com/watch?v=abc123"
+                required
+              />
+              <p style="font-size: 12px; color: #888; margin: 5px 0 0">
+                Accepted: youtube.com/watch?v=..., youtu.be/..., vimeo.com/...
+              </p>
+              <span
+                style="color: #c0392b; font-size: 12.5px"
+                th:if="${#fields.hasErrors('embedUrl')}"
+                th:errors="*{embedUrl}"
+                >Error</span
+              >
+            </div>
+
+            <div class="form-group">
+              <label
+                >Description
+                <span style="color: #999; font-weight: 400">max 500 chars</span>
+              </label>
+              <textarea
+                th:field="*{description}"
+                rows="3"
+                maxlength="500"
+                placeholder="Brief description of the video..."
+              ></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Host / Presenter</label>
+                <input
+                  type="text"
+                  th:field="*{host}"
+                  placeholder="e.g. Rahul Sharma"
+                />
+              </div>
+              <div class="form-group">
+                <label>Duration</label>
+                <input
+                  type="text"
+                  th:field="*{duration}"
+                  placeholder="e.g. 32:45"
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>
+                Thumbnail Image
+                <span style="color: #999; font-weight: 400">
+                  — leave blank to auto-extract from YouTube
+                </span>
+              </label>
+              <img
+                th:if="${video.thumbnailUrl}"
+                th:src="${video.thumbnailUrl}"
+                style="
+                  width: 160px;
+                  border-radius: 4px;
+                  margin-bottom: 10px;
+                  display: block;
+                "
+              />
+              <input type="file" name="thumbnailFile" accept="image/*" />
+              <p style="font-size: 12px; color: #888; margin: 5px 0 0">
+                For YouTube videos the thumbnail is extracted automatically.
+                Upload only to override it.
+              </p>
+            </div>
+
+            <div class="checkbox-row" style="margin-bottom: 24px">
+              <label>
+                <input type="checkbox" th:field="*{published}" />
+                Published (visible on site)
+              </label>
+              <label>
+                <input type="checkbox" th:field="*{featured}" />
+                Featured (shown in homepage section)
+              </label>
+            </div>
+
+            <input
+              type="hidden"
+              th:name="${_csrf.parameterName}"
+              th:value="${_csrf.token}"
+            />
+            <button
+              type="submit"
+              class="btn btn-primary"
+              th:text="${isEdit} ? 'Update Video' : 'Publish Video'"
+            >
+              Save
+            </button>
+            <a
+              th:href="@{/admin/videos}"
+              class="btn btn-secondary"
+              style="margin-left: 8px"
+              >Cancel</a
+            >
+          </form>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

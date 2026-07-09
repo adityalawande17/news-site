@@ -1,0 +1,117 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{fragments :: head('Press Releases')}"></head>
+  <body>
+    <th:block th:replace="~{fragments :: header(${categories}, ${featured})}">
+    </th:block>
+
+    <div class="container page-section">
+      <div class="section-header">
+        <h2>Press Releases</h2>
+      </div>
+      <p
+        style="
+          color: var(--muted);
+          font-size: 15px;
+          margin-top: -10px;
+          margin-bottom: 28px;
+        "
+      >
+        Official announcements from companies and institutions.
+      </p>
+
+      <div th:if="${!pressReleases.content.isEmpty()}">
+        <div
+          th:each="pr : ${pressReleases.content}"
+          style="
+            border-left: 4px solid var(--black);
+            padding: 16px 20px;
+            margin-bottom: 14px;
+            background: var(--white);
+            border-top: 0.5px solid var(--border);
+            border-right: 0.5px solid var(--border);
+            border-bottom: 0.5px solid var(--border);
+            border-radius: 0 4px 4px 0;
+          "
+        >
+          <div
+            style="
+              font-size: 11px;
+              font-weight: 700;
+              text-transform: uppercase;
+              letter-spacing: 0.6px;
+              color: var(--muted);
+              margin-bottom: 6px;
+            "
+          >
+            For Immediate Release &nbsp;&middot;&nbsp;
+            <span th:text="${#temporals.format(pr.createdAt,'MMMM dd, yyyy')}">
+              Date
+            </span>
+          </div>
+
+          <h3
+            style="
+              font-family: var(--serif);
+              font-size: 18px;
+              line-height: 1.35;
+              margin-bottom: 6px;
+            "
+          >
+            <a
+              th:href="@{/article/{slug}(slug=${pr.slug})}"
+              th:text="${pr.title}"
+              >Title</a
+            >
+          </h3>
+
+          <div style="font-size: 13px; color: var(--muted)">
+            <span
+              th:if="${pr.pressCompanyName}"
+              th:text="${pr.pressCompanyName}"
+              >Company</span
+            >
+            <span
+              th:if="${pr.pressContactEmail}"
+              style="
+                margin-left: 10px;
+                padding-left: 10px;
+                border-left: 1px solid var(--border);
+              "
+              th:text="${pr.pressContactEmail}"
+              >Email</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <p
+        th:if="${pressReleases.content.isEmpty()}"
+        style="text-align: center; padding: 60px 0; color: var(--muted)"
+      >
+        No press releases published yet.
+      </p>
+
+      <div class="pagination" th:if="${pressReleases.totalPages > 1}">
+        <a
+          th:if="${currentPage > 0}"
+          th:href="@{/press-releases(page=${currentPage - 1})}"
+          >&larr; Prev</a
+        >
+        <span
+          class="current"
+          th:text="${currentPage + 1} + ' of ' + ${pressReleases.totalPages}"
+        >
+          1
+        </span>
+        <a
+          th:if="${currentPage + 1 < pressReleases.totalPages}"
+          th:href="@{/press-releases(page=${currentPage + 1})}"
+          >Next &rarr;</a
+        >
+      </div>
+    </div>
+
+    <th:block th:replace="~{fragments :: footer}"></th:block>
+  </body>
+</html>

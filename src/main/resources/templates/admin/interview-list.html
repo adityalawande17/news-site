@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{admin/admin-fragments :: head('Interviews')}"></head>
+<body>
+<div class="admin-layout">
+  <div th:replace="~{admin/admin-fragments :: sidebar('interviews')}"></div>
+
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <h1>Interviews</h1>
+      <a th:href="@{/admin/interviews/new}" class="btn btn-primary">+ New Interview</a>
+    </div>
+
+    <div th:if="${success}" class="alert alert-success" th:text="${success}">OK</div>
+
+    <div class="admin-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Interviewee</th>
+            <th>Title / Company</th>
+            <th>Article Title</th>
+            <th>Category</th>
+            <th>Featured</th>
+            <th>Status</th>
+            <th>Views</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="iv : ${interviews}">
+            <td>
+              <!-- Circular photo or initials avatar -->
+              <div style="display:flex; align-items:center; gap:10px;">
+                <img th:if="${iv.intervieweePhoto}"
+                     th:src="${iv.intervieweePhoto}"
+                     style="width:36px; height:36px; border-radius:50%; object-fit:cover;"/>
+                <div th:unless="${iv.intervieweePhoto}"
+                     style="width:36px; height:36px; border-radius:50%; background:#1c2333;
+                            color:#fff; display:flex; align-items:center; justify-content:center;
+                            font-size:13px; font-weight:700; flex-shrink:0;"
+                     th:text="${iv.intervieweeName != null}
+                               ? ${#strings.substring(iv.intervieweeName, 0, 1)}
+                               : '?'">
+                  ?
+                </div>
+                <strong th:text="${iv.intervieweeName} ?: '—'">Name</strong>
+              </div>
+            </td>
+            <td>
+              <span th:text="${iv.intervieweeTitle} ?: ''">Title</span><br/>
+              <span style="font-size:12px; color:#777;"
+                    th:text="${iv.intervieweeCompany} ?: ''">Company</span>
+            </td>
+            <td style="max-width:200px;">
+              <span style="font-size:13px;" th:text="${iv.title}">Title</span>
+            </td>
+            <td th:text="${iv.category?.name} ?: '—'">Cat</td>
+            <td th:text="${iv.featured} ? 'Yes' : 'No'">No</td>
+            <td>
+              <span class="badge published" th:if="${iv.published}">Published</span>
+              <span class="badge draft"     th:unless="${iv.published}">Draft</span>
+            </td>
+            <td th:text="${iv.views}">0</td>
+            <td th:text="${#temporals.format(iv.createdAt,'MMM dd')}">Date</td>
+            <td style="display:flex; gap:6px;">
+              <a th:href="@{/article/{slug}(slug=${iv.slug})}"
+                 class="btn btn-secondary btn-sm" target="_blank">View</a>
+              <a th:href="@{/admin/interviews/edit/{id}(id=${iv.id})}"
+                 class="btn btn-secondary btn-sm">Edit</a>
+              <form method="post"
+                    th:action="@{/admin/interviews/delete/{id}(id=${iv.id})}"
+                    onsubmit="return confirm('Delete this interview?')">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <button type="submit" class="btn btn-danger btn-sm">Del</button>
+              </form>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p th:if="${interviews.isEmpty()}"
+         style="text-align:center; color:#888; padding:40px 0;">
+        No interviews yet.
+        <a th:href="@{/admin/interviews/new}" style="color:#c0392b;">Add the first one.</a>
+      </p>
+    </div>
+  </main>
+</div>
+</body>
+</html>

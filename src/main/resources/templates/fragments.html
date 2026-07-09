@@ -16,13 +16,13 @@
         <div class="container inner">
           <span class="date" id="topdate">Business &amp; Leadership News</span>
           <div class="socials">
-            <a href="#" title="Facebook">f</a>
-            <a href="#" title="Twitter">𝕏</a>
-            <a href="#" title="LinkedIn">in</a>
-            <a href="#" title="RSS">RSS</a>
+            <a href="#">f</a>
+            <a href="#">&#120143;</a>
+            <a href="#">in</a>
+            <a href="#">RSS</a>
           </div>
           <form class="search-wrap" th:action="@{/search}" method="get">
-            <input type="text" name="q" placeholder="Search articles..." />
+            <input type="text" name="q" placeholder="Search..." />
             <button type="submit">&#9906;</button>
           </form>
         </div>
@@ -30,29 +30,39 @@
 
       <!-- Masthead -->
       <div class="masthead">
-        <a th:href="@{/}" class="brand">TempNEWS</a>
-        <div class="tagline">
-          Insight &middot; Leadership &middot; Technology &middot; Business
+        <div class="masthead-content">
+          <a th:href="@{/}" class="brand">DECISIONS INSIGHTS</a>
+          <div class="tagline">
+            Insight &middot; Leadership &middot; Technology &middot; Business
+          </div>
         </div>
       </div>
 
-      <!-- Primary nav -->
+      <!-- Primary nav — includes Interviews -->
       <nav class="primary-nav">
         <div class="container inner">
           <a th:href="@{/}">Home</a>
+          <a th:href="@{/news}">News</a>
           <a th:href="@{/blog}">All Articles</a>
-          <a
+          <a th:href="@{/interviews}">Interviews</a>
+          <a th:href="@{/case-studies}">Case Studies</a>
+          <a th:href="@{/press-releases}">Press Releases</a>
+          <a th:href="@{/videos}">Videos</a>
+          <a th:href="@{/magazine}">Magazine</a>
+          <a th:href="@{/companies}">Companies</a>
+          <a th:href="@{/startups}">Startups</a>
+          <!-- <a
             th:each="cat : ${categories}"
             th:href="@{/category/{slug}(slug=${cat.slug})}"
             th:text="${cat.name}"
-            >Category</a
-          >
+            >Category</a 
+          > -->
           <a th:href="@{/about}">About</a>
           <a th:href="@{/contact}">Contact</a>
         </div>
       </nav>
 
-      <!-- Breaking news ticker (only if featured articles exist) -->
+      <!-- Breaking news ticker -->
       <div class="breaking" th:if="${featured != null and !featured.isEmpty()}">
         <div class="container inner">
           <span class="label">Breaking</span>
@@ -95,15 +105,19 @@
               </p>
               <div class="footer-social">
                 <a href="#">f</a>
-                <a href="#">𝕏</a>
+                <a href="#">&#120143;</a>
                 <a href="#">in</a>
-                <a href="#">▶</a>
+                <a href="#">&#9654;</a>
               </div>
             </div>
             <div>
               <h5>Navigate</h5>
               <a th:href="@{/}">Home</a>
               <a th:href="@{/blog}">All Articles</a>
+              <a th:href="@{/interviews}">Interviews</a>
+              <a th:href="@{/magazine}">Magazine</a>
+              <a th:href="@{/companies}">Companies</a>
+              <a th:href="@{/startups}">Startups</a>
               <a th:href="@{/about}">About Us</a>
               <a th:href="@{/contact}">Contact</a>
             </div>
@@ -130,14 +144,14 @@
 
       <script>
         const d = new Date();
-        const opts = {
-          weekday: "long",
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        };
         const el = document.getElementById("topdate");
-        if (el) el.textContent = d.toLocaleDateString("en-US", opts);
+        if (el)
+          el.textContent = d.toLocaleDateString("en-US", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          });
       </script>
     </th:block>
   </body>

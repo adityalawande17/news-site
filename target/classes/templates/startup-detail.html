@@ -1,0 +1,579 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{fragments :: head(${startup.name})}"></head>
+  <body>
+    <th:block th:replace="~{fragments :: header(${categories}, ${featured})}">
+    </th:block>
+
+    <div class="container" style="padding-bottom: 60px">
+      <!-- Cover banner -->
+      <div
+        style="
+          height: 200px;
+          background: #111;
+          border-radius: 0 0 8px 8px;
+          position: relative;
+          overflow: hidden;
+          margin: 0 -20px;
+        "
+      >
+        <img
+          th:if="${startup.coverImageUrl}"
+          th:src="${startup.coverImageUrl}"
+          style="width: 100%; height: 100%; object-fit: cover; opacity: 0.5"
+        />
+      </div>
+
+      <!-- Header card -->
+      <div
+        style="
+          background: var(--white);
+          border: 1px solid var(--border);
+          border-radius: 8px;
+          padding: 24px;
+          margin-top: -40px;
+          position: relative;
+          z-index: 1;
+          margin-bottom: 32px;
+        "
+      >
+        <div
+          style="
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            flex-wrap: wrap;
+          "
+        >
+          <!-- Logo -->
+          <img
+            th:if="${startup.logoUrl}"
+            th:src="${startup.logoUrl}"
+            style="
+              width: 80px;
+              height: 80px;
+              object-fit: contain;
+              background: #f5f5f5;
+              border: 1px solid var(--border);
+              border-radius: 12px;
+              padding: 8px;
+              flex-shrink: 0;
+            "
+          />
+          <div
+            th:unless="${startup.logoUrl}"
+            style="
+              width: 80px;
+              height: 80px;
+              background: #f5f5f5;
+              border: 1px solid var(--border);
+              border-radius: 12px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 36px;
+              flex-shrink: 0;
+            "
+          >
+            &#128640;
+          </div>
+
+          <div style="flex: 1">
+            <!-- Sector + Stage -->
+            <div
+              style="
+                display: flex;
+                gap: 8px;
+                align-items: center;
+                margin-bottom: 8px;
+                flex-wrap: wrap;
+              "
+            >
+              <span
+                th:if="${startup.sector}"
+                style="
+                  font-size: 12px;
+                  font-weight: 700;
+                  color: var(--red);
+                  text-transform: uppercase;
+                  letter-spacing: 0.5px;
+                "
+                th:text="${startup.sector}"
+                >Sector</span
+              >
+              <span
+                th:if="${startup.fundingStage != null}"
+                style="
+                  font-size: 11px;
+                  font-weight: 700;
+                  padding: 3px 10px;
+                  border-radius: 10px;
+                  background: #e3f2fd;
+                  color: #1565c0;
+                "
+                th:text="${startup.fundingStage.label}"
+                >Stage</span
+              >
+            </div>
+
+            <h1
+              style="
+                font-family: var(--serif);
+                font-size: 30px;
+                margin-bottom: 6px;
+                line-height: 1.2;
+              "
+              th:text="${startup.name}"
+            >
+              Name
+            </h1>
+
+            <p
+              th:if="${startup.pitch}"
+              style="font-size: 16px; color: var(--muted); margin-bottom: 16px"
+              th:text="${startup.pitch}"
+            >
+              Pitch
+            </p>
+
+            <!-- Links -->
+            <div style="display: flex; gap: 10px; flex-wrap: wrap">
+              <a
+                th:if="${startup.websiteUrl}"
+                th:href="${startup.websiteUrl}"
+                target="_blank"
+                style="
+                  background: var(--black);
+                  color: #fff;
+                  padding: 8px 18px;
+                  font-size: 13px;
+                  font-weight: 700;
+                  border-radius: 4px;
+                  text-decoration: none;
+                "
+              >
+                &#127758; Website
+              </a>
+              <a
+                th:if="${startup.linkedinUrl}"
+                th:href="${startup.linkedinUrl}"
+                target="_blank"
+                style="
+                  background: #0077b5;
+                  color: #fff;
+                  padding: 8px 18px;
+                  font-size: 13px;
+                  font-weight: 700;
+                  border-radius: 4px;
+                  text-decoration: none;
+                "
+              >
+                in LinkedIn
+              </a>
+              <a
+                th:if="${startup.twitterUrl}"
+                th:href="${startup.twitterUrl}"
+                target="_blank"
+                style="
+                  background: #111;
+                  color: #fff;
+                  padding: 8px 18px;
+                  font-size: 13px;
+                  font-weight: 700;
+                  border-radius: 4px;
+                  text-decoration: none;
+                "
+              >
+                &#120143; Twitter
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats bar -->
+        <div
+          style="
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            margin-top: 24px;
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+          "
+        >
+          <div
+            th:if="${startup.foundingYear}"
+            style="
+              text-align: center;
+              padding: 0 16px;
+              border-right: 1px solid var(--border);
+            "
+          >
+            <div
+              style="
+                font-family: var(--serif);
+                font-size: 22px;
+                font-weight: 700;
+              "
+              th:text="${startup.foundingYear}"
+            >
+              Year
+            </div>
+            <div
+              style="
+                font-size: 11px;
+                color: var(--muted);
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                margin-top: 3px;
+              "
+            >
+              Founded
+            </div>
+          </div>
+
+          <div
+            th:if="${startup.amountRaised}"
+            style="
+              text-align: center;
+              padding: 0 16px;
+              border-right: 1px solid var(--border);
+            "
+          >
+            <div
+              style="
+                font-family: var(--serif);
+                font-size: 22px;
+                font-weight: 700;
+              "
+              th:text="${startup.amountRaised}"
+            >
+              Amount
+            </div>
+            <div
+              style="
+                font-size: 11px;
+                color: var(--muted);
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                margin-top: 3px;
+              "
+            >
+              Raised
+            </div>
+          </div>
+
+          <div
+            th:if="${startup.city}"
+            style="
+              text-align: center;
+              padding: 0 16px;
+              border-right: 1px solid var(--border);
+            "
+          >
+            <div
+              style="
+                font-family: var(--serif);
+                font-size: 18px;
+                font-weight: 700;
+              "
+              th:text="${startup.city}"
+            >
+              City
+            </div>
+            <div
+              style="
+                font-size: 11px;
+                color: var(--muted);
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                margin-top: 3px;
+              "
+            >
+              Headquarters
+            </div>
+          </div>
+
+          <div
+            th:if="${startup.fundingStage != null}"
+            style="text-align: center; padding: 0 16px"
+          >
+            <div
+              style="
+                font-family: var(--serif);
+                font-size: 18px;
+                font-weight: 700;
+              "
+              th:text="${startup.fundingStage.label}"
+            >
+              Stage
+            </div>
+            <div
+              style="
+                font-size: 11px;
+                color: var(--muted);
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                margin-top: 3px;
+              "
+            >
+              Funding Stage
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Two-column layout -->
+      <div style="display: grid; grid-template-columns: 1fr 280px; gap: 32px">
+        <div>
+          <!-- About -->
+          <div class="section-header" style="margin-bottom: 16px">
+            <h2>About <span th:text="${startup.name}">Startup</span></h2>
+          </div>
+          <div
+            style="font-size: 16px; line-height: 1.85; color: var(--dark)"
+            th:text="${startup.description}"
+          >
+            Description
+          </div>
+
+          <!-- Founder section -->
+          <div
+            th:if="${startup.founderName != null}"
+            style="
+              margin-top: 36px;
+              padding: 24px;
+              border: 1px solid var(--border);
+              border-radius: 8px;
+              background: var(--white);
+            "
+          >
+            <div
+              style="
+                font-size: 12px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.6px;
+                color: var(--muted);
+                margin-bottom: 16px;
+              "
+            >
+              The Founder
+            </div>
+            <div style="display: flex; align-items: center; gap: 16px">
+              <img
+                th:if="${startup.founderPhoto}"
+                th:src="${startup.founderPhoto}"
+                style="
+                  width: 64px;
+                  height: 64px;
+                  border-radius: 50%;
+                  object-fit: cover;
+                  flex-shrink: 0;
+                "
+              />
+              <div
+                th:unless="${startup.founderPhoto}"
+                style="
+                  width: 64px;
+                  height: 64px;
+                  border-radius: 50%;
+                  background: #111;
+                  color: #fff;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  font-size: 24px;
+                  font-weight: 700;
+                  flex-shrink: 0;
+                "
+                th:text="${startup.founderName != null}
+                         ? ${#strings.substring(startup.founderName, 0, 1)}
+                         : '?'"
+              >
+                F
+              </div>
+              <div>
+                <div
+                  style="
+                    font-family: var(--serif);
+                    font-size: 20px;
+                    font-weight: 700;
+                    color: var(--black);
+                  "
+                  th:text="${startup.founderName}"
+                >
+                  Founder
+                </div>
+                <div
+                  style="font-size: 14px; color: var(--muted); margin-top: 3px"
+                  th:text="${startup.founderTitle}"
+                >
+                  Title
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <aside>
+          <div class="sidebar-widget">
+            <h4>Startup Details</h4>
+
+            <div
+              th:if="${startup.sector}"
+              style="padding: 8px 0; border-bottom: 1px solid var(--border)"
+            >
+              <div
+                style="
+                  font-size: 11px;
+                  color: var(--muted);
+                  text-transform: uppercase;
+                  letter-spacing: 0.4px;
+                "
+              >
+                Sector
+              </div>
+              <div
+                style="font-size: 14px; font-weight: 600; margin-top: 3px"
+                th:text="${startup.sector}"
+              >
+                Sector
+              </div>
+            </div>
+
+            <div
+              th:if="${startup.city}"
+              style="padding: 8px 0; border-bottom: 1px solid var(--border)"
+            >
+              <div
+                style="
+                  font-size: 11px;
+                  color: var(--muted);
+                  text-transform: uppercase;
+                  letter-spacing: 0.4px;
+                "
+              >
+                Location
+              </div>
+              <div
+                style="font-size: 14px; font-weight: 600; margin-top: 3px"
+                th:text="${startup.city} + (${startup.country} != null ? ', ' + ${startup.country} : '')"
+              >
+                City
+              </div>
+            </div>
+
+            <div
+              th:if="${startup.foundingYear}"
+              style="padding: 8px 0; border-bottom: 1px solid var(--border)"
+            >
+              <div
+                style="
+                  font-size: 11px;
+                  color: var(--muted);
+                  text-transform: uppercase;
+                  letter-spacing: 0.4px;
+                "
+              >
+                Founded
+              </div>
+              <div
+                style="font-size: 14px; font-weight: 600; margin-top: 3px"
+                th:text="${startup.foundingYear}"
+              >
+                Year
+              </div>
+            </div>
+
+            <div th:if="${startup.fundingStage != null}" style="padding: 8px 0">
+              <div
+                style="
+                  font-size: 11px;
+                  color: var(--muted);
+                  text-transform: uppercase;
+                  letter-spacing: 0.4px;
+                "
+              >
+                Funding Stage
+              </div>
+              <div
+                style="font-size: 14px; font-weight: 600; margin-top: 3px"
+                th:text="${startup.fundingStage.label}"
+              >
+                Stage
+              </div>
+            </div>
+          </div>
+
+          <!-- Other startups -->
+          <div class="sidebar-widget">
+            <h4>Other Startups</h4>
+            <div
+              th:each="st : ${featuredStartups}"
+              th:if="${st.slug != startup.slug}"
+              style="
+                display: flex;
+                gap: 10px;
+                margin-bottom: 12px;
+                align-items: center;
+              "
+            >
+              <img
+                th:if="${st.logoUrl}"
+                th:src="${st.logoUrl}"
+                style="
+                  width: 32px;
+                  height: 32px;
+                  object-fit: contain;
+                  border: 1px solid var(--border);
+                  border-radius: 6px;
+                  padding: 2px;
+                  flex-shrink: 0;
+                "
+              />
+              <div
+                th:unless="${st.logoUrl}"
+                style="
+                  width: 32px;
+                  height: 32px;
+                  background: var(--light-bg);
+                  border: 1px solid var(--border);
+                  border-radius: 6px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  font-size: 12px;
+                  flex-shrink: 0;
+                "
+              >
+                &#128640;
+              </div>
+              <div>
+                <a
+                  th:href="@{/startup/{slug}(slug=${st.slug})}"
+                  th:text="${st.name}"
+                  style="
+                    font-size: 13px;
+                    font-weight: 700;
+                    font-family: var(--serif);
+                  "
+                  >Name</a
+                >
+                <div
+                  style="font-size: 11px; color: var(--muted)"
+                  th:text="${st.fundingStage != null} ? ${st.fundingStage.label} : ${st.sector}"
+                >
+                  Stage
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <th:block th:replace="~{fragments :: footer}"></th:block>
+  </body>
+</html>
