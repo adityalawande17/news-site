@@ -129,6 +129,7 @@
               <label>Body Content</label>
               <textarea
                 th:field="*{content}"
+                id="articleContent"
                 rows="14"
                 placeholder="Full article body... (Q&amp;A format for interviews)"
               ></textarea>
@@ -480,6 +481,90 @@
 
       toggleTypeFields();
       typeSelect.addEventListener("change", toggleTypeFields);
+    </script>
+    <!-- TinyMCE Rich Text Editor -->
+    <script
+      src="https://cdn.tiny.cloud/1/9k5dh6t2nwvikfn2eqfo5cn3tcn66bwhlilx4riqpxp65qjp/tinymce/7/tinymce.min.js"
+      referrerpolicy="origin"
+    ></script>
+
+    <script>
+      tinymce.init({
+        selector: "#articleContent",
+        height: 500,
+        menubar: true,
+
+        plugins: [
+          "advlist",
+          "autolink",
+          "lists",
+          "link",
+          "image",
+          "charmap",
+          "anchor",
+          "searchreplace",
+          "visualblocks",
+          "code",
+          "fullscreen",
+          "insertdatetime",
+          "media",
+          "table",
+          "preview",
+          "help",
+          "wordcount",
+        ],
+
+        toolbar:
+          "undo redo | blocks | " +
+          "bold italic underline strikethrough | " +
+          "alignleft aligncenter alignright alignjustify | " +
+          "bullist numlist outdent indent | " +
+          "link image media table | " +
+          "removeformat | code fullscreen | help",
+
+        // Styling inside the editor matches your public site
+        content_style: `
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      color: #222;
+      max-width: 100%;
+      padding: 16px;
+    }
+    p { margin-bottom: 16px; }
+    h2 { font-family: Georgia, serif; font-size: 24px; margin: 24px 0 12px; }
+    h3 { font-family: Georgia, serif; font-size: 20px; margin: 20px 0 10px; }
+    blockquote {
+      border-left: 4px solid #c0392b;
+      padding: 8px 16px;
+      margin: 16px 0;
+      color: #555;
+      font-style: italic;
+    }
+    strong { font-weight: 700; }
+    a { color: #c0392b; }
+  `,
+
+        // Q&A format helper for interviews
+        formats: {
+          question: {
+            block: "p",
+            styles: { fontWeight: "bold", color: "#111111" },
+          },
+        },
+
+        // Prevent TinyMCE from stripping any HTML tags
+        valid_elements: "*[*]",
+        extended_valid_elements: "*[*]",
+
+        // On form submit, sync content back to the textarea automatically
+        setup: function (editor) {
+          editor.on("change", function () {
+            editor.save();
+          });
+        },
+      });
     </script>
   </body>
 </html>
