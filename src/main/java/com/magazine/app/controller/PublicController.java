@@ -60,8 +60,8 @@ public class PublicController {
         model.addAttribute("latestPressReleases",
             articleService.getLatestByType(ArticleType.PRESS_RELEASE, 3));
         model.addAttribute("latestVideos", videoService.getLatest(4));
-        // Map of region → latest issue for homepage buttons
-        model.addAttribute("latestPerRegion", magazineService.getLatestPerRegion());
+        // Map of region → latest 4 issue covers for homepage buttons
+        model.addAttribute("latestPerRegion", magazineService.getLatest4PerRegion());
         model.addAttribute("regions",         MagazineRegion.values());
         model.addAttribute("featuredCompanies", companyService.getFeatured());
         model.addAttribute("featuredStartups", startupService.getFeatured());

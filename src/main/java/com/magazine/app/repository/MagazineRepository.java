@@ -23,8 +23,8 @@ public interface MagazineRepository extends JpaRepository<Magazine, Long> {
         MagazineRegion region, Pageable pageable
     );
 
-    // Latest issue per region — for homepage preview
-    Optional<Magazine> findTopByPublishedTrueAndRegionOrderByYearDescIssueNumberDesc(
+    // Latest 4 issues per region — for homepage cover grid
+    List<Magazine> findTop4ByPublishedTrueAndRegionOrderByYearDescIssueNumberDesc(
         MagazineRegion region
     );
 

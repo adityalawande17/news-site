@@ -101,17 +101,14 @@ public Page<Magazine> getByRegion(MagazineRegion region, int page, int size) {
         );
 }
 
-// Latest issue per region — for homepage buttons
-// Returns a map: region → latest magazine (null if none published yet)
-public Map<MagazineRegion, Magazine> getLatestPerRegion() {
-    Map<MagazineRegion, Magazine> map = new LinkedHashMap<>();
+// Latest 4 issues per region — for homepage cover grid
+public Map<MagazineRegion, List<Magazine>> getLatest4PerRegion() {
+    Map<MagazineRegion, List<Magazine>> map = new LinkedHashMap<>();
     for (MagazineRegion region : MagazineRegion.values()) {
-        magazineRepository
-            .findTopByPublishedTrueAndRegionOrderByYearDescIssueNumberDesc(region)
-            .ifPresentOrElse(
-                mag -> map.put(region, mag),
-                ()  -> map.put(region, null)
-            );
+        map.put(region,
+            magazineRepository
+                .findTop4ByPublishedTrueAndRegionOrderByYearDescIssueNumberDesc(region)
+        );
     }
     return map;
 }
