@@ -7,58 +7,72 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <title th:text="${title} + ' | BizPulse'">BizPulse</title>
       <link rel="stylesheet" th:href="@{/css/style.css}" />
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      />
     </th:block>
 
     <!-- HEADER -->
     <th:block th:fragment="header(categories, featured)">
-      <!-- Top utility bar -->
-      <div class="topbar">
+      <!-- Top bar: subscribe · brand · socials -->
+      <div class="nav-top">
         <div class="container inner">
-          <span class="date" id="topdate">Business &amp; Leadership News</span>
-          <div class="socials">
-            <a href="#">f</a>
-            <a href="#">&#120143;</a>
-            <a href="#">in</a>
-            <a href="#">RSS</a>
+          <a th:href="@{/contact}" class="subscribe-btn">Subscribe</a>
+          <a th:href="@{/}" class="brand-mark">DECISIONS INSIGHTS</a>
+          <div class="social-icons">
+            <a href="#" aria-label="LinkedIn"
+              ><i class="fa-brands fa-linkedin-in"></i
+            ></a>
+            <a href="#" aria-label="Facebook"
+              ><i class="fa-brands fa-facebook-f"></i
+            ></a>
+            <a href="#" aria-label="Instagram"
+              ><i class="fa-brands fa-instagram"></i
+            ></a>
+            <a href="#" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#" aria-label="Pinterest"
+              ><i class="fa-brands fa-pinterest-p"></i
+            ></a>
+            <a href="#" aria-label="YouTube"
+              ><i class="fa-brands fa-youtube"></i
+            ></a>
           </div>
-          <form class="search-wrap" th:action="@{/search}" method="get">
-            <input type="text" name="q" placeholder="Search..." />
-            <button type="submit">&#9906;</button>
-          </form>
         </div>
       </div>
 
-      <!-- Masthead -->
-      <div class="masthead">
-        <div class="masthead-content">
-          <a th:href="@{/}" class="brand">DECISIONS INSIGHTS</a>
-          <div class="tagline">
-            Insight &middot; Leadership &middot; Technology &middot; Business
-          </div>
-        </div>
-      </div>
-
-      <!-- Primary nav — includes Interviews -->
+      <!-- Primary nav — hamburger · links · search -->
       <nav class="primary-nav">
         <div class="container inner">
-          <a th:href="@{/}">Home</a>
-          <a th:href="@{/news}">News</a>
-          <a th:href="@{/blog}">All Articles</a>
-          <a th:href="@{/interviews}">Interviews</a>
-          <a th:href="@{/case-studies}">Case Studies</a>
-          <a th:href="@{/press-releases}">Press Releases</a>
-          <a th:href="@{/videos}">Videos</a>
-          <a th:href="@{/magazine}">Magazine</a>
-          <a th:href="@{/companies}">Companies</a>
-          <a th:href="@{/startups}">Startups</a>
-          <!-- <a
-            th:each="cat : ${categories}"
-            th:href="@{/category/{slug}(slug=${cat.slug})}"
-            th:text="${cat.name}"
-            >Category</a 
-          > -->
-          <a th:href="@{/about}">About</a>
-          <a th:href="@{/contact}">Contact</a>
+          <button type="button" class="nav-hamburger" aria-label="Menu">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="nav-links">
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/news}">News</a>
+            <a th:href="@{/blog}">All Articles</a>
+            <a th:href="@{/interviews}">Interviews</a>
+            <a th:href="@{/case-studies}">Case Studies</a>
+            <a th:href="@{/press-releases}">Press Releases</a>
+            <a th:href="@{/videos}">Videos</a>
+            <a th:href="@{/magazine}">Magazine</a>
+            <a th:href="@{/companies}">Companies</a>
+            <a th:href="@{/startups}">Startups</a>
+            <!-- <a
+              th:each="cat : ${categories}"
+              th:href="@{/category/{slug}(slug=${cat.slug})}"
+              th:text="${cat.name}"
+              >Category</a
+            > -->
+            <a th:href="@{/about}">About</a>
+            <a th:href="@{/contact}">Contact</a>
+          </div>
+          <form class="nav-search" th:action="@{/search}" method="get">
+            <input type="text" name="q" placeholder="Search..." />
+            <button type="submit">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+          </form>
         </div>
       </nav>
 
