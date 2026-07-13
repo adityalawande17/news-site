@@ -380,178 +380,189 @@
           startAuto();
         }
       </script>
+    </div>
 
-      <!-- ── Latest News section ───────────────────────── -->
+    <!-- ── About promo banner — full-bleed ─────────────── -->
+    <a th:href="@{/about}" class="about-promo">
+      <div class="about-promo-content">
+        <h2>
+          Step into the World of Decisions Insights, where Insight and
+          Innovation Converge
+        </h2>
+        <p>
+          Decisions Insights is a digital publication built for ambitious
+          professionals, curating leadership stories, technology trends, and
+          startup journeys shaping business today across the globe.
+        </p>
+        <span class="about-promo-btn">Read More &raquo;</span>
+      </div>
+    </a>
+
+    <div class="container">
+
+      <!-- ── Interviews section ────────────────────────── -->
       <div
         class="cat-section"
-        th:if="${latestNews != null and !latestNews.isEmpty()}"
+        th:if="${latestInterviews != null and !latestInterviews.isEmpty()}"
       >
         <div class="section-header">
-          <h2>Latest News</h2>
-          <a th:href="@{/news}" class="view-all">View All &rarr;</a>
+          <h2>Interviews</h2>
+          <a th:href="@{/interviews}" class="view-all">View All &rarr;</a>
         </div>
 
-        <div class="article-grid-3">
-          <!-- First two as image cards -->
-          <div class="art-card-img" th:if="${latestNews.size() > 0}">
-            <a th:href="@{/article/{slug}(slug=${latestNews[0].slug})}">
-              <img
-                th:src="${latestNews[0].imageUrl}
-             ?: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=600'"
-                th:alt="${latestNews[0].title}"
-              />
-            </a>
-            <div class="art-body">
-              <div
-                style="
-                  display: flex;
-                  gap: 6px;
-                  align-items: center;
-                  margin-bottom: 5px;
-                "
-              >
-                <span
-                  th:if="${latestNews[0].breaking}"
-                  style="
-                    background: #cc0000;
-                    color: #fff;
-                    font-size: 9px;
-                    font-weight: 800;
-                    padding: 2px 7px;
-                    border-radius: 2px;
-                    text-transform: uppercase;
-                  "
-                  >Breaking</span
+        <div class="interviews-layout">
+          <!-- Left: square slideshow — latest 3 -->
+          <div class="interview-slideshow">
+            <div class="interview-slide-viewport">
+              <div class="interview-slide-track" id="interviewTrack">
+                <div
+                  class="interview-slide"
+                  th:each="iv,i : ${latestInterviews}"
+                  th:if="${i.index < 3}"
                 >
-                <span
-                  class="art-meta"
-                  th:if="${latestNews[0].newsSource}"
-                  th:text="${latestNews[0].newsSource}"
-                  >Source</span
-                >
+                  <a
+                    th:href="@{/article/{slug}(slug=${iv.slug})}"
+                    class="interview-slide-img"
+                  >
+                    <img
+                      th:src="${iv.imageUrl}
+                     ?: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=700&auto=format&fit=crop'"
+                      th:alt="${iv.title}"
+                    />
+                  </a>
+                  <div class="interview-slide-overlay">
+                    <div class="interview-slide-info">
+                      <div
+                        class="interview-slide-name"
+                        th:if="${iv.intervieweeName}"
+                        th:text="${iv.intervieweeName}"
+                      >
+                        Name
+                      </div>
+                      <div class="interview-slide-role">
+                        <span th:text="${iv.intervieweeTitle}">Role</span
+                        ><span
+                          th:if="${iv.intervieweeCompany}"
+                          th:text="', ' + ${iv.intervieweeCompany}"
+                          >, Company</span
+                        >
+                      </div>
+                      <a
+                        class="interview-slide-title"
+                        th:href="@{/article/{slug}(slug=${iv.slug})}"
+                        th:text="${iv.title}"
+                        >Title</a
+                      >
+                    </div>
+                    <div class="interview-slide-nav">
+                      <button
+                        type="button"
+                        class="interview-slide-arrow prev"
+                        onclick="interviewPrev()"
+                        aria-label="Previous"
+                      >
+                        &#8249;
+                      </button>
+                      <button
+                        type="button"
+                        class="interview-slide-arrow next"
+                        onclick="interviewNext()"
+                        aria-label="Next"
+                      >
+                        &#8250;
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <h3>
-                <a
-                  th:href="@{/article/{slug}(slug=${latestNews[0].slug})}"
-                  th:text="${latestNews[0].title}"
-                  >Title</a
-                >
-              </h3>
-              <p th:text="${latestNews[0].summary}">Summary</p>
-              <span
-                class="art-meta"
-                th:text="${#temporals.format(latestNews[0].createdAt,'MMM dd, yyyy')}"
-              >
-                Date
-              </span>
             </div>
           </div>
 
-          <div class="art-card-img" th:if="${latestNews.size() > 1}">
-            <a th:href="@{/article/{slug}(slug=${latestNews[1].slug})}">
-              <img
-                th:src="${latestNews[1].imageUrl}
-             ?: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=600'"
-                th:alt="${latestNews[1].title}"
-              />
-            </a>
-            <div class="art-body">
-              <div
-                style="
-                  display: flex;
-                  gap: 6px;
-                  align-items: center;
-                  margin-bottom: 5px;
-                "
-              >
-                <span
-                  th:if="${latestNews[1].breaking}"
-                  style="
-                    background: #cc0000;
-                    color: #fff;
-                    font-size: 9px;
-                    font-weight: 800;
-                    padding: 2px 7px;
-                    border-radius: 2px;
-                    text-transform: uppercase;
-                  "
-                  >Breaking</span
-                >
-                <span
-                  class="art-meta"
-                  th:if="${latestNews[1].newsSource}"
-                  th:text="${latestNews[1].newsSource}"
-                  >Source</span
-                >
-              </div>
-              <h3>
-                <a
-                  th:href="@{/article/{slug}(slug=${latestNews[1].slug})}"
-                  th:text="${latestNews[1].title}"
-                  >Title</a
-                >
-              </h3>
-              <p th:text="${latestNews[1].summary}">Summary</p>
-            </div>
-          </div>
-
-          <!-- Third column: text list -->
-          <div class="art-list" th:if="${latestNews.size() > 2}">
+          <!-- Right: stacked cards — next 3 -->
+          <div class="interview-stack" th:if="${latestInterviews.size() > 3}">
             <div
-              class="art-list-item"
-              th:each="n,i : ${latestNews}"
-              th:if="${i.index >= 2 and i.index <= 4}"
+              class="interview-stack-item"
+              th:each="iv,i : ${latestInterviews}"
+              th:if="${i.index >= 3 and i.index < 6}"
             >
-              <div style="display: flex; gap: 6px; margin-bottom: 4px">
+              <a
+                th:href="@{/article/{slug}(slug=${iv.slug})}"
+                class="interview-stack-photo"
+              >
+                <img
+                  th:if="${iv.intervieweePhoto}"
+                  th:src="${iv.intervieweePhoto}"
+                  th:alt="${iv.intervieweeName}"
+                />
                 <span
-                  th:if="${n.breaking}"
-                  style="
-                    background: #cc0000;
-                    color: #fff;
-                    font-size: 9px;
-                    font-weight: 800;
-                    padding: 1px 6px;
-                    border-radius: 2px;
-                  "
+                  th:unless="${iv.intervieweePhoto}"
+                  th:text="${iv.intervieweeName != null ? #strings.substring(iv.intervieweeName, 0, 1) : '?'}"
+                  >A</span
                 >
-                  Breaking
-                </span>
-                <span
-                  class="tl-meta"
-                  th:text="${#temporals.format(n.createdAt,'MMM dd')}"
+              </a>
+              <div class="interview-stack-body">
+                <h4>
+                  <a
+                    th:href="@{/article/{slug}(slug=${iv.slug})}"
+                    th:text="${iv.title}"
+                    >Title</a
+                  >
+                </h4>
+                <div
+                  class="interview-stack-name"
+                  th:if="${iv.intervieweeName}"
+                  th:text="${iv.intervieweeName}"
                 >
-                  Date
-                </span>
+                  Name
+                </div>
+                <div class="interview-stack-role">
+                  <span th:text="${iv.intervieweeTitle}">Role</span
+                  ><span
+                    th:if="${iv.intervieweeCompany}"
+                    th:text="', ' + ${iv.intervieweeCompany}"
+                    >, Company</span
+                  >
+                </div>
               </div>
-              <h4>
-                <a
-                  th:href="@{/article/{slug}(slug=${n.slug})}"
-                  th:text="${n.title}"
-                  >Title</a
-                >
-              </h4>
-              <p th:text="${#strings.abbreviate(n.summary, 80)}">Summary</p>
             </div>
           </div>
         </div>
+
+        <script>
+          (function () {
+            const track = document.getElementById("interviewTrack");
+            if (!track) return;
+            const slides = track.children.length;
+            let current = 0;
+            let timer = null;
+
+            function goTo(index) {
+              current = ((index % slides) + slides) % slides;
+              track.style.transform = "translateX(-" + current * 100 + "%)";
+            }
+            window.interviewNext = () => goTo(current + 1);
+            window.interviewPrev = () => goTo(current - 1);
+
+            function startAuto() {
+              clearInterval(timer);
+              if (slides > 1)
+                timer = setInterval(() => goTo(current + 1), 5000);
+            }
+            function stopAuto() {
+              clearInterval(timer);
+            }
+
+            const wrap = track.closest(".interview-slideshow");
+            if (wrap) {
+              wrap.addEventListener("mouseenter", stopAuto);
+              wrap.addEventListener("mouseleave", startAuto);
+            }
+
+            goTo(0);
+            startAuto();
+          })();
+        </script>
       </div>
-
-      <!-- ── About promo banner ──────────────────────────── -->
-      <a th:href="@{/about}" class="about-promo">
-        <div class="about-promo-content">
-          <h2>
-            Step into the World of Decisions Insights, where Insight and
-            Innovation Converge
-          </h2>
-          <p>
-            Decisions Insights is a digital publication built for ambitious
-            professionals, curating leadership stories, technology trends, and
-            startup journeys shaping business today across the globe.
-          </p>
-          <span class="about-promo-btn">Read More &raquo;</span>
-        </div>
-      </a>
-
     </div>
 
     <!-- Featured Companies section — full-bleed carousel -->
@@ -715,6 +726,22 @@
       </script>
     </section>
 
+    <!-- ── Blog promo banner ──────────────────────────── -->
+    <a th:href="@{/blog}" class="blog-promo">
+      <div class="blog-promo-content">
+        <h2>
+          Enter a World of Intelligent Decisions, Fueled by Insight and
+          Innovation.
+        </h2>
+        <p>
+          Decisions Insights is a global digital publication showcasing
+          influential leaders, cutting-edge technology, and startup success
+          stories that inspire innovation and shape tomorrow's business world.
+        </p>
+        <span class="about-promo-btn">Read More &raquo;</span>
+      </div>
+    </a>
+
     <div class="container">
       <!-- Featured Startups section -->
       <div
@@ -863,116 +890,6 @@
                   >Amount</span
                 >
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── Interviews section ────────────────────────── -->
-      <div
-        class="cat-section"
-        th:if="${latestInterviews != null and !latestInterviews.isEmpty()}"
-      >
-        <div class="section-header">
-          <h2>Interviews</h2>
-          <a th:href="@{/interviews}" class="view-all">View All &rarr;</a>
-        </div>
-
-        <div class="article-grid-3">
-          <div
-            th:each="iv : ${latestInterviews}"
-            style="
-              border: 1px solid var(--border);
-              border-radius: 4px;
-              overflow: hidden;
-              background: var(--white);
-            "
-          >
-            <!-- Cover image -->
-            <a th:href="@{/article/{slug}(slug=${iv.slug})}">
-              <img
-                th:src="${iv.imageUrl}
-               ?: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=500&auto=format&fit=crop'"
-                th:alt="${iv.title}"
-                style="width: 100%; height: 160px; object-fit: cover"
-              />
-            </a>
-
-            <div style="padding: 14px">
-              <!-- Interviewee row -->
-              <div
-                th:if="${iv.intervieweeName != null}"
-                style="
-                  display: flex;
-                  align-items: center;
-                  gap: 10px;
-                  margin-bottom: 10px;
-                "
-              >
-                <img
-                  th:if="${iv.intervieweePhoto}"
-                  th:src="${iv.intervieweePhoto}"
-                  style="
-                    width: 38px;
-                    height: 38px;
-                    border-radius: 50%;
-                    object-fit: cover;
-                    flex-shrink: 0;
-                  "
-                />
-                <div
-                  th:unless="${iv.intervieweePhoto}"
-                  style="
-                    width: 38px;
-                    height: 38px;
-                    border-radius: 50%;
-                    background: var(--black);
-                    color: #fff;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-weight: 700;
-                    flex-shrink: 0;
-                  "
-                  th:text="${#strings.substring(iv.intervieweeName, 0, 1)}"
-                >
-                  A
-                </div>
-
-                <div>
-                  <div
-                    style="
-                      font-weight: 700;
-                      font-size: 13px;
-                      color: var(--black);
-                    "
-                    th:text="${iv.intervieweeName}"
-                  >
-                    Name
-                  </div>
-                  <div
-                    style="font-size: 11px; color: var(--muted)"
-                    th:text="${iv.intervieweeTitle}"
-                  >
-                    Title
-                  </div>
-                </div>
-              </div>
-
-              <!-- Title -->
-              <h3
-                style="
-                  font-family: var(--serif);
-                  font-size: 15px;
-                  line-height: 1.35;
-                "
-              >
-                <a
-                  th:href="@{/article/{slug}(slug=${iv.slug})}"
-                  th:text="${iv.title}"
-                  >Title</a
-                >
-              </h3>
             </div>
           </div>
         </div>

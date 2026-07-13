@@ -50,9 +50,10 @@ public class PublicController {
         model.addAttribute("featured",          featured);
         model.addAttribute("categories",        categories);
         model.addAttribute("catArticles",        catArticles);
-        // Interview preview section on homepage (latest 3)
+        // Interview preview section on homepage — latest 6: first 3 in the
+        // slideshow, next 3 in the stacked list
         model.addAttribute("latestInterviews",
-            articleService.getLatestByType(ArticleType.INTERVIEW, 3));
+            articleService.getLatestByType(ArticleType.INTERVIEW, 6));
         model.addAttribute("latestNews",
             articleService.getLatestByType(ArticleType.NEWS, 3));
         model.addAttribute("latestCaseStudies",

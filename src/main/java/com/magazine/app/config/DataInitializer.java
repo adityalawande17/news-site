@@ -7,6 +7,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 public class DataInitializer implements CommandLineRunner {
 
@@ -25,6 +27,11 @@ public class DataInitializer implements CommandLineRunner {
             );
             System.out.println(">>> Admin created: admin / admin123");
         }
+
+        // Tops up interviews on every startup (idempotent) — runs even when
+        // the rest of this method short-circuits below because categories
+        // already exist from a previous run.
+        seedExtraInterviews();
 
         if (categoryRepository.count() > 0) return; // already seeded
 
@@ -171,6 +178,110 @@ articleRepository.save(news3);
         a.setIntervieweeName(name);  a.setIntervieweeTitle(jobTitle);
         a.setIntervieweeCompany(company);
         a.setFeatured(featured);     a.setPublished(true);
+        return a;
+    }
+
+    // Adds 5 more interviews (with cover + interviewee photos) so the homepage
+    // slideshow (latest 3) and stacked list (next 3) both have content to show.
+    private void seedExtraInterviews() {
+        if (articleRepository.countByPublishedTrueAndArticleType(ArticleType.INTERVIEW) >= 6) {
+            return; // already topped up
+        }
+
+        Category leadership = categoryRepository.findBySlug("leadership").orElse(null);
+        Category tech       = categoryRepository.findBySlug("technology").orElse(null);
+        Category startups   = categoryRepository.findBySlug("startups").orElse(null);
+        Category finance    = categoryRepository.findBySlug("finance").orElse(null);
+
+        LocalDateTime now = LocalDateTime.now();
+
+        save(interviewWithPhoto(
+            "\"The Playbook for Scaling Enterprise Cloud Infrastructure\" — David Kessler, CTO of Meridian Cloud",
+            "scaling-enterprise-cloud-david-kessler",
+            "Meridian Cloud's CTO on what breaks first when infrastructure scales 100x in a year.",
+            "<p><strong>Q: What breaks first when you scale that fast?</strong></p>"
+            + "<p>Not the servers — the assumptions. Every architectural shortcut you took at 1x traffic becomes a production incident at 100x. We rebuilt our data layer twice in eighteen months.</p>"
+            + "<p><strong>Q: How do you decide what to rebuild versus patch?</strong></p>"
+            + "<p>If a patch buys us more than two quarters of runway, we patch. Anything less, we rebuild properly. Technical debt compounds faster than people expect.</p>",
+            tech, "David Kessler", "Chief Technology Officer", "Meridian Cloud",
+            "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=900&auto=format&fit=crop",
+            true, now.minusHours(1)
+        ));
+
+        save(interviewWithPhoto(
+            "\"Inside the $200M Turnaround\" — Marcus Whitfield, CEO of Ashford Capital Group",
+            "200m-turnaround-marcus-whitfield-ashford",
+            "How Ashford Capital Group's new CEO rebuilt investor trust after two brutal quarters.",
+            "<p><strong>Q: Where did you start?</strong></p>"
+            + "<p>With the balance sheet, not the press release. Everyone wanted a comeback story on day one. I wanted to know exactly how bad things were before promising anything.</p>"
+            + "<p><strong>Q: What convinced investors to stay?</strong></p>"
+            + "<p>Transparency, mostly. We over-communicated for two years — monthly letters instead of quarterly ones. People forgive bad numbers faster than they forgive silence.</p>",
+            finance, "Marcus Whitfield", "Chief Executive Officer", "Ashford Capital Group",
+            "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=900&auto=format&fit=crop",
+            false, now.minusHours(2)
+        ));
+
+        save(interviewWithPhoto(
+            "\"Reimagining Patient Care Through Data\" — Dr. Elena Torres, COO of Meridian Health Network",
+            "reimagining-patient-care-elena-torres",
+            "Meridian Health Network's COO on the operational changes behind shorter wait times and better outcomes.",
+            "<p><strong>Q: What's the biggest operational bottleneck in healthcare?</strong></p>"
+            + "<p>Handoffs. Every time a patient moves between departments, information gets lost. We mapped every handoff in our system and it changed how we staff entirely.</p>"
+            + "<p><strong>Q: What result are you proudest of?</strong></p>"
+            + "<p>Average emergency wait times dropped by 40% in a year, without adding headcount. That came purely from fixing coordination, not spending more.</p>",
+            leadership, "Elena Torres", "Chief Operating Officer", "Meridian Health Network",
+            "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=300&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=900&auto=format&fit=crop",
+            false, now.minusHours(3)
+        ));
+
+        save(interviewWithPhoto(
+            "\"Building Brands People Actually Remember\" — Nadia Farouk, CMO of Lumen Creative Co.",
+            "building-memorable-brands-nadia-farouk",
+            "Lumen Creative's CMO on why most brand campaigns are forgotten within a week — and what she does differently.",
+            "<p><strong>Q: Why do most campaigns fail to stick?</strong></p>"
+            + "<p>They're built to be liked, not remembered. Those aren't the same goal. We optimise for one specific, ownable idea per campaign instead of trying to say everything at once.</p>"
+            + "<p><strong>Q: How do you measure that?</strong></p>"
+            + "<p>Unprompted recall surveys, four weeks after a campaign ends. If people can't describe it unprompted, it didn't work — no matter what the engagement metrics said.</p>",
+            leadership, "Nadia Farouk", "Chief Marketing Officer", "Lumen Creative Co.",
+            "https://images.unsplash.com/photo-1607746882042-944635dfe10e?w=300&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=900&auto=format&fit=crop",
+            false, now.minusHours(4)
+        ));
+
+        save(interviewWithPhoto(
+            "\"From Garage to Series C in 18 Months\" — Jordan Reyes, Founder & CEO of Pathfinder Robotics",
+            "garage-to-series-c-jordan-reyes-pathfinder",
+            "Pathfinder Robotics' founder on the fundraising sprint that took the company from three people to three hundred.",
+            "<p><strong>Q: What changed once you raised the Series A?</strong></p>"
+            + "<p>The problems got more expensive to get wrong. At the garage stage, a bad decision costs you weeks. At scale, it costs you quarters and half your engineering team's trust.</p>"
+            + "<p><strong>Q: Any advice for founders in that jump?</strong></p>"
+            + "<p>Hire slower than you think you need to. We over-hired once trying to match investor expectations, and undoing that was harder than the original hiring push.</p>",
+            startups, "Jordan Reyes", "Founder & CEO", "Pathfinder Robotics",
+            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=900&auto=format&fit=crop",
+            true, now.minusHours(5)
+        ));
+    }
+
+    private Article interviewWithPhoto(String title, String slug, String summary,
+                                        String content, Category cat,
+                                        String name, String jobTitle, String company,
+                                        String intervieweePhoto, String coverImageUrl,
+                                        boolean featured, LocalDateTime createdAt) {
+        Article a = new Article();
+        a.setTitle(title);           a.setSlug(slug);
+        a.setSummary(summary);       a.setContent(content);
+        a.setAuthorName("Editorial Team");
+        a.setCategory(cat);          a.setArticleType(ArticleType.INTERVIEW);
+        a.setIntervieweeName(name);  a.setIntervieweeTitle(jobTitle);
+        a.setIntervieweeCompany(company);
+        a.setIntervieweePhoto(intervieweePhoto);
+        a.setImageUrl(coverImageUrl);
+        a.setFeatured(featured);     a.setPublished(true);
+        a.setCreatedAt(createdAt);   a.setUpdatedAt(createdAt);
         return a;
     }
 
