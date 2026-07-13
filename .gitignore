@@ -1,0 +1,20 @@
+# Maven build output
+target/
+
+# Compiled class files
+*.class
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# H2 database lock file (runtime-only; data/*.mv.db is intentionally tracked)
+data/*.lock.db
