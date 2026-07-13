@@ -49,36 +49,77 @@
             </div>
           </div>
 
-          <!-- Side list of featured articles 2-5 -->
+          <!-- Side list of featured articles 2-5 — vertical auto-scrolling carousel -->
           <aside class="hero-aside">
-            <div
-              class="hero-aside-item"
-              th:each="art,i : ${featured}"
-              th:if="${i.index > 0 and i.index <= 5}"
-            >
-              <a th:href="@{/article/{slug}(slug=${art.slug})}">
-                <img
-                  th:src="${art.imageUrl}
-                 ?: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=300&auto=format&fit=crop'"
-                  th:alt="${art.title}"
-                />
-              </a>
-              <div>
-                <div class="art-meta" style="margin-bottom: 4px">
-                  <span
-                    class="cat-tag"
-                    th:if="${art.category}"
-                    th:text="${art.category.name}"
-                    >Cat</span
-                  >
+            <h3 class="hero-aside-heading">Latest Insights</h3>
+            <div class="hero-aside-viewport">
+              <div class="hero-aside-track">
+                <!-- Items, then the same items again for a seamless loop -->
+                <div
+                  class="hero-aside-item"
+                  th:each="art,i : ${featured}"
+                  th:if="${i.index > 0 and i.index <= 6}"
+                >
+                  <a th:href="@{/article/{slug}(slug=${art.slug})}">
+                    <img
+                      th:src="${art.imageUrl}
+                     ?: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=300&auto=format&fit=crop'"
+                      th:alt="${art.title}"
+                    />
+                  </a>
+                  <div>
+                    <div class="art-meta" style="margin-bottom: 4px">
+                      <span
+                        class="cat-tag"
+                        th:if="${art.category}"
+                        th:text="${art.category.name}"
+                        >Cat</span
+                      >
+                    </div>
+                    <h4>
+                      <a
+                        th:href="@{/article/{slug}(slug=${art.slug})}"
+                        th:text="${art.title}"
+                        >Title</a
+                      >
+                    </h4>
+                  </div>
                 </div>
-                <h4>
+                <div
+                  class="hero-aside-item"
+                  aria-hidden="true"
+                  th:each="art,i : ${featured}"
+                  th:if="${i.index > 0 and i.index <= 5}"
+                >
                   <a
                     th:href="@{/article/{slug}(slug=${art.slug})}"
-                    th:text="${art.title}"
-                    >Title</a
+                    tabindex="-1"
                   >
-                </h4>
+                    <img
+                      th:src="${art.imageUrl}
+                     ?: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=300&auto=format&fit=crop'"
+                      th:alt="${art.title}"
+                    />
+                  </a>
+                  <div>
+                    <div class="art-meta" style="margin-bottom: 4px">
+                      <span
+                        class="cat-tag"
+                        th:if="${art.category}"
+                        th:text="${art.category.name}"
+                        >Cat</span
+                      >
+                    </div>
+                    <h4>
+                      <a
+                        th:href="@{/article/{slug}(slug=${art.slug})}"
+                        th:text="${art.title}"
+                        tabindex="-1"
+                        >Title</a
+                      >
+                    </h4>
+                  </div>
+                </div>
               </div>
             </div>
           </aside>
@@ -339,6 +380,19 @@
           startAuto();
         }
       </script>
+
+      <!-- ── About promo banner ──────────────────────────── -->
+      <a th:href="@{/about}" class="about-promo">
+        <div class="about-promo-content">
+          <h2>Step into the World of Decisions Insights, where Insight and Innovation Converge</h2>
+          <p>
+            Decisions Insights is a digital publication built for ambitious
+            professionals, curating leadership stories, technology trends,
+            and startup journeys shaping business today across the globe.
+          </p>
+          <span class="about-promo-btn">Read More &raquo;</span>
+        </div>
+      </a>
 
       <!-- ── Latest News section ───────────────────────── -->
       <div

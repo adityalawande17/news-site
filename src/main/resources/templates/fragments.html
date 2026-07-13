@@ -5,7 +5,9 @@
     <th:block th:fragment="head(title)">
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title th:text="${title} + ' | BizPulse'">BizPulse</title>
+      <title th:text="${title} + ' | Decisions Insights'">
+        Decisions Insights
+      </title>
       <link rel="stylesheet" th:href="@{/css/style.css}" />
       <link
         rel="stylesheet"
@@ -18,7 +20,7 @@
       <!-- Top bar: subscribe · brand · socials -->
       <div class="nav-top">
         <div class="container inner">
-          <a th:href="@{/contact}" class="subscribe-btn">Subscribe</a>
+          <a th:href="@{/contact}" class="subscribe-btn">Contact Us</a>
           <a th:href="@{/}" class="brand-mark">DECISIONS INSIGHTS</a>
           <div class="social-icons">
             <a href="#" aria-label="LinkedIn"
@@ -46,9 +48,6 @@
       <!-- Primary nav — hamburger · links · search -->
       <nav class="primary-nav">
         <div class="container inner">
-          <button type="button" class="nav-hamburger" aria-label="Menu">
-            <i class="fa-solid fa-bars"></i>
-          </button>
           <div class="nav-links">
             <a th:href="@{/}">Home</a>
             <a th:href="@{/news}">News</a>
@@ -99,7 +98,7 @@
         <div class="container">
           <div class="footer-grid">
             <div>
-              <div class="footer-brand">BizPulse</div>
+              <div class="footer-brand">Decisions Insights</div>
               <p>
                 A digital publication for ambitious professionals. Covering
                 leadership, technology, startups, and the ideas shaping business
@@ -132,7 +131,7 @@
             </div>
             <div>
               <h5>Company</h5>
-              <a th:href="@{/about}">About BizPulse</a>
+              <a th:href="@{/about}">About Decisions Insights</a>
               <a th:href="@{/contact}">Advertise</a>
               <a th:href="@{/contact}">Write for Us</a>
               <a th:href="@{/admin/login}">Admin Login</a>
@@ -140,7 +139,7 @@
           </div>
         </div>
         <div class="footer-bottom">
-          &copy; 2026 BizPulse &mdash; All rights reserved.
+          &copy; 2026 Decisions Insights &mdash; All rights reserved.
         </div>
       </footer>
 
