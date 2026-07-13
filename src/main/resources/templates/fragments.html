@@ -30,7 +30,9 @@
             <a href="#" aria-label="Instagram"
               ><i class="fa-brands fa-instagram"></i
             ></a>
-            <a href="#" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#" aria-label="X"
+              ><i class="fa-brands fa-x-twitter"></i
+            ></a>
             <a href="#" aria-label="Pinterest"
               ><i class="fa-brands fa-pinterest-p"></i
             ></a>
@@ -75,20 +77,6 @@
           </form>
         </div>
       </nav>
-
-      <!-- Breaking news ticker -->
-      <div class="breaking" th:if="${featured != null and !featured.isEmpty()}">
-        <div class="container inner">
-          <span class="label">Breaking</span>
-          <span class="ticker-text">
-            <a
-              th:href="@{/article/{slug}(slug=${featured[0].slug})}"
-              th:text="${featured[0].title}"
-              >Headline</a
-            >
-          </span>
-        </div>
-      </div>
     </th:block>
 
     <!-- FOOTER -->

@@ -54,7 +54,7 @@
             <div
               class="hero-aside-item"
               th:each="art,i : ${featured}"
-              th:if="${i.index > 0 and i.index <= 4}"
+              th:if="${i.index > 0 and i.index <= 5}"
             >
               <a th:href="@{/article/{slug}(slug=${art.slug})}">
                 <img
