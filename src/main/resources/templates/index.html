@@ -381,19 +381,6 @@
         }
       </script>
 
-      <!-- ── About promo banner ──────────────────────────── -->
-      <a th:href="@{/about}" class="about-promo">
-        <div class="about-promo-content">
-          <h2>Step into the World of Decisions Insights, where Insight and Innovation Converge</h2>
-          <p>
-            Decisions Insights is a digital publication built for ambitious
-            professionals, curating leadership stories, technology trends,
-            and startup journeys shaping business today across the globe.
-          </p>
-          <span class="about-promo-btn">Read More &raquo;</span>
-        </div>
-      </a>
-
       <!-- ── Latest News section ───────────────────────── -->
       <div
         class="cat-section"
@@ -549,139 +536,198 @@
         </div>
       </div>
 
-      <!-- Featured Companies section -->
-      <div
-        class="cat-section"
-        th:if="${featuredCompanies != null and !featuredCompanies.isEmpty()}"
-      >
+      <!-- ── About promo banner ──────────────────────────── -->
+      <a th:href="@{/about}" class="about-promo">
+        <div class="about-promo-content">
+          <h2>
+            Step into the World of Decisions Insights, where Insight and
+            Innovation Converge
+          </h2>
+          <p>
+            Decisions Insights is a digital publication built for ambitious
+            professionals, curating leadership stories, technology trends, and
+            startup journeys shaping business today across the globe.
+          </p>
+          <span class="about-promo-btn">Read More &raquo;</span>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- Featured Companies section — full-bleed carousel -->
+    <section
+      class="company-promo"
+      th:if="${featuredCompanies != null and !featuredCompanies.isEmpty()}"
+    >
+      <div class="container">
         <div class="section-header">
           <h2>Featured Companies</h2>
           <a th:href="@{/companies}" class="view-all">View All &rarr;</a>
         </div>
 
-        <div class="article-grid-3">
-          <div
-            th:each="co : ${featuredCompanies}"
-            style="
-              border: 1px solid var(--border);
-              border-radius: 8px;
-              overflow: hidden;
-              background: var(--white);
-              transition: box-shadow 0.2s;
-            "
-            onmouseover="this.style.boxShadow = '0 4px 16px rgba(0,0,0,0.1)'"
-            onmouseout="this.style.boxShadow = 'none'"
+        <div class="company-carousel">
+          <button
+            type="button"
+            class="company-carousel-arrow prev"
+            onclick="companyGo(companyCurrent - 1)"
+            aria-label="Previous"
           >
-            <!-- Header strip -->
-            <div style="height: 70px; background: #111; position: relative">
-              <img
-                th:if="${co.coverImageUrl}"
-                th:src="${co.coverImageUrl}"
-                style="
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0.6;
-                "
-              />
-              <div style="position: absolute; bottom: -18px; left: 14px">
-                <img
-                  th:if="${co.logoUrl}"
-                  th:src="${co.logoUrl}"
-                  style="
-                    width: 36px;
-                    height: 36px;
-                    object-fit: contain;
-                    background: #fff;
-                    border: 2px solid var(--border);
-                    border-radius: 6px;
-                    padding: 3px;
-                  "
-                />
-                <div
-                  th:unless="${co.logoUrl}"
-                  style="
-                    width: 36px;
-                    height: 36px;
-                    background: #fff;
-                    border: 2px solid var(--border);
-                    border-radius: 6px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-size: 14px;
-                  "
-                >
-                  &#127970;
+            &#8249;
+          </button>
+
+          <div class="company-carousel-viewport">
+            <div class="company-carousel-track" id="companyTrack">
+              <div class="company-card" th:each="co : ${featuredCompanies}">
+                <div class="company-card-cover">
+                  <img
+                    th:if="${co.coverImageUrl}"
+                    th:src="${co.coverImageUrl}"
+                    th:alt="${co.name}"
+                  />
+                  <div class="company-card-logo">
+                    <img
+                      th:if="${co.logoUrl}"
+                      th:src="${co.logoUrl}"
+                      th:alt="${co.name}"
+                    />
+                    <span th:unless="${co.logoUrl}">&#127970;</span>
+                  </div>
+                </div>
+
+                <div class="company-card-body">
+                  <div
+                    class="company-card-sector"
+                    th:if="${co.sector}"
+                    th:text="${co.sector}"
+                  >
+                    Sector
+                  </div>
+
+                  <h3>
+                    <a
+                      th:href="@{/company/{slug}(slug=${co.slug})}"
+                      th:text="${co.name}"
+                      >Name</a
+                    >
+                  </h3>
+
+                  <p
+                    th:if="${co.tagline}"
+                    th:text="${#strings.abbreviate(co.tagline, 70)}"
+                  >
+                    Tagline
+                  </p>
+
+                  <div class="company-card-meta">
+                    <span
+                      th:if="${co.headquarters}"
+                      th:text="${co.headquarters}"
+                      >HQ</span
+                    >
+                    <span
+                      th:if="${co.foundingYear}"
+                      th:text="'Est. ' + ${co.foundingYear}"
+                      >Year</span
+                    >
+                  </div>
                 </div>
               </div>
             </div>
-
-            <div style="padding: 24px 14px 14px">
-              <div
-                th:if="${co.sector}"
-                style="
-                  font-size: 10px;
-                  font-weight: 700;
-                  color: var(--red);
-                  text-transform: uppercase;
-                  letter-spacing: 0.5px;
-                  margin-bottom: 4px;
-                "
-                th:text="${co.sector}"
-              >
-                Sector
-              </div>
-
-              <h3
-                style="
-                  font-family: var(--serif);
-                  font-size: 16px;
-                  font-weight: 700;
-                  margin-bottom: 4px;
-                "
-              >
-                <a
-                  th:href="@{/company/{slug}(slug=${co.slug})}"
-                  th:text="${co.name}"
-                  >Name</a
-                >
-              </h3>
-
-              <p
-                th:if="${co.tagline}"
-                style="
-                  font-size: 12px;
-                  color: var(--muted);
-                  margin-bottom: 10px;
-                "
-                th:text="${#strings.abbreviate(co.tagline, 60)}"
-              >
-                Tagline
-              </p>
-
-              <div
-                style="
-                  display: flex;
-                  gap: 12px;
-                  font-size: 12px;
-                  color: var(--muted);
-                "
-              >
-                <span th:if="${co.headquarters}" th:text="${co.headquarters}"
-                  >HQ</span
-                >
-                <span
-                  th:if="${co.foundingYear}"
-                  th:text="'Est. ' + ${co.foundingYear}"
-                  >Year</span
-                >
-              </div>
-            </div>
           </div>
+
+          <button
+            type="button"
+            class="company-carousel-arrow next"
+            onclick="companyGo(companyCurrent + 1)"
+            aria-label="Next"
+          >
+            &#8250;
+          </button>
         </div>
+
+        <div class="company-carousel-dots" id="companyDots"></div>
       </div>
 
+      <script>
+        (function () {
+          const track = document.getElementById("companyTrack");
+          const dotsWrap = document.getElementById("companyDots");
+          const wrap = document.querySelector(".company-carousel");
+          if (!track || !wrap) return;
+
+          const cardCount = track.children.length;
+          let perPage = 3;
+          let pages = 1;
+          let current = 0;
+          let timer = null;
+
+          function perPageForWidth() {
+            if (window.innerWidth <= 600) return 1;
+            if (window.innerWidth <= 900) return 2;
+            return 3;
+          }
+
+          function buildDots() {
+            dotsWrap.innerHTML = "";
+            for (let i = 0; i < pages; i++) {
+              const dot = document.createElement("span");
+              dot.className =
+                "company-carousel-dot" + (i === 0 ? " active" : "");
+              dot.addEventListener("click", () => goTo(i));
+              dotsWrap.appendChild(dot);
+            }
+          }
+
+          function goTo(index) {
+            current = ((index % pages) + pages) % pages;
+            window.companyCurrent = current;
+            track.style.transform = "translateX(-" + current * 100 + "%)";
+            dotsWrap
+              .querySelectorAll(".company-carousel-dot")
+              .forEach((d, i) => d.classList.toggle("active", i === current));
+          }
+          window.companyGo = goTo;
+
+          function recalc() {
+            perPage = perPageForWidth();
+            pages = Math.max(1, Math.ceil(cardCount / perPage));
+            current = Math.min(current, pages - 1);
+            buildDots();
+            goTo(current);
+            const showNav = pages > 1;
+            wrap
+              .querySelectorAll(".company-carousel-arrow")
+              .forEach((a) => (a.style.display = showNav ? "flex" : "none"));
+            dotsWrap.style.display = showNav ? "flex" : "none";
+          }
+
+          function startAuto() {
+            clearInterval(timer);
+            if (pages > 1) timer = setInterval(() => goTo(current + 1), 4500);
+          }
+          function stopAuto() {
+            clearInterval(timer);
+          }
+
+          wrap.addEventListener("mouseenter", stopAuto);
+          wrap.addEventListener("mouseleave", startAuto);
+
+          let resizeTimer;
+          window.addEventListener("resize", () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+              recalc();
+              startAuto();
+            }, 200);
+          });
+
+          recalc();
+          startAuto();
+        })();
+      </script>
+    </section>
+
+    <div class="container">
       <!-- Featured Startups section -->
       <div
         class="cat-section"
