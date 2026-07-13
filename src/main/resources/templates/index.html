@@ -562,19 +562,28 @@
       <div class="container">
         <div class="section-header">
           <h2>Featured Companies</h2>
-          <a th:href="@{/companies}" class="view-all">View All &rarr;</a>
+          <div class="section-header-actions">
+            <button
+              type="button"
+              class="company-carousel-arrow prev"
+              onclick="companyPrev()"
+              aria-label="Previous"
+            >
+              &#8249;
+            </button>
+            <button
+              type="button"
+              class="company-carousel-arrow next"
+              onclick="companyNext()"
+              aria-label="Next"
+            >
+              &#8250;
+            </button>
+            <a th:href="@{/companies}" class="view-all">View All &rarr;</a>
+          </div>
         </div>
 
         <div class="company-carousel">
-          <button
-            type="button"
-            class="company-carousel-arrow prev"
-            onclick="companyGo(companyCurrent - 1)"
-            aria-label="Previous"
-          >
-            &#8249;
-          </button>
-
           <div class="company-carousel-viewport">
             <div class="company-carousel-track" id="companyTrack">
               <div class="company-card" th:each="co : ${featuredCompanies}">
@@ -634,76 +643,65 @@
               </div>
             </div>
           </div>
-
-          <button
-            type="button"
-            class="company-carousel-arrow next"
-            onclick="companyGo(companyCurrent + 1)"
-            aria-label="Next"
-          >
-            &#8250;
-          </button>
         </div>
-
-        <div class="company-carousel-dots" id="companyDots"></div>
       </div>
 
       <script>
         (function () {
           const track = document.getElementById("companyTrack");
-          const dotsWrap = document.getElementById("companyDots");
           const wrap = document.querySelector(".company-carousel");
-          if (!track || !wrap) return;
+          if (!track || !wrap || track.children.length < 2) return;
 
-          const cardCount = track.children.length;
-          let perPage = 3;
-          let pages = 1;
-          let current = 0;
+          const EASE = "transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)";
+          let animating = false;
           let timer = null;
 
-          function perPageForWidth() {
-            if (window.innerWidth <= 600) return 1;
-            if (window.innerWidth <= 900) return 2;
-            return 3;
+          function step() {
+            return track.children[1].offsetLeft - track.children[0].offsetLeft;
           }
 
-          function buildDots() {
-            dotsWrap.innerHTML = "";
-            for (let i = 0; i < pages; i++) {
-              const dot = document.createElement("span");
-              dot.className =
-                "company-carousel-dot" + (i === 0 ? " active" : "");
-              dot.addEventListener("click", () => goTo(i));
-              dotsWrap.appendChild(dot);
+          // Left card exits, everything shifts left, a new card enters from the right
+          function next() {
+            if (animating) return;
+            animating = true;
+            track.style.transition = EASE;
+            track.style.transform = "translateX(-" + step() + "px)";
+          }
+
+          // Right card exits, everything shifts right, the previous card re-enters from the left
+          function prev() {
+            if (animating) return;
+            animating = true;
+            const s = step();
+            const last = track.lastElementChild;
+            track.insertBefore(last, track.firstElementChild);
+            // Compensate instantly so the prepended card starts off-screen left
+            track.style.transition = "none";
+            track.style.transform = "translateX(-" + s + "px)";
+            track.offsetHeight; // force reflow
+            track.style.transition = EASE;
+            track.style.transform = "translateX(0px)";
+          }
+
+          track.addEventListener("transitionend", (e) => {
+            if (e.target !== track || e.propertyName !== "transform") return;
+            if (track.style.transform !== "translateX(0px)") {
+              // Completed a "next" slide — rotate the exited card to the end
+              track.appendChild(track.firstElementChild);
+              track.style.transition = "none";
+              track.style.transform = "translateX(0px)";
+              track.offsetHeight; // force reflow
+              track.style.transition = EASE;
             }
-          }
+            animating = false;
+          });
 
-          function goTo(index) {
-            current = ((index % pages) + pages) % pages;
-            window.companyCurrent = current;
-            track.style.transform = "translateX(-" + current * 100 + "%)";
-            dotsWrap
-              .querySelectorAll(".company-carousel-dot")
-              .forEach((d, i) => d.classList.toggle("active", i === current));
-          }
-          window.companyGo = goTo;
-
-          function recalc() {
-            perPage = perPageForWidth();
-            pages = Math.max(1, Math.ceil(cardCount / perPage));
-            current = Math.min(current, pages - 1);
-            buildDots();
-            goTo(current);
-            const showNav = pages > 1;
-            wrap
-              .querySelectorAll(".company-carousel-arrow")
-              .forEach((a) => (a.style.display = showNav ? "flex" : "none"));
-            dotsWrap.style.display = showNav ? "flex" : "none";
-          }
+          window.companyNext = next;
+          window.companyPrev = prev;
 
           function startAuto() {
             clearInterval(timer);
-            if (pages > 1) timer = setInterval(() => goTo(current + 1), 4500);
+            timer = setInterval(next, 4000);
           }
           function stopAuto() {
             clearInterval(timer);
@@ -712,16 +710,6 @@
           wrap.addEventListener("mouseenter", stopAuto);
           wrap.addEventListener("mouseleave", startAuto);
 
-          let resizeTimer;
-          window.addEventListener("resize", () => {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-              recalc();
-              startAuto();
-            }, 200);
-          });
-
-          recalc();
           startAuto();
         })();
       </script>
