@@ -13,43 +13,66 @@
         th:if="${featured != null and !featured.isEmpty()}"
       >
         <div class="hero-grid">
-          <!-- Main hero article -->
-          <div class="hero-main">
-            <a th:href="@{/article/{slug}(slug=${featured[0].slug})}">
-              <img
-                th:src="${featured[0].imageUrl}
-               ?: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=900&auto=format&fit=crop'"
-                th:alt="${featured[0].title}"
-              />
-            </a>
-            <div class="art-body">
-              <div class="art-meta" style="margin-bottom: 8px">
-                <span
-                  class="cat-tag"
-                  th:if="${featured[0].category}"
-                  th:text="${featured[0].category.name}"
-                  >Category</span
+          <!-- Main hero carousel — latest 3 featured articles -->
+          <div class="hero-carousel">
+            <div class="hero-carousel-viewport">
+              <div class="hero-carousel-track" id="heroTrack">
+                <div
+                  class="hero-slide hero-main"
+                  th:each="art,i : ${featured}"
+                  th:if="${i.index < 3}"
                 >
-                <span
-                  th:text="${#temporals.format(featured[0].createdAt,'MMMM dd, yyyy')}"
-                  >Date</span
-                >
+                  <a th:href="@{/article/{slug}(slug=${art.slug})}">
+                    <img
+                      th:src="${art.imageUrl}
+                     ?: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=900&auto=format&fit=crop'"
+                      th:alt="${art.title}"
+                    />
+                  </a>
+                  <div class="art-body">
+                    <div class="art-meta" style="margin-bottom: 8px">
+                      <span
+                        class="cat-tag"
+                        th:if="${art.category}"
+                        th:text="${art.category.name}"
+                        >Category</span
+                      >
+                      <span
+                        th:text="${#temporals.format(art.createdAt,'MMMM dd, yyyy')}"
+                        >Date</span
+                      >
+                    </div>
+                    <h2>
+                      <a
+                        th:href="@{/article/{slug}(slug=${art.slug})}"
+                        th:text="${art.title}"
+                        >Title</a
+                      >
+                    </h2>
+                    <p th:text="${art.summary}">Summary</p>
+                    <span class="art-meta" th:text="'By ' + ${art.authorName}"
+                      >Author</span
+                    >
+                  </div>
+                </div>
               </div>
-              <h2>
-                <a
-                  th:href="@{/article/{slug}(slug=${featured[0].slug})}"
-                  th:text="${featured[0].title}"
-                  >Title</a
-                >
-              </h2>
-              <p th:text="${featured[0].summary}">Summary</p>
-              <span class="art-meta" th:text="'By ' + ${featured[0].authorName}"
-                >Author</span
-              >
+            </div>
+
+            <!-- Horizontal bar indicators, not dots -->
+            <div class="hero-carousel-bars">
+              <button
+                type="button"
+                class="hero-carousel-bar"
+                th:each="art,i : ${featured}"
+                th:if="${i.index < 3}"
+                th:classappend="${i.index == 0} ? ' active' : ''"
+                th:attr="onclick='heroGoTo(' + ${i.index} + ')'"
+                aria-label="Go to slide"
+              ></button>
             </div>
           </div>
 
-          <!-- Side list of featured articles 2-5 — vertical auto-scrolling carousel -->
+          <!-- Side list of the next 7 featured articles — vertical auto-scrolling carousel -->
           <aside class="hero-aside">
             <h3 class="hero-aside-heading">Latest Insights</h3>
             <div class="hero-aside-viewport">
@@ -58,7 +81,7 @@
                 <div
                   class="hero-aside-item"
                   th:each="art,i : ${featured}"
-                  th:if="${i.index > 0 and i.index <= 6}"
+                  th:if="${i.index >= 3 and i.index < 10}"
                 >
                   <a th:href="@{/article/{slug}(slug=${art.slug})}">
                     <img
@@ -89,7 +112,7 @@
                   class="hero-aside-item"
                   aria-hidden="true"
                   th:each="art,i : ${featured}"
-                  th:if="${i.index > 0 and i.index <= 5}"
+                  th:if="${i.index >= 3 and i.index < 10}"
                 >
                   <a
                     th:href="@{/article/{slug}(slug=${art.slug})}"
@@ -124,6 +147,44 @@
             </div>
           </aside>
         </div>
+
+        <script>
+          (function () {
+            const track = document.getElementById("heroTrack");
+            if (!track) return;
+            const bars = document.querySelectorAll(".hero-carousel-bar");
+            const slides = track.children.length;
+            let current = 0;
+            let timer = null;
+
+            function goTo(index) {
+              current = ((index % slides) + slides) % slides;
+              track.style.transform = "translateX(-" + current * 100 + "%)";
+              bars.forEach((b, i) =>
+                b.classList.toggle("active", i === current),
+              );
+            }
+            window.heroGoTo = goTo;
+
+            function startAuto() {
+              clearInterval(timer);
+              if (slides > 1)
+                timer = setInterval(() => goTo(current + 1), 6000);
+            }
+            function stopAuto() {
+              clearInterval(timer);
+            }
+
+            const wrap = track.closest(".hero-carousel");
+            if (wrap) {
+              wrap.addEventListener("mouseenter", stopAuto);
+              wrap.addEventListener("mouseleave", startAuto);
+            }
+
+            goTo(0);
+            startAuto();
+          })();
+        </script>
       </div>
 
       <!-- Magazine Carousel Section -->
@@ -1015,6 +1076,22 @@
           </div>
         </div>
       </div>
+
+      <!-- ── Third promo banner ──────────────────────────── -->
+      <a th:href="@{/blog}" class="third-banner-promo">
+        <div class="third-banner-promo-content">
+          <h2>
+            Enter a World of Intelligent Decisions, Fueled by Insight and
+            Innovation.
+          </h2>
+          <p>
+            Decisions Insights is a global digital publication showcasing
+            influential leaders, cutting-edge technology, and startup success
+            stories that inspire innovation and shape tomorrow's business world.
+          </p>
+          <span class="third-banner-promo-btn">Read More &raquo;</span>
+        </div>
+      </a>
 
       <!-- Videos section -->
       <div

@@ -765,6 +765,40 @@ img {
   margin-bottom: 10px;
 }
 
+/* Hero carousel — 3 slides, reuses .hero-main typography above */
+.hero-carousel-viewport {
+  overflow: hidden;
+}
+.hero-carousel-track {
+  display: flex;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.hero-slide {
+  flex: 0 0 100%;
+  min-width: 0;
+}
+.hero-carousel-bars {
+  display: flex;
+  gap: 6px;
+  margin-top: 16px;
+}
+.hero-carousel-bar {
+  flex: 1;
+  height: 4px;
+  padding: 0;
+  border: none;
+  border-radius: 2px;
+  background: var(--border);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.hero-carousel-bar:hover {
+  background: var(--muted);
+}
+.hero-carousel-bar.active {
+  background: var(--black);
+}
+
 .hero-aside {
   display: flex;
   flex-direction: column;
@@ -900,6 +934,63 @@ img {
     padding: 36px 24px;
   }
   .about-promo-content h2 {
+    font-size: 22px;
+  }
+}
+
+/* ── 3rd banner promo banner ──────────────────────────── */
+.third-banner-promo {
+  display: block;
+  position: relative;
+  margin: 28px 0;
+  min-height: 400px;
+  overflow: hidden;
+  background:
+    linear-gradient(to right, rgba(0, 0, 0, 0.225), rgba(0, 0, 0, 0.422)),
+    url("https://images.unsplash.com/photo-1513759565286-20e9c5fad06b?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")
+      center/cover no-repeat;
+}
+.third-banner-promo-content {
+  max-width: 620px;
+  /* margin-left: auto; */
+  padding: 56px 60px;
+}
+.third-banner-promo-content h2 {
+  font-family: var(--serif);
+  font-size: 28px;
+  line-height: 1.3;
+  color: #fff;
+  margin-bottom: 16px;
+}
+.third-banner-promo-content p {
+  font-size: 15px;
+  line-height: 1.75;
+  color: #ddd;
+  margin-bottom: 26px;
+}
+.third-banner-promo-btn {
+  display: inline-block;
+  border: 1px solid #fff;
+  color: #ffffff;
+  padding: 12px 28px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+.third-banner-promo:hover .third-banner-promo-btn {
+  background: #ffffff;
+  color: var(--black);
+}
+@media (max-width: 700px) {
+  .third-banner-promo-content {
+    max-width: 100%;
+    padding: 36px 24px;
+  }
+  .third-banner-promo-content h2 {
     font-size: 22px;
   }
 }

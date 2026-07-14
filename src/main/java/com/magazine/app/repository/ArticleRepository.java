@@ -17,6 +17,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     Page<Article> findByPublishedTrueOrderByCreatedAtDesc(Pageable pageable);
     Page<Article> findByPublishedTrueAndCategoryOrderByCreatedAtDesc(Category category, Pageable pageable);
     List<Article> findByPublishedTrueAndFeaturedTrueOrderByCreatedAtDesc();
+    long countByPublishedTrueAndFeaturedTrue();
     List<Article> findTop5ByPublishedTrueOrderByCreatedAtDesc();
     List<Article> findByPublishedTrueAndTitleContainingIgnoreCase(String keyword);
     long countByPublishedTrue();

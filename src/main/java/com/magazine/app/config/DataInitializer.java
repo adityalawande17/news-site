@@ -28,11 +28,13 @@ public class DataInitializer implements CommandLineRunner {
             System.out.println(">>> Admin created: admin / admin123");
         }
 
-        // Tops up categories and interviews on every startup (idempotent) —
-        // runs even when the rest of this method short-circuits below
-        // because categories already exist from a previous run.
+        // Tops up categories, interviews, and featured articles on every
+        // startup (idempotent) — runs even when the rest of this method
+        // short-circuits below because categories already exist from a
+        // previous run.
         seedExtraCategories();
         seedExtraInterviews();
+        seedExtraFeaturedArticle();
 
         if (categoryRepository.count() > 0) return; // already seeded
 
@@ -195,6 +197,40 @@ articleRepository.save(news3);
         if (categoryRepository.findBySlug(slug).isEmpty()) {
             categoryRepository.save(new Category(name, slug, description));
         }
+    }
+
+    // Tops up featured articles to 10 (idempotent) so the homepage hero
+    // carousel (3 slides) + side list (7 items) both have content to show.
+    private void seedExtraFeaturedArticle() {
+        if (articleRepository.countByPublishedTrueAndFeaturedTrue() >= 10) {
+            return; // already topped up
+        }
+        if (articleRepository.findBySlug("global-markets-rally-inflation-cools").isPresent()) {
+            return;
+        }
+
+        Category finance = categoryRepository.findBySlug("finance").orElse(null);
+
+        Article a = new Article();
+        a.setTitle("Global Markets Rally as Inflation Cools Faster Than Expected");
+        a.setSlug("global-markets-rally-inflation-cools");
+        a.setSummary("Equity markets posted their strongest week in months after fresh data showed inflation easing across major economies.");
+        a.setContent(
+            "<p>Global equity markets rallied this week after inflation data across the US, Europe, and Asia came in below "
+            + "analyst expectations, fueling bets that central banks are nearing the end of their tightening cycles.</p>"
+            + "<p>The rally was broad-based, with technology and financial stocks leading gains. Bond yields fell in tandem "
+            + "as investors priced in a higher probability of rate cuts later this year.</p>"
+            + "<p>Analysts caution that a single month of cooler data isn't a trend, but the market reaction underscores how "
+            + "sensitive investor sentiment remains to every incoming inflation print.</p>"
+        );
+        a.setAuthorName("Editorial Team");
+        a.setCategory(finance);
+        a.setArticleType(ArticleType.NEWS);
+        a.setNewsSource("Market Desk");
+        a.setImageUrl("https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=900&auto=format&fit=crop");
+        a.setFeatured(true);
+        a.setPublished(true);
+        articleRepository.save(a);
     }
 
     // Adds 5 more interviews (with cover + interviewee photos) so the homepage
