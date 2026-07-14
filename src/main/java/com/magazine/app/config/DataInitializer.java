@@ -28,9 +28,10 @@ public class DataInitializer implements CommandLineRunner {
             System.out.println(">>> Admin created: admin / admin123");
         }
 
-        // Tops up interviews on every startup (idempotent) — runs even when
-        // the rest of this method short-circuits below because categories
-        // already exist from a previous run.
+        // Tops up categories and interviews on every startup (idempotent) —
+        // runs even when the rest of this method short-circuits below
+        // because categories already exist from a previous run.
+        seedExtraCategories();
         seedExtraInterviews();
 
         if (categoryRepository.count() > 0) return; // already seeded
@@ -179,6 +180,21 @@ articleRepository.save(news3);
         a.setIntervieweeCompany(company);
         a.setFeatured(featured);     a.setPublished(true);
         return a;
+    }
+
+    // Tops up categories to 10 (idempotent, per-slug) so the nav's category
+    // drawer has a full list to show.
+    private void seedExtraCategories() {
+        addCategoryIfMissing("Healthcare", "healthcare", "Innovation and leadership in healthcare and life sciences");
+        addCategoryIfMissing("Marketing",  "marketing",  "Brand strategy, growth, and marketing leadership");
+        addCategoryIfMissing("Real Estate","real-estate","Property, development, and real estate investment");
+        addCategoryIfMissing("Energy",     "energy",     "Energy markets, sustainability, and infrastructure");
+    }
+
+    private void addCategoryIfMissing(String name, String slug, String description) {
+        if (categoryRepository.findBySlug(slug).isEmpty()) {
+            categoryRepository.save(new Category(name, slug, description));
+        }
     }
 
     // Adds 5 more interviews (with cover + interviewee photos) so the homepage

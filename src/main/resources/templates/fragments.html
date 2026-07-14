@@ -17,10 +17,17 @@
 
     <!-- HEADER -->
     <th:block th:fragment="header(categories, featured)">
-      <!-- Top bar: subscribe · brand · socials -->
+      <!-- Top bar: hamburger · brand · socials -->
       <div class="nav-top">
         <div class="container inner">
-          <a th:href="@{/contact}" class="subscribe-btn">Contact Us</a>
+          <button
+            type="button"
+            class="nav-hamburger-btn"
+            onclick="toggleCategoryDrawer()"
+            aria-label="Open categories menu"
+          >
+            <i class="fa-solid fa-bars"></i>
+          </button>
           <a th:href="@{/}" class="brand-mark">DECISIONS INSIGHTS</a>
           <div class="social-icons">
             <a href="#" aria-label="LinkedIn"
@@ -45,7 +52,7 @@
         </div>
       </div>
 
-      <!-- Primary nav — hamburger · links · search -->
+      <!-- Primary nav — links · search -->
       <nav class="primary-nav">
         <div class="container inner">
           <div class="nav-links">
@@ -76,6 +83,57 @@
           </form>
         </div>
       </nav>
+
+      <!-- Category drawer — opened from the hamburger button -->
+      <div
+        class="category-drawer-backdrop"
+        id="categoryDrawerBackdrop"
+        onclick="closeCategoryDrawer()"
+      ></div>
+      <aside class="category-drawer" id="categoryDrawer">
+        <div class="category-drawer-header">
+          <span class="category-drawer-title">Categories</span>
+          <button
+            type="button"
+            class="category-drawer-close"
+            onclick="closeCategoryDrawer()"
+            aria-label="Close categories menu"
+          >
+            &#10005;
+          </button>
+        </div>
+        <nav class="category-drawer-list">
+          <a
+            th:each="cat : ${categories}"
+            th:href="@{/category/{slug}(slug=${cat.slug})}"
+            th:text="${cat.name}"
+            >Category</a
+          >
+        </nav>
+      </aside>
+
+      <script>
+        function toggleCategoryDrawer() {
+          const drawer = document.getElementById("categoryDrawer");
+          const backdrop = document.getElementById("categoryDrawerBackdrop");
+          if (!drawer || !backdrop) return;
+          const isOpen = drawer.classList.contains("open");
+          drawer.classList.toggle("open", !isOpen);
+          backdrop.classList.toggle("open", !isOpen);
+          document.body.style.overflow = isOpen ? "" : "hidden";
+        }
+        function closeCategoryDrawer() {
+          const drawer = document.getElementById("categoryDrawer");
+          const backdrop = document.getElementById("categoryDrawerBackdrop");
+          if (!drawer || !backdrop) return;
+          drawer.classList.remove("open");
+          backdrop.classList.remove("open");
+          document.body.style.overflow = "";
+        }
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") closeCategoryDrawer();
+        });
+      </script>
     </th:block>
 
     <!-- FOOTER -->
