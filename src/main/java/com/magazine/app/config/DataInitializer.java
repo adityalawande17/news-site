@@ -35,6 +35,7 @@ public class DataInitializer implements CommandLineRunner {
         seedExtraCategories();
         seedExtraInterviews();
         seedExtraFeaturedArticle();
+        seedExtraCaseStudiesAndPressReleases();
 
         if (categoryRepository.count() > 0) return; // already seeded
 
@@ -231,6 +232,112 @@ articleRepository.save(news3);
         a.setFeatured(true);
         a.setPublished(true);
         articleRepository.save(a);
+    }
+
+    // Tops up case studies and press releases to 3 each (idempotent, per-slug)
+    // so the homepage's merged 3-column section has a "cover + 2 title-only"
+    // set for both.
+    private void seedExtraCaseStudiesAndPressReleases() {
+        Category finance = categoryRepository.findBySlug("finance").orElse(null);
+        Category tech    = categoryRepository.findBySlug("technology").orElse(null);
+        Category startups = categoryRepository.findBySlug("startups").orElse(null);
+
+        if (articleRepository.findBySlug("regional-bank-loan-approval-case-study").isEmpty()) {
+            Article a = new Article();
+            a.setTitle("How a Regional Bank Cut Loan Approval Time by 65%");
+            a.setSlug("regional-bank-loan-approval-case-study");
+            a.setSummary("Meridian Community Bank restructured its underwriting workflow to move from a 12-day average approval time to just over 4.");
+            a.setContent(
+                "<p>Meridian Community Bank's loan approval pipeline relied on manual document handoffs between five "
+                + "separate departments, each with its own queue and turnaround expectations.</p>"
+                + "<p>By consolidating document intake into a single digital workflow and automating routine compliance "
+                + "checks, the bank cut average approval time from 12 days to just over 4 — without adding headcount.</p>"
+            );
+            a.setAuthorName("Editorial Team");
+            a.setCategory(finance);
+            a.setArticleType(ArticleType.CASE_STUDY);
+            a.setClientName("Meridian Community Bank");
+            a.setClientIndustry("Banking");
+            a.setCaseChallenge("A five-department manual handoff process was creating a 12-day average loan approval time.");
+            a.setCaseSolution("Consolidated document intake into one digital workflow with automated compliance checks.");
+            a.setCaseResult("65% faster approvals");
+            a.setImageUrl("https://images.unsplash.com/photo-1541354329998-f4d9a9f9297f?w=700&auto=format&fit=crop");
+            a.setFeatured(false);
+            a.setPublished(true);
+            articleRepository.save(a);
+        }
+
+        if (articleRepository.findBySlug("brightpath-logistics-support-case-study").isEmpty()) {
+            Article a = new Article();
+            a.setTitle("Scaling Customer Support Without Scaling Headcount");
+            a.setSlug("brightpath-logistics-support-case-study");
+            a.setSummary("BrightPath Logistics tripled shipment volume while keeping its support team the same size, by routing tickets before they reach a human.");
+            a.setContent(
+                "<p>As BrightPath Logistics' shipment volume tripled year over year, its support queue grew far faster "
+                + "than its team could scale to match.</p>"
+                + "<p>A triage layer that automatically resolves routine status-check tickets before they reach a human "
+                + "agent freed the team to focus on the exceptions that actually need a person — keeping response times "
+                + "flat through the growth.</p>"
+            );
+            a.setAuthorName("Editorial Team");
+            a.setCategory(startups);
+            a.setArticleType(ArticleType.CASE_STUDY);
+            a.setClientName("BrightPath Logistics");
+            a.setClientIndustry("Logistics");
+            a.setCaseChallenge("Support ticket volume tripled while the support team stayed the same size.");
+            a.setCaseSolution("Added an automated triage layer to resolve routine tickets before human handoff.");
+            a.setCaseResult("3x volume, flat headcount");
+            a.setImageUrl("https://images.unsplash.com/photo-1556761175-4b46a572b786?w=700&auto=format&fit=crop");
+            a.setFeatured(false);
+            a.setPublished(true);
+            articleRepository.save(a);
+        }
+
+        if (articleRepository.findBySlug("nexapay-fraud-detection-launch").isEmpty()) {
+            Article a = new Article();
+            a.setTitle("NexaPay Launches AI-Powered Fraud Detection for SMBs");
+            a.setSlug("nexapay-fraud-detection-launch");
+            a.setSummary("The new tool flags suspicious transactions in real time, aimed at small businesses that can't afford a dedicated fraud team.");
+            a.setContent(
+                "<p>NexaPay today announced the launch of its AI-powered fraud detection engine, built specifically for "
+                + "small and mid-sized businesses that process payments without a dedicated fraud team.</p>"
+                + "<p>The tool flags suspicious transactions in real time and learns from each merchant's typical "
+                + "transaction patterns, reducing false positives compared to rule-based systems.</p>"
+            );
+            a.setAuthorName("Editorial Team");
+            a.setCategory(tech);
+            a.setArticleType(ArticleType.PRESS_RELEASE);
+            a.setPressCompanyName("NexaPay");
+            a.setPressContactName("Media Relations");
+            a.setPressContactEmail("press@nexapay.example.com");
+            a.setImageUrl("https://images.unsplash.com/photo-1553877522-43269d4ea984?w=700&auto=format&fit=crop");
+            a.setFeatured(false);
+            a.setPublished(true);
+            articleRepository.save(a);
+        }
+
+        if (articleRepository.findBySlug("atlas-portlink-strategic-partnership").isEmpty()) {
+            Article a = new Article();
+            a.setTitle("Atlas Logistics and PortLink Announce Strategic Partnership");
+            a.setSlug("atlas-portlink-strategic-partnership");
+            a.setSummary("The partnership will integrate PortLink's customs clearance platform directly into Atlas's shipment tracking system.");
+            a.setContent(
+                "<p>Atlas Logistics and PortLink today announced a strategic partnership that will integrate PortLink's "
+                + "customs clearance platform directly into Atlas's shipment tracking system.</p>"
+                + "<p>The integration is expected to cut customs-related delays for Atlas customers by giving them "
+                + "real-time visibility into clearance status alongside shipment location.</p>"
+            );
+            a.setAuthorName("Editorial Team");
+            a.setCategory(startups);
+            a.setArticleType(ArticleType.PRESS_RELEASE);
+            a.setPressCompanyName("Atlas Logistics");
+            a.setPressContactName("Media Relations");
+            a.setPressContactEmail("press@atlaslogistics.example.com");
+            a.setImageUrl("https://images.unsplash.com/photo-1521791136064-7986c2920216?w=700&auto=format&fit=crop");
+            a.setFeatured(false);
+            a.setPublished(true);
+            articleRepository.save(a);
+        }
     }
 
     // Adds 5 more interviews (with cover + interviewee photos) so the homepage

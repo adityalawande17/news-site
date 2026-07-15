@@ -647,6 +647,137 @@ img {
   }
 }
 
+/* ── Merged Case Studies / Press Releases / Newsletter ── */
+.merged-3col {
+  display: grid;
+  grid-template-columns: 1fr 1fr 0.6fr;
+  gap: 28px;
+}
+.merged-col-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--black);
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+}
+.merged-col-heading h3 {
+  font-family: var(--serif);
+  font-size: 15px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--black);
+}
+.merged-featured-item img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+.merged-featured-item h4 {
+  font-family: var(--serif);
+  font-size: 16px;
+  line-height: 1.35;
+  color: var(--black);
+}
+.merged-featured-item h4 a:hover {
+  color: var(--red);
+}
+.merged-title-list {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+}
+.merged-title-list-item {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+}
+.merged-title-list-item:last-child {
+  border-bottom: none;
+}
+.merged-title-list-item a {
+  font-family: var(--serif);
+  font-size: 14.5px;
+  line-height: 1.4;
+  color: var(--black);
+}
+.merged-title-list-item a:hover {
+  color: var(--red);
+}
+
+/* Newsletter column — same row, but its own distinct banner styling.
+   height:100% (not just min-height) so it fills the grid cell exactly,
+   flush with the top of the sibling columns — no gap above it. */
+.newsletter-col {
+  position: relative;
+  height: 100%;
+  min-height: 420px;
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  background:
+    linear-gradient(to top, rgba(0, 0, 0, 0.232), rgba(0, 0, 0, 0.264)),
+    url("https://images.pexels.com/photos/17070412/pexels-photo-17070412.jpeg")
+      center/cover no-repeat;
+}
+.newsletter-col-content {
+  padding: 26px 22px;
+  width: 100%;
+}
+.newsletter-col-content h3 {
+  font-family: var(--serif);
+  font-size: 19px;
+  color: #fff;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.newsletter-col-content p {
+  font-size: 13px;
+  color: #ddd;
+  line-height: 1.6;
+  margin-bottom: 18px;
+}
+.newsletter-col-form input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+.newsletter-col-form input::placeholder {
+  color: #bbb;
+}
+.newsletter-col-form button {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #fff;
+  background: #fff;
+  color: var(--black);
+  font-weight: 700;
+  font-size: 12.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+.newsletter-col-form button:hover {
+  background: transparent;
+  color: #fff;
+}
+@media (max-width: 900px) {
+  .merged-3col {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ── Homepage category section ──────────────────── */
 .cat-section {
   padding: 28px 0;
