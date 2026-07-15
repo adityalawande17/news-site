@@ -15,6 +15,7 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired private AdminUserRepository  adminUserRepository;
     @Autowired private CategoryRepository   categoryRepository;
     @Autowired private ArticleRepository    articleRepository;
+    @Autowired private StartupRepository    startupRepository;
     @Autowired private PasswordEncoder      passwordEncoder;
 
     @Override
@@ -36,6 +37,7 @@ public class DataInitializer implements CommandLineRunner {
         seedExtraInterviews();
         seedExtraFeaturedArticle();
         seedExtraCaseStudiesAndPressReleases();
+        seedExtraStartups();
 
         if (categoryRepository.count() > 0) return; // already seeded
 
@@ -338,6 +340,65 @@ articleRepository.save(news3);
             a.setPublished(true);
             articleRepository.save(a);
         }
+    }
+
+    // Tops up startups to 6 (idempotent, per-slug) so the homepage's
+    // Startup Spotlight marquee has a full row to scroll through.
+    private void seedExtraStartups() {
+        addStartupIfMissing(
+            "PayNest", "paynest",
+            "Meera Iyer", "Founder & CEO",
+            "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&auto=format&fit=crop",
+            "Fintech", "Bengaluru", "India", 2020, FundingStage.SERIES_C, "$60M"
+        );
+        addStartupIfMissing(
+            "CarePulse", "carepulse",
+            "Daniel Osei", "Co-Founder & CEO",
+            "https://images.unsplash.com/photo-1600180758890-6b94519a8ba6?w=400&auto=format&fit=crop",
+            "HealthTech", "Austin", "USA", 2019, FundingStage.SERIES_B, "$32M"
+        );
+        addStartupIfMissing(
+            "AgroSense", "agrosense",
+            "Grace Wanjiru", "Founder & CEO",
+            "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=400&auto=format&fit=crop",
+            "AgriTech", "Nairobi", "Kenya", 2022, FundingStage.SERIES_A, "$9M"
+        );
+        addStartupIfMissing(
+            "LearnLoop", "learnloop",
+            "Oliver Bennett", "Co-Founder & CEO",
+            "https://images.unsplash.com/photo-1531891437562-4301cf35b7e4?w=400&auto=format&fit=crop",
+            "EdTech", "London", "UK", 2021, FundingStage.SERIES_A, "$14M"
+        );
+        addStartupIfMissing(
+            "VoltGrid", "voltgrid",
+            "Lukas Weber", "Founder & CEO",
+            "https://images.unsplash.com/photo-1618077360395-f3068be8e001?w=400&auto=format&fit=crop",
+            "CleanTech", "Berlin", "Germany", 2020, FundingStage.SEED, "$5M"
+        );
+    }
+
+    private void addStartupIfMissing(String name, String slug,
+                                      String founderName, String founderTitle, String founderPhoto,
+                                      String sector, String city, String country,
+                                      int foundingYear, FundingStage stage, String amountRaised) {
+        if (startupRepository.findBySlug(slug).isPresent()) return;
+
+        Startup s = new Startup();
+        s.setName(name);
+        s.setSlug(slug);
+        s.setPitch(name + " is a " + sector + " startup based in " + city + ", " + country + ".");
+        s.setFounderName(founderName);
+        s.setFounderTitle(founderTitle);
+        s.setFounderPhoto(founderPhoto);
+        s.setSector(sector);
+        s.setCity(city);
+        s.setCountry(country);
+        s.setFoundingYear(foundingYear);
+        s.setFundingStage(stage);
+        s.setAmountRaised(amountRaised);
+        s.setFeatured(false);
+        s.setPublished(true);
+        startupRepository.save(s);
     }
 
     // Adds 5 more interviews (with cover + interviewee photos) so the homepage

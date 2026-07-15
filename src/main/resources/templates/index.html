@@ -202,8 +202,8 @@
             th:id="'btn-' + ${reg}"
             th:attr="onclick='goToRegion(' + ${iter.index} + ', this)'"
             th:style="${iter.index == 0}
-                      ? 'flex:1; padding:7px 16px; border-radius:0; font-size:13px; font-weight:700; border:1px solid #111; background:#111; color:#fff; cursor:pointer; transition: all 0.2s;'
-                      : 'flex:1; padding:7px 16px; border-radius:0; font-size:13px; font-weight:700; border:1px solid var(--border); background:var(--white); color:var(--dark); cursor:pointer; transition: all 0.2s;'"
+          ? 'flex:1; padding:10px 16px; border-radius:50px; font-size:13px; font-weight:700; border:1px solid #111; background:#fff; color:#111; cursor:pointer; transition:all 0.2s;'
+          : 'flex:1; padding:10px 16px; border-radius:50px; font-size:13px; font-weight:700; border:1px solid #111; background:#111; color:#fff; cursor:pointer; transition:all 0.2s;'"
           >
             Region
           </button>
@@ -353,15 +353,18 @@
           track.style.transform = "translateX(-" + current * 100 + "%)";
 
           // Update region buttons
+          // Update region buttons
           document.querySelectorAll('[id^="btn-"]').forEach((b, i) => {
             if (i === current) {
+              // Active button - white background, black text
+              b.style.background = "#fff";
+              b.style.color = "#111";
+              b.style.border = "1px solid #111";
+            } else {
+              // Inactive buttons - black background, white text
               b.style.background = "#111";
               b.style.color = "#fff";
               b.style.border = "1px solid #111";
-            } else {
-              b.style.background = "var(--white)";
-              b.style.color = "var(--dark)";
-              b.style.border = "1px solid var(--border)";
             }
           });
 
@@ -491,28 +494,42 @@
                     />
                   </a>
                   <div class="interview-slide-overlay">
-                    <div class="interview-slide-info">
-                      <div
-                        class="interview-slide-name"
-                        th:if="${iv.intervieweeName}"
-                        th:text="${iv.intervieweeName}"
-                      >
-                        Name
-                      </div>
-                      <div class="interview-slide-role">
-                        <span th:text="${iv.intervieweeTitle}">Role</span
-                        ><span
-                          th:if="${iv.intervieweeCompany}"
-                          th:text="', ' + ${iv.intervieweeCompany}"
-                          >, Company</span
+                    <div class="interview-slide-left">
+                      <div class="interview-slide-photo">
+                        <img
+                          th:if="${iv.intervieweePhoto}"
+                          th:src="${iv.intervieweePhoto}"
+                          th:alt="${iv.intervieweeName}"
+                        />
+                        <span
+                          th:unless="${iv.intervieweePhoto}"
+                          th:text="${iv.intervieweeName != null ? #strings.substring(iv.intervieweeName, 0, 1) : '?'}"
+                          >A</span
                         >
                       </div>
-                      <a
-                        class="interview-slide-title"
-                        th:href="@{/article/{slug}(slug=${iv.slug})}"
-                        th:text="${iv.title}"
-                        >Title</a
-                      >
+                      <div class="interview-slide-info">
+                        <div
+                          class="interview-slide-name"
+                          th:if="${iv.intervieweeName}"
+                          th:text="${iv.intervieweeName}"
+                        >
+                          Name
+                        </div>
+                        <div class="interview-slide-role">
+                          <span th:text="${iv.intervieweeTitle}">Role</span
+                          ><span
+                            th:if="${iv.intervieweeCompany}"
+                            th:text="', ' + ${iv.intervieweeCompany}"
+                            >, Company</span
+                          >
+                        </div>
+                        <a
+                          class="interview-slide-title"
+                          th:href="@{/article/{slug}(slug=${iv.slug})}"
+                          th:text="${iv.title}"
+                          >Title</a
+                        >
+                      </div>
                     </div>
                     <div class="interview-slide-nav">
                       <button
@@ -803,7 +820,7 @@
     </a>
 
     <div class="container">
-      <!-- Featured Startups section -->
+      <!-- Featured Startups section — horizontal auto-scrolling marquee -->
       <div
         class="cat-section"
         th:if="${featuredStartups != null and !featuredStartups.isEmpty()}"
@@ -813,142 +830,163 @@
           <a th:href="@{/startups}" class="view-all">View All &rarr;</a>
         </div>
 
-        <div class="article-grid-3">
-          <div
-            th:each="st : ${featuredStartups}"
-            style="
-              border: 1px solid var(--border);
-              border-radius: 8px;
-              overflow: hidden;
-              background: var(--white);
-              transition: box-shadow 0.2s;
-            "
-            onmouseover="this.style.boxShadow = '0 4px 16px rgba(0,0,0,0.1)'"
-            onmouseout="this.style.boxShadow = 'none'"
-          >
-            <!-- Header strip -->
-            <div style="height: 70px; background: #111; position: relative">
-              <img
-                th:if="${st.coverImageUrl}"
-                th:src="${st.coverImageUrl}"
-                style="
-                  width: 100%;
-                  height: 100%;
-                  object-fit: cover;
-                  opacity: 0.5;
-                "
-              />
-              <!-- Funding badge -->
-              <div
-                th:if="${st.fundingStage != null}"
-                style="
-                  position: absolute;
-                  top: 8px;
-                  right: 8px;
-                  background: rgba(0, 0, 0, 0.75);
-                  color: #fff;
-                  font-size: 10px;
-                  font-weight: 700;
-                  padding: 2px 8px;
-                  border-radius: 10px;
-                "
-                th:text="${st.fundingStage.label}"
-              >
-                Stage
-              </div>
-              <!-- Logo -->
-              <div style="position: absolute; bottom: -16px; left: 12px">
+        <div class="startup-marquee-viewport">
+          <div class="startup-marquee-track">
+            <!-- Cards, then the same cards again for a seamless loop -->
+            <div
+              class="startup-card"
+              th:each="st : ${featuredStartups}"
+            >
+              <div class="startup-card-photo">
                 <img
-                  th:if="${st.logoUrl}"
-                  th:src="${st.logoUrl}"
-                  style="
-                    width: 32px;
-                    height: 32px;
-                    object-fit: contain;
-                    background: #fff;
-                    border: 2px solid var(--border);
-                    border-radius: 6px;
-                    padding: 2px;
-                  "
+                  th:if="${st.founderPhoto}"
+                  th:src="${st.founderPhoto}"
+                  th:alt="${st.founderName}"
                 />
+                <div class="startup-card-logo">
+                  <img
+                    th:if="${st.logoUrl}"
+                    th:src="${st.logoUrl}"
+                    th:alt="${st.name}"
+                  />
+                  <span th:unless="${st.logoUrl}">&#128640;</span>
+                </div>
+              </div>
+              <div class="startup-card-body">
                 <div
-                  th:unless="${st.logoUrl}"
-                  style="
-                    width: 32px;
-                    height: 32px;
-                    background: #fff;
-                    border: 2px solid var(--border);
-                    border-radius: 6px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-size: 12px;
-                  "
+                  class="startup-card-sector"
+                  th:if="${st.sector}"
+                  th:text="${st.sector}"
                 >
-                  &#128640;
+                  Sector
+                </div>
+                <h3>
+                  <a
+                    th:href="@{/startup/{slug}(slug=${st.slug})}"
+                    th:text="${st.name}"
+                    >Name</a
+                  >
+                </h3>
+                <div
+                  class="startup-card-founder"
+                  th:if="${st.founderName}"
+                  th:text="${st.founderName} + (${st.founderTitle} != null ? ', ' + ${st.founderTitle} : '')"
+                >
+                  Founder
+                </div>
+                <div class="startup-card-stats">
+                  <div th:if="${st.foundingYear != null}">
+                    <span class="startup-card-stat-label">Founded</span>
+                    <span
+                      class="startup-card-stat-value"
+                      th:text="${st.foundingYear}"
+                      >Year</span
+                    >
+                  </div>
+                  <div th:if="${st.amountRaised}">
+                    <span class="startup-card-stat-label">Raised</span>
+                    <span
+                      class="startup-card-stat-value"
+                      th:text="${st.amountRaised}"
+                      >Amount</span
+                    >
+                  </div>
+                  <div th:if="${st.city}">
+                    <span class="startup-card-stat-label">HQ</span>
+                    <span
+                      class="startup-card-stat-value"
+                      th:text="${st.city} + (${st.country} != null ? ', ' + ${st.country} : '')"
+                      >City</span
+                    >
+                  </div>
+                  <div th:if="${st.fundingStage != null}">
+                    <span class="startup-card-stat-label">Series</span>
+                    <span
+                      class="startup-card-stat-value"
+                      th:text="${st.fundingStage.label}"
+                      >Stage</span
+                    >
+                  </div>
                 </div>
               </div>
             </div>
-
-            <div style="padding: 22px 12px 14px">
-              <div
-                th:if="${st.sector}"
-                style="
-                  font-size: 10px;
-                  font-weight: 700;
-                  color: var(--red);
-                  text-transform: uppercase;
-                  letter-spacing: 0.5px;
-                  margin-bottom: 3px;
-                "
-                th:text="${st.sector}"
-              >
-                Sector
+            <div
+              class="startup-card"
+              aria-hidden="true"
+              th:each="st : ${featuredStartups}"
+            >
+              <div class="startup-card-photo">
+                <img
+                  th:if="${st.founderPhoto}"
+                  th:src="${st.founderPhoto}"
+                  th:alt="${st.founderName}"
+                />
+                <div class="startup-card-logo">
+                  <img
+                    th:if="${st.logoUrl}"
+                    th:src="${st.logoUrl}"
+                    th:alt="${st.name}"
+                  />
+                  <span th:unless="${st.logoUrl}">&#128640;</span>
+                </div>
               </div>
-
-              <h3
-                style="
-                  font-family: var(--serif);
-                  font-size: 16px;
-                  font-weight: 700;
-                  margin-bottom: 4px;
-                "
-              >
-                <a
-                  th:href="@{/startup/{slug}(slug=${st.slug})}"
-                  th:text="${st.name}"
-                  >Name</a
+              <div class="startup-card-body">
+                <div
+                  class="startup-card-sector"
+                  th:if="${st.sector}"
+                  th:text="${st.sector}"
                 >
-              </h3>
-
-              <p
-                th:if="${st.pitch}"
-                style="
-                  font-size: 12px;
-                  color: var(--muted);
-                  margin-bottom: 8px;
-                  line-height: 1.5;
-                "
-                th:text="${#strings.abbreviate(st.pitch, 80)}"
-              >
-                Pitch
-              </p>
-
-              <div
-                style="
-                  display: flex;
-                  gap: 10px;
-                  font-size: 11px;
-                  color: var(--muted);
-                "
-              >
-                <span th:if="${st.city}" th:text="${st.city}">City</span>
-                <span
-                  th:if="${st.amountRaised}"
-                  style="font-weight: 700; color: var(--black)"
-                  th:text="${st.amountRaised}"
-                  >Amount</span
+                  Sector
+                </div>
+                <h3>
+                  <a
+                    th:href="@{/startup/{slug}(slug=${st.slug})}"
+                    th:text="${st.name}"
+                    tabindex="-1"
+                    >Name</a
+                  >
+                </h3>
+                <div
+                  class="startup-card-founder"
+                  th:if="${st.founderName}"
+                  th:text="${st.founderName} + (${st.founderTitle} != null ? ', ' + ${st.founderTitle} : '')"
                 >
+                  Founder
+                </div>
+                <div class="startup-card-stats">
+                  <div th:if="${st.foundingYear != null}">
+                    <span class="startup-card-stat-label">Founded</span>
+                    <span
+                      class="startup-card-stat-value"
+                      th:text="${st.foundingYear}"
+                      >Year</span
+                    >
+                  </div>
+                  <div th:if="${st.amountRaised}">
+                    <span class="startup-card-stat-label">Raised</span>
+                    <span
+                      class="startup-card-stat-value"
+                      th:text="${st.amountRaised}"
+                      >Amount</span
+                    >
+                  </div>
+                  <div th:if="${st.city}">
+                    <span class="startup-card-stat-label">HQ</span>
+                    <span
+                      class="startup-card-stat-value"
+                      th:text="${st.city} + (${st.country} != null ? ', ' + ${st.country} : '')"
+                      >City</span
+                    >
+                  </div>
+                  <div th:if="${st.fundingStage != null}">
+                    <span class="startup-card-stat-label">Series</span>
+                    <span
+                      class="startup-card-stat-value"
+                      th:text="${st.fundingStage.label}"
+                      >Stage</span
+                    >
+                  </div>
+                </div>
               </div>
             </div>
           </div>

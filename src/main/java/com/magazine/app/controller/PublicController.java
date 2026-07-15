@@ -65,7 +65,8 @@ public class PublicController {
         model.addAttribute("latestPerRegion", magazineService.getLatest4PerRegion());
         model.addAttribute("regions",         MagazineRegion.values());
         model.addAttribute("featuredCompanies", companyService.getFeatured());
-        model.addAttribute("featuredStartups", startupService.getFeatured());
+        // Startup Spotlight — latest 6 added, not just featured=true ones
+        model.addAttribute("featuredStartups", startupService.getLatest(6));
 
         return "index";
     }
