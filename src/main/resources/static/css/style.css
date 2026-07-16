@@ -840,20 +840,6 @@ img {
 .startup-marquee-viewport {
   overflow: hidden;
   position: relative;
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent 0,
-    black 40px,
-    black calc(100% - 40px),
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    to right,
-    transparent 0,
-    black 40px,
-    black calc(100% - 40px),
-    transparent 100%
-  );
 }
 .startup-marquee-track {
   display: flex;
@@ -1204,20 +1190,6 @@ img {
   flex: 0 0 500px;
   overflow: hidden;
   position: relative;
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    transparent 0,
-    black 24px,
-    black calc(100% - 24px),
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    to bottom,
-    transparent 0,
-    black 24px,
-    black calc(100% - 24px),
-    transparent 100%
-  );
 }
 .hero-aside-track {
   display: flex;
@@ -1765,7 +1737,7 @@ img {
   position: relative;
   z-index: 2;
   margin: 40px 0 -70px;
-  border-radius: 15px;
+  border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.25s ease;
