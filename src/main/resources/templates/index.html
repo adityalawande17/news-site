@@ -715,18 +715,51 @@
                     Tagline
                   </p>
 
-                  <div class="company-card-meta">
-                    <span
-                      th:if="${co.headquarters}"
-                      th:text="${co.headquarters}"
-                      >HQ</span
-                    >
-                    <span
-                      th:if="${co.foundingYear}"
-                      th:text="'Est. ' + ${co.foundingYear}"
-                      >Year</span
-                    >
+                  <div class="company-card-stats">
+                    <div th:if="${co.foundingYear}">
+                      <div class="company-card-stat-label">Founded</div>
+                      <div
+                        class="company-card-stat-value"
+                        th:text="${co.foundingYear}"
+                      >
+                        Year
+                      </div>
+                    </div>
+                    <div th:if="${co.employeeCount}">
+                      <div class="company-card-stat-label">Employees</div>
+                      <div
+                        class="company-card-stat-value"
+                        th:text="${co.employeeCount}"
+                      >
+                        Count
+                      </div>
+                    </div>
+                    <div th:if="${co.headquarters}">
+                      <div class="company-card-stat-label">HQ</div>
+                      <div
+                        class="company-card-stat-value"
+                        th:text="${co.headquarters}"
+                      >
+                        HQ
+                      </div>
+                    </div>
+                    <div th:if="${co.annualRevenue}">
+                      <div class="company-card-stat-label">Revenue</div>
+                      <div
+                        class="company-card-stat-value"
+                        th:text="${co.annualRevenue}"
+                      >
+                        Revenue
+                      </div>
+                    </div>
                   </div>
+
+                  <a
+                    th:href="@{/company/{slug}(slug=${co.slug})}"
+                    class="company-card-view-profile"
+                  >
+                    View Profile &rarr;
+                  </a>
                 </div>
               </div>
             </div>
@@ -833,10 +866,7 @@
         <div class="startup-marquee-viewport">
           <div class="startup-marquee-track">
             <!-- Cards, then the same cards again for a seamless loop -->
-            <div
-              class="startup-card"
-              th:each="st : ${featuredStartups}"
-            >
+            <div class="startup-card" th:each="st : ${featuredStartups}">
               <div class="startup-card-photo">
                 <img
                   th:if="${st.founderPhoto}"
@@ -1142,6 +1172,56 @@
         </div>
       </a>
 
+      <!-- ── Category showcase: 4 fixed categories, stacked ──────── -->
+      <div
+        class="cat-section"
+        th:if="${homepageCategories != null and !homepageCategories.isEmpty()}"
+      >
+        <div class="section-header">
+          <h2>Explore by Category</h2>
+        </div>
+
+        <div class="category-stack-row">
+          <div
+            class="category-stack"
+            th:each="cat : ${homepageCategories}"
+            th:if="${catArticles[cat.slug] != null and !catArticles[cat.slug].isEmpty()}"
+          >
+            <div class="category-stack-heading">
+              <h3 th:text="${cat.name}">Category</h3>
+              <a
+                th:href="@{/category/{slug}(slug=${cat.slug})}"
+                class="view-all"
+                >View All &rarr;</a
+              >
+            </div>
+
+            <div class="category-stack-cards">
+              <div
+                class="category-stack-card"
+                th:each="art,i : ${catArticles[cat.slug]}"
+                th:if="${i.index < 3}"
+              >
+                <a th:href="@{/article/{slug}(slug=${art.slug})}">
+                  <img
+                    th:src="${art.imageUrl}
+                   ?: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&auto=format&fit=crop'"
+                    th:alt="${art.title}"
+                  />
+                </a>
+                <h4>
+                  <a
+                    th:href="@{/article/{slug}(slug=${art.slug})}"
+                    th:text="${art.title}"
+                    >Title</a
+                  >
+                </h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Videos section -->
       <div
         class="cat-section"
@@ -1224,101 +1304,6 @@
                   >Title</a
                 >
               </h3>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── Category sections ─────────────────────────── -->
-      <div
-        class="cat-section"
-        th:each="cat : ${categories}"
-        th:if="${catArticles[cat.slug] != null and !catArticles[cat.slug].isEmpty()}"
-      >
-        <div class="section-header">
-          <h2 th:text="${cat.name}">Category</h2>
-          <a th:href="@{/category/{slug}(slug=${cat.slug})}" class="view-all"
-            >View All &rarr;</a
-          >
-        </div>
-
-        <div class="article-grid-3">
-          <!-- First image card -->
-          <div class="art-card-img" th:if="${catArticles[cat.slug].size() > 0}">
-            <a
-              th:href="@{/article/{slug}(slug=${catArticles[cat.slug][0].slug})}"
-            >
-              <img
-                th:src="${catArticles[cat.slug][0].imageUrl}
-               ?: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&auto=format&fit=crop'"
-                th:alt="${catArticles[cat.slug][0].title}"
-              />
-            </a>
-            <div class="art-body">
-              <h3>
-                <a
-                  th:href="@{/article/{slug}(slug=${catArticles[cat.slug][0].slug})}"
-                  th:text="${catArticles[cat.slug][0].title}"
-                  >Title</a
-                >
-              </h3>
-              <p th:text="${catArticles[cat.slug][0].summary}">Summary</p>
-              <span
-                class="art-meta"
-                th:text="${#temporals.format(catArticles[cat.slug][0].createdAt,'MMM dd, yyyy')}"
-                >Date</span
-              >
-            </div>
-          </div>
-
-          <!-- Second image card -->
-          <div class="art-card-img" th:if="${catArticles[cat.slug].size() > 1}">
-            <a
-              th:href="@{/article/{slug}(slug=${catArticles[cat.slug][1].slug})}"
-            >
-              <img
-                th:src="${catArticles[cat.slug][1].imageUrl}
-               ?: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&auto=format&fit=crop'"
-                th:alt="${catArticles[cat.slug][1].title}"
-              />
-            </a>
-            <div class="art-body">
-              <h3>
-                <a
-                  th:href="@{/article/{slug}(slug=${catArticles[cat.slug][1].slug})}"
-                  th:text="${catArticles[cat.slug][1].title}"
-                  >Title</a
-                >
-              </h3>
-              <p th:text="${catArticles[cat.slug][1].summary}">Summary</p>
-              <span
-                class="art-meta"
-                th:text="${#temporals.format(catArticles[cat.slug][1].createdAt,'MMM dd, yyyy')}"
-                >Date</span
-              >
-            </div>
-          </div>
-
-          <!-- Text list column -->
-          <div class="art-list" th:if="${catArticles[cat.slug].size() > 2}">
-            <div
-              class="art-list-item"
-              th:each="art,i : ${catArticles[cat.slug]}"
-              th:if="${i.index >= 2 and i.index <= 4}"
-            >
-              <div class="art-meta" style="margin-bottom: 4px">
-                <span th:text="${#temporals.format(art.createdAt,'MMM dd')}"
-                  >Date</span
-                >
-              </div>
-              <h4>
-                <a
-                  th:href="@{/article/{slug}(slug=${art.slug})}"
-                  th:text="${art.title}"
-                  >Title</a
-                >
-              </h4>
-              <p th:text="${#strings.abbreviate(art.summary, 90)}">Summary</p>
             </div>
           </div>
         </div>

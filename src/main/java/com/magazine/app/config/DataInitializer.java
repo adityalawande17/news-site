@@ -38,6 +38,7 @@ public class DataInitializer implements CommandLineRunner {
         seedExtraFeaturedArticle();
         seedExtraCaseStudiesAndPressReleases();
         seedExtraStartups();
+        seedExtraClimateArticles();
 
         if (categoryRepository.count() > 0) return; // already seeded
 
@@ -399,6 +400,57 @@ articleRepository.save(news3);
         s.setFeatured(false);
         s.setPublished(true);
         startupRepository.save(s);
+    }
+
+    // Tops up the Climate category to 3 articles (idempotent, per-slug) so
+    // the homepage's 4-category showcase has a full row for it, matching
+    // Leadership/Technology/Startups which already have 3 each.
+    private void seedExtraClimateArticles() {
+        Category climate = categoryRepository.findBySlug("climate").orElse(null);
+        if (climate == null) return;
+
+        if (articleRepository.findBySlug("global-emissions-record-high-2026").isEmpty()) {
+            Article a = new Article();
+            a.setTitle("Global Emissions Hit Record High Despite Renewable Energy Boom");
+            a.setSlug("global-emissions-record-high-2026");
+            a.setSummary("Even as solar and wind capacity grew faster than ever, global carbon emissions climbed to a new record last year.");
+            a.setContent(
+                "<p>Global carbon emissions reached a record high last year, according to new data, even as renewable "
+                + "energy capacity grew at its fastest pace on record.</p>"
+                + "<p>Analysts point to rising energy demand from data centers and continued reliance on coal in parts "
+                + "of Asia as the main drivers, offsetting gains made elsewhere.</p>"
+            );
+            a.setAuthorName("Editorial Team");
+            a.setCategory(climate);
+            a.setArticleType(ArticleType.NEWS);
+            a.setNewsSource("Climate Desk");
+            a.setImageUrl("https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=700&auto=format&fit=crop");
+            a.setFeatured(false);
+            a.setPublished(true);
+            articleRepository.save(a);
+        }
+
+        if (articleRepository.findBySlug("ocean-plastic-cleanup-100000-tons-2026").isEmpty()) {
+            Article a = new Article();
+            a.setTitle("Ocean Plastic Cleanup Effort Removes 100,000 Tons of Waste in 2026");
+            a.setSlug("ocean-plastic-cleanup-100000-tons-2026");
+            a.setSummary("A coalition of nonprofits and shipping companies hit a major milestone in a multi-year ocean cleanup initiative.");
+            a.setContent(
+                "<p>A coalition of environmental nonprofits and commercial shipping partners announced they've removed "
+                + "100,000 tons of plastic waste from the world's oceans this year, the largest single-year total since "
+                + "the initiative began.</p>"
+                + "<p>Organizers credit new collection vessels and expanded partnerships with coastal communities for "
+                + "the jump, though they caution the scale of ocean plastic pollution still far outpaces cleanup capacity.</p>"
+            );
+            a.setAuthorName("Editorial Team");
+            a.setCategory(climate);
+            a.setArticleType(ArticleType.NEWS);
+            a.setNewsSource("Climate Desk");
+            a.setImageUrl("https://images.unsplash.com/photo-1621451537084-482c73073a0f?w=700&auto=format&fit=crop");
+            a.setFeatured(false);
+            a.setPublished(true);
+            articleRepository.save(a);
+        }
     }
 
     // Adds 5 more interviews (with cover + interviewee photos) so the homepage

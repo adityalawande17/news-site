@@ -16,7 +16,5 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
 
     List<Video> findByPublishedTrueAndFeaturedTrueOrderByCreatedAtDesc();
 
-    List<Video> findTop4ByPublishedTrueOrderByCreatedAtDesc();
-
     long countByPublishedTrue();
 }

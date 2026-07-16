@@ -30,7 +30,9 @@ public class VideoService {
     }
 
     public List<Video> getLatest(int limit) {
-        return videoRepository.findTop4ByPublishedTrueOrderByCreatedAtDesc();
+        return videoRepository
+            .findByPublishedTrueOrderByCreatedAtDesc(PageRequest.of(0, limit))
+            .getContent();
     }
 
     public Optional<Video> getBySlug(String slug) {

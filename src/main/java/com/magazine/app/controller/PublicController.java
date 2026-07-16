@@ -50,6 +50,16 @@ public class PublicController {
         model.addAttribute("featured",          featured);
         model.addAttribute("categories",        categories);
         model.addAttribute("catArticles",        catArticles);
+        // Homepage category showcase — only these 4, in this order, not
+        // every category in the DB
+        List<String> homepageCategorySlugs = List.of("leadership", "technology", "climate", "startups");
+        List<Category> homepageCategories = homepageCategorySlugs.stream()
+            .map(slug -> categories.stream()
+                .filter(c -> c.getSlug().equals(slug))
+                .findFirst().orElse(null))
+            .filter(Objects::nonNull)
+            .toList();
+        model.addAttribute("homepageCategories", homepageCategories);
         // Interview preview section on homepage — latest 6: first 3 in the
         // slideshow, next 3 in the stacked list
         model.addAttribute("latestInterviews",
@@ -60,7 +70,7 @@ public class PublicController {
             articleService.getLatestByType(ArticleType.CASE_STUDY, 3));
         model.addAttribute("latestPressReleases",
             articleService.getLatestByType(ArticleType.PRESS_RELEASE, 3));
-        model.addAttribute("latestVideos", videoService.getLatest(4));
+        model.addAttribute("latestVideos", videoService.getLatest(3));
         // Map of region → latest 4 issue covers for homepage buttons
         model.addAttribute("latestPerRegion", magazineService.getLatest4PerRegion());
         model.addAttribute("regions",         MagazineRegion.values());
