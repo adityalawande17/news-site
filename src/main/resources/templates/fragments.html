@@ -66,12 +66,6 @@
             <a th:href="@{/magazine}">Magazine</a>
             <a th:href="@{/companies}">Companies</a>
             <a th:href="@{/startups}">Startups</a>
-            <!-- <a
-              th:each="cat : ${categories}"
-              th:href="@{/category/{slug}(slug=${cat.slug})}"
-              th:text="${cat.name}"
-              >Category</a
-            > -->
             <a th:href="@{/about}">About</a>
             <a th:href="@{/contact}">Contact</a>
           </div>
@@ -138,17 +132,28 @@
 
     <!-- FOOTER -->
     <th:block th:fragment="footer">
-      <!-- Newsletter strip -->
-      <div class="newsletter-strip">
-        <div class="container inner">
-          <div>
-            <h3>Stay Informed</h3>
-            <p>Get the latest business insights delivered to your inbox.</p>
+      <!-- Newsletter card — floats over the footer below -->
+      <div class="container">
+        <div class="newsletter-card">
+          <div class="newsletter-card-content">
+            <div class="newsletter-card-text">
+              <h3>Subscribe for Latest Updates</h3>
+              <p>Get the latest business insights delivered to your inbox.</p>
+            </div>
+            <form
+              class="newsletter-card-form"
+              th:action="@{/contact}"
+              method="get"
+            >
+              <input
+                type="email"
+                name="email"
+                placeholder="Enter your email address"
+                required
+              />
+              <button type="submit">Subscribe</button>
+            </form>
           </div>
-          <form class="newsletter-form" th:action="@{/contact}" method="get">
-            <input type="email" placeholder="Enter your email address" />
-            <button type="submit">Subscribe</button>
-          </form>
         </div>
       </div>
 
@@ -158,38 +163,63 @@
             <div>
               <div class="footer-brand">Decisions Insights</div>
               <p>
-                A digital publication for ambitious professionals. Covering
-                leadership, technology, startups, and the ideas shaping business
-                today.
+                A digital publication for ambitious professionals — covering
+                leadership, technology, startups, and finance through
+                in-depth articles, executive interviews, case studies, press
+                releases, videos, and our regular digital magazine.
               </p>
+              <address class="footer-address">
+                Prasanna Pride, Satawadi, Hadapsar,<br />
+                Pune 28
+              </address>
+              <a
+                href="mailto:company@decisionsinsights.com"
+                class="footer-email"
+                >company@decisionsinsights.com</a
+              >
               <div class="footer-social">
-                <a href="#">f</a>
-                <a href="#">&#120143;</a>
-                <a href="#">in</a>
-                <a href="#">&#9654;</a>
+                <a href="#" aria-label="Facebook"
+                  ><i class="fa-brands fa-facebook-f"></i
+                ></a>
+                <a href="#" aria-label="X"
+                  ><i class="fa-brands fa-x-twitter"></i
+                ></a>
+                <a href="#" aria-label="LinkedIn"
+                  ><i class="fa-brands fa-linkedin-in"></i
+                ></a>
+                <a href="#" aria-label="Instagram"
+                  ><i class="fa-brands fa-instagram"></i
+                ></a>
+                <a href="#" aria-label="YouTube"
+                  ><i class="fa-brands fa-youtube"></i
+                ></a>
               </div>
             </div>
             <div>
               <h5>Navigate</h5>
               <a th:href="@{/}">Home</a>
-              <a th:href="@{/blog}">All Articles</a>
+              <a th:href="@{/news}">News</a>
               <a th:href="@{/interviews}">Interviews</a>
+              <a th:href="@{/case-studies}">Case Studies</a>
+              <a th:href="@{/press-releases}">Press Releases</a>
+              <a th:href="@{/videos}">Videos</a>
               <a th:href="@{/magazine}">Magazine</a>
-              <a th:href="@{/companies}">Companies</a>
-              <a th:href="@{/startups}">Startups</a>
-              <a th:href="@{/about}">About Us</a>
-              <a th:href="@{/contact}">Contact</a>
             </div>
             <div>
               <h5>Topics</h5>
-              <a th:href="@{/category/leadership}">Leadership</a>
-              <a th:href="@{/category/technology}">Technology</a>
-              <a th:href="@{/category/startups}">Startups</a>
-              <a th:href="@{/category/finance}">Finance</a>
+              <a
+                th:each="cat, i : ${categories}"
+                th:if="${i.index < 6}"
+                th:href="@{/category/{slug}(slug=${cat.slug})}"
+                th:text="${cat.name}"
+                >Category</a
+              >
             </div>
             <div>
               <h5>Company</h5>
               <a th:href="@{/about}">About Decisions Insights</a>
+              <a th:href="@{/companies}">Companies</a>
+              <a th:href="@{/startups}">Startups</a>
               <a th:href="@{/contact}">Advertise</a>
               <a th:href="@{/contact}">Write for Us</a>
               <a th:href="@{/admin/login}">Admin Login</a>
@@ -197,20 +227,14 @@
           </div>
         </div>
         <div class="footer-bottom">
-          &copy; 2026 Decisions Insights &mdash; All rights reserved.
+          &copy; <span id="footerYear">2026</span> Decisions Insights &mdash;
+          All rights reserved.
         </div>
       </footer>
 
       <script>
-        const d = new Date();
-        const el = document.getElementById("topdate");
-        if (el)
-          el.textContent = d.toLocaleDateString("en-US", {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          });
+        const yearEl = document.getElementById("footerYear");
+        if (yearEl) yearEl.textContent = new Date().getFullYear();
       </script>
     </th:block>
   </body>
