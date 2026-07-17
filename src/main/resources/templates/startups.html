@@ -97,12 +97,14 @@
             <img
               th:if="${st.coverImageUrl}"
               th:src="${st.coverImageUrl}"
+              loading="lazy"
               style="width: 100%; height: 100%; object-fit: cover; opacity: 0.5"
             />
             <div style="position: absolute; bottom: -18px; left: 14px">
               <img
                 th:if="${st.logoUrl}"
                 th:src="${st.logoUrl}"
+                loading="lazy"
                 style="
                   width: 36px;
                   height: 36px;

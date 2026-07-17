@@ -1422,6 +1422,38 @@ img {
   margin-bottom: 36px;
 }
 
+/* ── Magazine listing: cover-only grid, 5 per page ── */
+.magazine-cover-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+  margin-bottom: 36px;
+}
+.magazine-cover-link {
+  display: block;
+}
+.magazine-cover-link img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+.magazine-cover-link:hover img {
+  transform: scale(1.03);
+}
+@media (max-width: 900px) {
+  .magazine-cover-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 560px) {
+  .magazine-cover-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 /* ── Article detail ──────────────────────────────── */
 .article-page {
   padding: 32px 0 60px;

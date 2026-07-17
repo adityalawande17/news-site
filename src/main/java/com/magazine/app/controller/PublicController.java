@@ -209,11 +209,11 @@ public String magazine(
 
     if (region != null) {
         model.addAttribute("magazines",
-            magazineService.getByRegion(region, page, 9));
+            magazineService.getByRegion(region, page, 15));
         model.addAttribute("activeRegion", region);
     } else {
         model.addAttribute("magazines",
-            magazineService.getPublished(page, 9));
+            magazineService.getPublished(page, 15));
         model.addAttribute("activeRegion", null);
     }
 
