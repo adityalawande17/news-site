@@ -20,15 +20,6 @@
       <!-- Top bar: hamburger · brand · socials -->
       <div class="nav-top">
         <div class="container inner">
-          <button
-            type="button"
-            class="nav-hamburger-btn"
-            onclick="toggleCategoryDrawer()"
-            aria-label="Open categories menu"
-          >
-            <i class="fa-solid fa-bars"></i>
-          </button>
-          <a th:href="@{/}" class="brand-mark">DECISIONS INSIGHTS</a>
           <div class="social-icons">
             <a href="#" aria-label="LinkedIn"
               ><i class="fa-brands fa-linkedin-in"></i
@@ -49,6 +40,16 @@
               ><i class="fa-brands fa-youtube"></i
             ></a>
           </div>
+          <a th:href="@{/}" class="brand-mark">DECISIONS INSIGHTS</a>
+
+          <button
+            type="button"
+            class="nav-hamburger-btn"
+            onclick="toggleCategoryDrawer()"
+            aria-label="Open categories menu"
+          >
+            <i class="fa-solid fa-bars"></i>
+          </button>
         </div>
       </div>
 
@@ -58,16 +59,16 @@
           <div class="nav-links">
             <a th:href="@{/}">Home</a>
             <a th:href="@{/news}">News</a>
-            <a th:href="@{/blog}">All Articles</a>
+            <a th:href="@{/magazine}">Magazine</a>
             <a th:href="@{/interviews}">Interviews</a>
+            <a th:href="@{/companies}">Companies</a>
+            <a th:href="@{/startups}">Startups</a>
             <a th:href="@{/case-studies}">Case Studies</a>
             <a th:href="@{/press-releases}">Press Releases</a>
             <a th:href="@{/videos}">Videos</a>
-            <a th:href="@{/magazine}">Magazine</a>
-            <a th:href="@{/companies}">Companies</a>
-            <a th:href="@{/startups}">Startups</a>
-            <a th:href="@{/about}">About</a>
-            <a th:href="@{/contact}">Contact</a>
+            <a th:href="@{/blog}">All Articles</a>
+            <a th:href="@{/about}">About Us</a>
+            <a th:href="@{/contact}">Contact Us</a>
           </div>
           <form class="nav-search" th:action="@{/search}" method="get">
             <input type="text" name="q" placeholder="Search..." />
@@ -164,13 +165,13 @@
               <div class="footer-brand">Decisions Insights</div>
               <p>
                 A digital publication for ambitious professionals — covering
-                leadership, technology, startups, and finance through
-                in-depth articles, executive interviews, case studies, press
-                releases, videos, and our regular digital magazine.
+                leadership, technology, startups, and finance through in-depth
+                articles, executive interviews, case studies, press releases,
+                videos, and our regular digital magazine.
               </p>
               <address class="footer-address">
-                Prasanna Pride, Satawadi, Hadapsar,<br />
-                Pune 28
+                <strong>Address:</strong> Prasanna Pride, Satawadi, Hadapsar,<br />
+                Pune, Maharashtra, India
               </address>
               <a
                 href="mailto:company@decisionsinsights.com"
