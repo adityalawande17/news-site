@@ -37,7 +37,7 @@
         <div class="sidebar-art" th:each="a : ${latest}" th:if="${a.slug != article.slug}">
           <a th:href="@{/article/{slug}(slug=${a.slug})}">
             <img th:src="${a.imageUrl} ?: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=200&auto=format&fit=crop'"
-                 th:alt="${a.title}"/>
+                 th:alt="${a.title}" loading="lazy"/>
           </a>
           <h5><a th:href="@{/article/{slug}(slug=${a.slug})}" th:text="${a.title}">Title</a></h5>
         </div>

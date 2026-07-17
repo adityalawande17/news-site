@@ -202,6 +202,7 @@
               <img
                 th:if="${a.intervieweePhoto}"
                 th:src="${a.intervieweePhoto}"
+                loading="lazy"
                 style="
                   width: 46px;
                   height: 46px;
@@ -214,6 +215,7 @@
                 th:unless="${a.intervieweePhoto}"
                 th:src="${a.imageUrl}
                ?: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200'"
+                loading="lazy"
                 style="
                   width: 46px;
                   height: 46px;

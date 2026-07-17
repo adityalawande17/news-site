@@ -21,7 +21,7 @@
     <div class="art-card-img" th:each="art : ${articles.content}">
       <a th:href="@{/article/{slug}(slug=${art.slug})}">
         <img th:src="${art.imageUrl} ?: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&auto=format&fit=crop'"
-             th:alt="${art.title}" style="height:200px; object-fit:cover; width:100%;"/>
+             th:alt="${art.title}" loading="lazy" style="height:200px; object-fit:cover; width:100%;"/>
       </a>
       <div class="art-body" style="padding-top:12px;">
         <div class="art-meta" style="margin-bottom:6px;">

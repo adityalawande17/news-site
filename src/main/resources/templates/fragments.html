@@ -20,6 +20,15 @@
       <!-- Top bar: hamburger · brand · socials -->
       <div class="nav-top">
         <div class="container inner">
+          <button
+            type="button"
+            class="nav-hamburger-btn"
+            onclick="toggleCategoryDrawer()"
+            aria-label="Open categories menu"
+          >
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <a th:href="@{/}" class="brand-mark">DECISIONS INSIGHTS</a>
           <div class="social-icons">
             <a href="#" aria-label="LinkedIn"
               ><i class="fa-brands fa-linkedin-in"></i
@@ -40,16 +49,6 @@
               ><i class="fa-brands fa-youtube"></i
             ></a>
           </div>
-          <a th:href="@{/}" class="brand-mark">DECISIONS INSIGHTS</a>
-
-          <button
-            type="button"
-            class="nav-hamburger-btn"
-            onclick="toggleCategoryDrawer()"
-            aria-label="Open categories menu"
-          >
-            <i class="fa-solid fa-bars"></i>
-          </button>
         </div>
       </div>
 
