@@ -4,25 +4,34 @@
 <body>
 <th:block th:replace="~{fragments :: header(${categories}, ${featured})}"></th:block>
 
-<div class="container">
-  <div class="page-content">
-    <h1>About Decisions Insights</h1>
-    <p style="font-size:18px; border-left:4px solid var(--black); padding-left:18px; color:#333;">
-      Decisions Insights is a digital publication for ambitious professionals — covering leadership, technology, startups, and the ideas shaping business today.
-    </p>
-    <p>We believe that clear, honest insight drives better decisions. Our editorial team brings together perspectives from across industries to help professionals stay informed and ahead of the curve.</p>
-    <p>Whether you're a founder, an executive, or a professional building something meaningful — Decisions Insights is built for you.</p>
+<section class="about-hero">
+  <div class="container">
+    <div class="about-hero-content">
+      <h1>About Decisions Insights</h1>
+      <p>
+        Decisions Insights is a digital publication for <strong>ambitious professionals</strong> — covering
+        leadership, technology, startups, and the ideas shaping business today. We believe that
+        <strong>clear, honest insight</strong> drives better decisions, and our editorial team brings
+        together perspectives from across industries to help professionals stay informed and ahead
+        of the curve. Whether you're a founder, an executive, or a professional building something
+        meaningful — Decisions Insights is built for you.
+      </p>
+    </div>
   </div>
+</section>
 
+<div class="container">
   <!-- Mission / Vision / Environment -->
-  <div class="about-cards">
-    <div class="about-card">
-      <img
-        src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=700&auto=format&fit=crop"
-        alt="Our Mission"
-        loading="lazy"
-      />
-      <div class="about-card-body">
+  <div class="about-stack-cards">
+    <div class="about-stack-card">
+      <div class="about-stack-card-media">
+        <img
+          src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=700&auto=format&fit=crop"
+          alt="Our Mission"
+          loading="lazy"
+        />
+      </div>
+      <div class="about-stack-card-body">
         <h3>Our Mission</h3>
         <p>
           To deliver clear, honest, and actionable business insight that
@@ -32,13 +41,15 @@
         </p>
       </div>
     </div>
-    <div class="about-card">
-      <img
-        src="https://images.unsplash.com/photo-1500534623283-312aade485b7?w=700&auto=format&fit=crop"
-        alt="Our Vision"
-        loading="lazy"
-      />
-      <div class="about-card-body">
+    <div class="about-stack-card">
+      <div class="about-stack-card-media">
+        <img
+          src="https://images.unsplash.com/photo-1500534623283-312aade485b7?w=700&auto=format&fit=crop"
+          alt="Our Vision"
+          loading="lazy"
+        />
+      </div>
+      <div class="about-stack-card-body">
         <h3>Our Vision</h3>
         <p>
           To be the most trusted voice for ambitious professionals
@@ -48,13 +59,15 @@
         </p>
       </div>
     </div>
-    <div class="about-card">
-      <img
-        src="https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?w=700&auto=format&fit=crop"
-        alt="Environmental Responsibility"
-        loading="lazy"
-      />
-      <div class="about-card-body">
+    <div class="about-stack-card">
+      <div class="about-stack-card-media">
+        <img
+          src="https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?w=700&auto=format&fit=crop"
+          alt="Environmental Responsibility"
+          loading="lazy"
+        />
+      </div>
+      <div class="about-stack-card-body">
         <h3>Environmental Responsibility</h3>
         <p>
           As a digital-first publication, we're committed to minimizing our
