@@ -24,11 +24,9 @@ public class MagazineService {
     @Autowired private ArticleRepository  articleRepository;
 
     // ── Public ───────────────────────────────────────
-    public Page<Magazine> getPublished(int page, int size) {
+    public Page<Magazine> getPublished(int page, int size, Sort.Direction sortDir) {
         return magazineRepository
-            .findByPublishedTrueOrderByYearDescIssueNumberDesc(
-                PageRequest.of(page, size)
-            );
+            .findByPublishedTrue(PageRequest.of(page, size, yearSort(sortDir)));
     }
 
     public List<Magazine> getLatest(int limit) {
@@ -94,11 +92,42 @@ public class MagazineService {
     }
 
     // Paginated issues filtered by region — for /magazine?region=ASIA
-public Page<Magazine> getByRegion(MagazineRegion region, int page, int size) {
+public Page<Magazine> getByRegion(MagazineRegion region, int page, int size, Sort.Direction sortDir) {
     return magazineRepository
-        .findByPublishedTrueAndRegionOrderByYearDescIssueNumberDesc(
-            region, PageRequest.of(page, size)
+        .findByPublishedTrueAndRegion(
+            region, PageRequest.of(page, size, yearSort(sortDir))
         );
+}
+
+// Paginated issues filtered by year — for /magazine?year=2026
+public Page<Magazine> getByYear(int year, int page, int size, Sort.Direction sortDir) {
+    return magazineRepository
+        .findByPublishedTrueAndYear(
+            year, PageRequest.of(page, size, yearSort(sortDir))
+        );
+}
+
+// Paginated issues filtered by region + year — for /magazine?region=ASIA&year=2026
+public Page<Magazine> getByRegionAndYear(MagazineRegion region, int year, int page, int size, Sort.Direction sortDir) {
+    return magazineRepository
+        .findByPublishedTrueAndRegionAndYear(
+            region, year, PageRequest.of(page, size, yearSort(sortDir))
+        );
+}
+
+// Sort by year then issue number, in the given direction
+private Sort yearSort(Sort.Direction sortDir) {
+    return Sort.by(sortDir, "year").and(Sort.by(sortDir, "issueNumber"));
+}
+
+// Distinct publication years across all published issues — for the year filter dropdown
+public List<Integer> getAvailableYears() {
+    return magazineRepository.findAll().stream()
+        .filter(Magazine::isPublished)
+        .map(Magazine::getYear)
+        .distinct()
+        .sorted(java.util.Comparator.reverseOrder())
+        .collect(java.util.stream.Collectors.toList());
 }
 
 // Latest 4 issues per region — for homepage cover grid

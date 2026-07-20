@@ -10,55 +10,158 @@
     ></th:block>
 
     <div class="container page-section">
-      <!-- Region filter buttons -->
-      <div
+      <!-- Filter row: region · year · sort — one form, any change re-submits all three -->
+      <form
+        th:action="@{/magazine}"
+        method="get"
         style="
           display: flex;
-          gap: 8px;
+          align-items: center;
+          justify-content: space-between;
           flex-wrap: wrap;
+          gap: 20px;
           margin-bottom: 28px;
           padding-bottom: 20px;
           border-bottom: 1px solid var(--border);
         "
       >
-        <a
-          th:href="@{/magazine}"
-          style="
-            padding: 8px 18px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 700;
-            text-decoration: none;
-            border: 1px solid var(--border);
-          "
-          th:style="${activeRegion == null}
-                 ? 'padding:8px 18px; border-radius:20px; font-size:13px; font-weight:700; background:#111; color:#fff; border:1px solid #111;'
-                 : 'padding:8px 18px; border-radius:20px; font-size:13px; font-weight:700; background:#fff; color:#333; border:1px solid #ddd;'"
+        <div
+          style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap"
         >
-          All Regions
-        </a>
+          <div style="display: flex; align-items: center; gap: 8px">
+            <label
+              for="regionFilter"
+              style="
+                font-size: 13px;
+                font-weight: 700;
+                color: var(--muted);
+                text-transform: uppercase;
+                letter-spacing: 0.4px;
+              "
+              >Region</label
+            >
+            <select
+              id="regionFilter"
+              name="region"
+              onchange="this.form.submit()"
+              style="
+                padding: 7px 14px;
+                border-radius: 20px;
+                font-size: 13px;
+                font-weight: 700;
+                border: 1px solid var(--border);
+                background: #fff;
+                color: #333;
+                cursor: pointer;
+              "
+            >
+              <option value="" th:selected="${activeRegion == null}">
+                All Regions
+              </option>
+              <option
+                th:each="reg : ${regions}"
+                th:value="${reg}"
+                th:text="${reg.label}"
+                th:selected="${activeRegion == reg}"
+              >
+                Region
+              </option>
+            </select>
+          </div>
 
-        <a
-          th:each="reg : ${regions}"
-          th:href="@{/magazine(region=${reg})}"
-          th:text="${reg.label}"
-          th:style="${activeRegion == reg}
-                 ? 'padding:8px 18px; border-radius:20px; font-size:13px; font-weight:700; background:#111; color:#fff; border:1px solid #111; text-decoration:none;'
-                 : 'padding:8px 18px; border-radius:20px; font-size:13px; font-weight:700; background:#fff; color:#333; border:1px solid #ddd; text-decoration:none;'"
-        >
-          Region
-        </a>
-      </div>
+          <div style="display: flex; align-items: center; gap: 8px">
+            <label
+              for="yearFilter"
+              style="
+                font-size: 13px;
+                font-weight: 700;
+                color: var(--muted);
+                text-transform: uppercase;
+                letter-spacing: 0.4px;
+              "
+              >Year</label
+            >
+            <select
+              id="yearFilter"
+              name="year"
+              onchange="this.form.submit()"
+              style="
+                padding: 7px 14px;
+                border-radius: 20px;
+                font-size: 13px;
+                font-weight: 700;
+                border: 1px solid var(--border);
+                background: #fff;
+                color: #333;
+                cursor: pointer;
+              "
+            >
+              <option value="" th:selected="${activeYear == null}">
+                All Years
+              </option>
+              <option
+                th:each="yr : ${years}"
+                th:value="${yr}"
+                th:text="${yr}"
+                th:selected="${activeYear != null and activeYear == yr}"
+              >
+                2026
+              </option>
+            </select>
+          </div>
 
-      <!-- Active region heading -->
-      <div th:if="${activeRegion != null}" style="margin-bottom: 20px">
+          <div style="display: flex; align-items: center; gap: 8px">
+            <label
+              for="sortFilter"
+              style="
+                font-size: 13px;
+                font-weight: 700;
+                color: var(--muted);
+                text-transform: uppercase;
+                letter-spacing: 0.4px;
+              "
+              >Sort by Year</label
+            >
+            <select
+              id="sortFilter"
+              name="sort"
+              onchange="this.form.submit()"
+              style="
+                padding: 7px 14px;
+                border-radius: 20px;
+                font-size: 13px;
+                font-weight: 700;
+                border: 1px solid var(--border);
+                background: #fff;
+                color: #333;
+                cursor: pointer;
+              "
+            >
+              <option value="desc" th:selected="${activeSort == 'desc'}">
+                Newest First
+              </option>
+              <option value="asc" th:selected="${activeSort == 'asc'}">
+                Oldest First
+              </option>
+            </select>
+          </div>
+        </div>
+      </form>
+
+      <!-- Active region / year heading -->
+      <div
+        th:if="${activeRegion != null or activeYear != null}"
+        style="margin-bottom: 20px"
+      >
         <h3
           style="
             font-family: var(--serif);
             font-size: 20px;
             color: var(--black);
           "
-          th:text="${activeRegion.label} + ' Edition'"
+          th:text="${(activeRegion != null ? activeRegion.label + ' ' : '')
+                  + (activeYear != null ? activeYear + ' ' : '')
+                  + 'Edition'}"
         >
           Region Edition
         </h3>
@@ -86,24 +189,18 @@
       >
         No issues published
         <span
-          th:if="${activeRegion != null}"
-          th:text="' for ' + ${activeRegion.label} + ' yet.'"
+          th:text="${(activeRegion != null ? ' for ' + activeRegion.label : '')
+                  + (activeYear != null ? ' in ' + activeYear : '')
+                  + ' yet.'}"
           >yet.</span
         >
-        <span th:unless="${activeRegion != null}"> yet.</span>
       </p>
 
-      <!-- Pagination — preserve region param -->
+      <!-- Pagination — preserves region/year/sort params (Thymeleaf omits null ones) -->
       <div class="pagination" th:if="${magazines.totalPages > 1}">
         <a
-          th:if="${currentPage > 0 and activeRegion != null}"
-          th:href="@{/magazine(region=${activeRegion}, page=${currentPage - 1})}"
-        >
-          &larr; Prev
-        </a>
-        <a
-          th:if="${currentPage > 0 and activeRegion == null}"
-          th:href="@{/magazine(page=${currentPage - 1})}"
+          th:if="${currentPage > 0}"
+          th:href="@{/magazine(region=${activeRegion}, year=${activeYear}, sort=${activeSort}, page=${currentPage - 1})}"
         >
           &larr; Prev
         </a>
@@ -114,14 +211,8 @@
           1
         </span>
         <a
-          th:if="${currentPage + 1 < magazines.totalPages and activeRegion != null}"
-          th:href="@{/magazine(region=${activeRegion}, page=${currentPage + 1})}"
-        >
-          Next &rarr;
-        </a>
-        <a
-          th:if="${currentPage + 1 < magazines.totalPages and activeRegion == null}"
-          th:href="@{/magazine(page=${currentPage + 1})}"
+          th:if="${currentPage + 1 < magazines.totalPages}"
+          th:href="@{/magazine(region=${activeRegion}, year=${activeYear}, sort=${activeSort}, page=${currentPage + 1})}"
         >
           Next &rarr;
         </a>

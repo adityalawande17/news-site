@@ -7,6 +7,7 @@ import com.magazine.app.service.ArticleService;
 import com.magazine.app.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -205,19 +206,32 @@ public String videoDetail(@PathVariable String slug, Model model) {
 public String magazine(
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(required = false) MagazineRegion region,
+        @RequestParam(required = false) Integer year,
+        @RequestParam(defaultValue = "desc") String sort,
         Model model) {
 
-    if (region != null) {
+    Sort.Direction sortDir = "asc".equalsIgnoreCase(sort)
+        ? Sort.Direction.ASC : Sort.Direction.DESC;
+
+    if (region != null && year != null) {
         model.addAttribute("magazines",
-            magazineService.getByRegion(region, page, 15));
-        model.addAttribute("activeRegion", region);
+            magazineService.getByRegionAndYear(region, year, page, 15, sortDir));
+    } else if (region != null) {
+        model.addAttribute("magazines",
+            magazineService.getByRegion(region, page, 15, sortDir));
+    } else if (year != null) {
+        model.addAttribute("magazines",
+            magazineService.getByYear(year, page, 15, sortDir));
     } else {
         model.addAttribute("magazines",
-            magazineService.getPublished(page, 15));
-        model.addAttribute("activeRegion", null);
+            magazineService.getPublished(page, 15, sortDir));
     }
 
+    model.addAttribute("activeRegion", region);
+    model.addAttribute("activeYear",   year);
+    model.addAttribute("activeSort",   sortDir == Sort.Direction.ASC ? "asc" : "desc");
     model.addAttribute("regions",     MagazineRegion.values());
+    model.addAttribute("years",       magazineService.getAvailableYears());
     model.addAttribute("currentPage", page);
     model.addAttribute("categories",  categoryService.getAll());
     model.addAttribute("featured",    articleService.getFeaturedArticles());

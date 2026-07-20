@@ -14,13 +14,22 @@ public interface MagazineRepository extends JpaRepository<Magazine, Long> {
 
     Optional<Magazine> findBySlug(String slug);
 
-    Page<Magazine> findByPublishedTrueOrderByYearDescIssueNumberDesc(
-        Pageable pageable
-    );
+    // Magazine listing page — sort direction (asc/desc) comes from the Pageable's Sort
+    Page<Magazine> findByPublishedTrue(Pageable pageable);
 
     // All published issues for a specific region
-    Page<Magazine> findByPublishedTrueAndRegionOrderByYearDescIssueNumberDesc(
+    Page<Magazine> findByPublishedTrueAndRegion(
         MagazineRegion region, Pageable pageable
+    );
+
+    // All published issues for a specific year
+    Page<Magazine> findByPublishedTrueAndYear(
+        int year, Pageable pageable
+    );
+
+    // All published issues for a specific region + year
+    Page<Magazine> findByPublishedTrueAndRegionAndYear(
+        MagazineRegion region, int year, Pageable pageable
     );
 
     // Latest 4 issues per region — for homepage cover grid
