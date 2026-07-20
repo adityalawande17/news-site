@@ -27,19 +27,17 @@ public class StartupService {
             );
     }
 
-    public Page<Startup> getBySector(String sector, int page, int size) {
-        return startupRepository
-            .findByPublishedTrueAndSectorOrderByCreatedAtDesc(
-                sector, PageRequest.of(page, size)
-            );
+    // Combinable sector / stage / city filters — pass null for "any"
+    public Page<Startup> getFiltered(String sector, FundingStage stage, String city, int page, int size) {
+        String sectorParam = (sector != null && !sector.isBlank()) ? sector : null;
+        String cityParam   = (city != null && !city.isBlank()) ? city : null;
+        return startupRepository.findFiltered(
+            sectorParam, stage, cityParam, PageRequest.of(page, size)
+        );
     }
 
-    public Page<Startup> getByFundingStage(FundingStage stage,
-                                            int page, int size) {
-        return startupRepository
-            .findByPublishedTrueAndFundingStageOrderByCreatedAtDesc(
-                stage, PageRequest.of(page, size)
-            );
+    public List<String> getAllCities() {
+        return startupRepository.findDistinctCityByPublishedTrue();
     }
 
     public List<Startup> getFeatured() {

@@ -10,63 +10,143 @@
     ></th:block>
 
     <div class="container page-section">
-      <!-- Sector filter pills -->
-      <div style="margin-bottom: 12px">
-        <span
-          style="
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-right: 8px;
-          "
-          >Sector:</span
-        >
-        <a
-          th:href="@{/startups}"
-          th:style="${activeSector == null and activeStage == null}
-                 ? 'padding:5px 14px; border-radius:20px; font-size:12px; font-weight:700; background:#111; color:#fff; border:1px solid #111; text-decoration:none; margin-right:6px;'
-                 : 'padding:5px 14px; border-radius:20px; font-size:12px; font-weight:700; background:#fff; color:#555; border:1px solid var(--border); text-decoration:none; margin-right:6px;'"
-        >
-          All
-        </a>
-        <a
-          th:each="sec : ${sectors}"
-          th:href="@{/startups(sector=${sec})}"
-          th:text="${sec}"
-          th:style="${activeSector == sec}
-                 ? 'padding:5px 14px; border-radius:20px; font-size:12px; font-weight:700; background:#111; color:#fff; border:1px solid #111; text-decoration:none; margin-right:6px;'
-                 : 'padding:5px 14px; border-radius:20px; font-size:12px; font-weight:700; background:#fff; color:#555; border:1px solid var(--border); text-decoration:none; margin-right:6px;'"
-        >
-          Sector
-        </a>
-      </div>
+      <!-- Filter row: sector · stage · location — one form, any change re-submits all three -->
+      <form
+        th:action="@{/startups}"
+        method="get"
+        style="
+          display: flex;
+          align-items: center;
+          gap: 20px;
+          flex-wrap: wrap;
+          margin-bottom: 28px;
+          padding-bottom: 20px;
+          border-bottom: 1px solid var(--border);
+        "
+      >
+        <div style="display: flex; align-items: center; gap: 8px">
+          <label
+            for="sectorFilter"
+            style="
+              font-size: 13px;
+              font-weight: 700;
+              color: var(--muted);
+              text-transform: uppercase;
+              letter-spacing: 0.4px;
+            "
+            >Sector</label
+          >
+          <select
+            id="sectorFilter"
+            name="sector"
+            onchange="this.form.submit()"
+            style="
+              padding: 7px 14px;
+              border-radius: 20px;
+              font-size: 13px;
+              font-weight: 700;
+              border: 1px solid var(--border);
+              background: #fff;
+              color: #333;
+              cursor: pointer;
+            "
+          >
+            <option value="" th:selected="${activeSector == null}">
+              All Sectors
+            </option>
+            <option
+              th:each="sec : ${sectors}"
+              th:value="${sec}"
+              th:text="${sec}"
+              th:selected="${activeSector == sec}"
+            >
+              Sector
+            </option>
+          </select>
+        </div>
 
-      <!-- Funding stage filter pills -->
-      <div style="margin-bottom: 28px">
-        <span
-          style="
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-right: 8px;
-          "
-          >Stage:</span
-        >
-        <a
-          th:each="stage : ${fundingStages}"
-          th:href="@{/startups(stage=${stage})}"
-          th:text="${stage.label}"
-          th:style="${activeStage == stage}
-                 ? 'padding:5px 14px; border-radius:20px; font-size:12px; font-weight:700; background:#cc0000; color:#fff; border:1px solid #cc0000; text-decoration:none; margin-right:6px;'
-                 : 'padding:5px 14px; border-radius:20px; font-size:12px; font-weight:700; background:#fff; color:#555; border:1px solid var(--border); text-decoration:none; margin-right:6px;'"
-        >
-          Stage
-        </a>
-      </div>
+        <div style="display: flex; align-items: center; gap: 8px">
+          <label
+            for="stageFilter"
+            style="
+              font-size: 13px;
+              font-weight: 700;
+              color: var(--muted);
+              text-transform: uppercase;
+              letter-spacing: 0.4px;
+            "
+            >Stage</label
+          >
+          <select
+            id="stageFilter"
+            name="stage"
+            onchange="this.form.submit()"
+            style="
+              padding: 7px 14px;
+              border-radius: 20px;
+              font-size: 13px;
+              font-weight: 700;
+              border: 1px solid var(--border);
+              background: #fff;
+              color: #333;
+              cursor: pointer;
+            "
+          >
+            <option value="" th:selected="${activeStage == null}">
+              All Stages
+            </option>
+            <option
+              th:each="stage : ${fundingStages}"
+              th:value="${stage}"
+              th:text="${stage.label}"
+              th:selected="${activeStage == stage}"
+            >
+              Stage
+            </option>
+          </select>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 8px">
+          <label
+            for="cityFilter"
+            style="
+              font-size: 13px;
+              font-weight: 700;
+              color: var(--muted);
+              text-transform: uppercase;
+              letter-spacing: 0.4px;
+            "
+            >Location</label
+          >
+          <select
+            id="cityFilter"
+            name="city"
+            onchange="this.form.submit()"
+            style="
+              padding: 7px 14px;
+              border-radius: 20px;
+              font-size: 13px;
+              font-weight: 700;
+              border: 1px solid var(--border);
+              background: #fff;
+              color: #333;
+              cursor: pointer;
+            "
+          >
+            <option value="" th:selected="${activeCity == null}">
+              All Locations
+            </option>
+            <option
+              th:each="c : ${cities}"
+              th:value="${c}"
+              th:text="${c}"
+              th:selected="${activeCity == c}"
+            >
+              City
+            </option>
+          </select>
+        </div>
+      </form>
 
       <!-- Startup cards -->
       <div class="blog-grid" th:if="${!startups.content.isEmpty()}">
@@ -239,23 +319,11 @@
         No startups found.
       </p>
 
-      <!-- Pagination -->
+      <!-- Pagination — preserves sector/stage/city params (Thymeleaf omits null ones) -->
       <div class="pagination" th:if="${startups.totalPages > 1}">
         <a
-          th:if="${currentPage > 0 and activeSector != null}"
-          th:href="@{/startups(sector=${activeSector}, page=${currentPage - 1})}"
-        >
-          &larr; Prev
-        </a>
-        <a
-          th:if="${currentPage > 0 and activeStage != null}"
-          th:href="@{/startups(stage=${activeStage}, page=${currentPage - 1})}"
-        >
-          &larr; Prev
-        </a>
-        <a
-          th:if="${currentPage > 0 and activeSector == null and activeStage == null}"
-          th:href="@{/startups(page=${currentPage - 1})}"
+          th:if="${currentPage > 0}"
+          th:href="@{/startups(sector=${activeSector}, stage=${activeStage}, city=${activeCity}, page=${currentPage - 1})}"
         >
           &larr; Prev
         </a>
@@ -266,20 +334,8 @@
           1
         </span>
         <a
-          th:if="${currentPage + 1 < startups.totalPages and activeSector != null}"
-          th:href="@{/startups(sector=${activeSector}, page=${currentPage + 1})}"
-        >
-          Next &rarr;
-        </a>
-        <a
-          th:if="${currentPage + 1 < startups.totalPages and activeStage != null}"
-          th:href="@{/startups(stage=${activeStage}, page=${currentPage + 1})}"
-        >
-          Next &rarr;
-        </a>
-        <a
-          th:if="${currentPage + 1 < startups.totalPages and activeSector == null and activeStage == null}"
-          th:href="@{/startups(page=${currentPage + 1})}"
+          th:if="${currentPage + 1 < startups.totalPages}"
+          th:href="@{/startups(sector=${activeSector}, stage=${activeStage}, city=${activeCity}, page=${currentPage + 1})}"
         >
           Next &rarr;
         </a>

@@ -311,26 +311,17 @@ public String startups(
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(required = false) String sector,
         @RequestParam(required = false) FundingStage stage,
+        @RequestParam(required = false) String city,
         Model model) {
 
-    if (sector != null && !sector.isBlank()) {
-        model.addAttribute("startups",
-            startupService.getBySector(sector, page, 12));
-        model.addAttribute("activeSector", sector);
-        model.addAttribute("activeStage",  null);
-    } else if (stage != null) {
-        model.addAttribute("startups",
-            startupService.getByFundingStage(stage, page, 12));
-        model.addAttribute("activeSector", null);
-        model.addAttribute("activeStage",  stage);
-    } else {
-        model.addAttribute("startups",
-            startupService.getPublished(page, 12));
-        model.addAttribute("activeSector", null);
-        model.addAttribute("activeStage",  null);
-    }
+    model.addAttribute("startups",
+        startupService.getFiltered(sector, stage, city, page, 12));
 
+    model.addAttribute("activeSector", (sector != null && !sector.isBlank()) ? sector : null);
+    model.addAttribute("activeStage",  stage);
+    model.addAttribute("activeCity",   (city != null && !city.isBlank()) ? city : null);
     model.addAttribute("sectors",       startupService.getAllSectors());
+    model.addAttribute("cities",        startupService.getAllCities());
     model.addAttribute("fundingStages", FundingStage.values());
     model.addAttribute("currentPage",   page);
     model.addAttribute("categories",    categoryService.getAll());
