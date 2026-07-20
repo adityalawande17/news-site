@@ -11,6 +11,54 @@
     ></th:block>
 
     <div class="container page-section">
+      <!-- Filter row: sort dropdown (left) -->
+      <form
+        th:action="@{/interviews}"
+        method="get"
+        style="
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          margin-bottom: 28px;
+          padding-bottom: 20px;
+          border-bottom: 1px solid var(--border);
+        "
+      >
+        <label
+          for="sortFilter"
+          style="
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+          "
+          >Sort</label
+        >
+        <select
+          id="sortFilter"
+          name="sort"
+          onchange="this.form.submit()"
+          style="
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            border: 1px solid var(--border);
+            background: #fff;
+            color: #333;
+            cursor: pointer;
+          "
+        >
+          <option value="desc" th:selected="${activeSort == 'desc'}">
+            Newest First
+          </option>
+          <option value="asc" th:selected="${activeSort == 'asc'}">
+            Oldest First
+          </option>
+        </select>
+      </form>
+
       <!-- Interview card grid -->
       <div class="blog-grid" th:if="${!interviews.content.isEmpty()}">
         <div
@@ -169,11 +217,11 @@
         <p>Check back soon.</p>
       </div>
 
-      <!-- Pagination -->
+      <!-- Pagination — preserves sort param (Thymeleaf omits it when null) -->
       <div class="pagination" th:if="${interviews.totalPages > 1}">
         <a
           th:if="${currentPage > 0}"
-          th:href="@{/interviews(page=${currentPage - 1})}"
+          th:href="@{/interviews(sort=${activeSort}, page=${currentPage - 1})}"
           >&larr; Prev</a
         >
         <span
@@ -183,7 +231,7 @@
         >
         <a
           th:if="${currentPage + 1 < interviews.totalPages}"
-          th:href="@{/interviews(page=${currentPage + 1})}"
+          th:href="@{/interviews(sort=${activeSort}, page=${currentPage + 1})}"
           >Next &rarr;</a
         >
       </div>

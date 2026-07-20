@@ -108,8 +108,16 @@ public class PublicController {
 
     // ── Interviews public listing ───────────────────
     @GetMapping("/interviews")
-    public String interviews(@RequestParam(defaultValue = "0") int page, Model model) {
-        model.addAttribute("interviews",  articleService.getByType(ArticleType.INTERVIEW, page, 9));
+    public String interviews(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "desc") String sort,
+            Model model) {
+        Sort.Direction sortDir = "asc".equalsIgnoreCase(sort)
+            ? Sort.Direction.ASC : Sort.Direction.DESC;
+
+        model.addAttribute("interviews",
+            articleService.getByTypeSorted(ArticleType.INTERVIEW, null, page, 9, sortDir));
+        model.addAttribute("activeSort",  sortDir == Sort.Direction.ASC ? "asc" : "desc");
         model.addAttribute("currentPage", page);
         model.addAttribute("categories", categoryService.getAll());
         model.addAttribute("featured",   articleService.getFeaturedArticles());

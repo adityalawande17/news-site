@@ -10,30 +10,59 @@
     ></th:block>
 
     <div class="container page-section">
-      <!-- Sector filter pills -->
-      <div
+      <!-- Sector filter dropdown -->
+      <form
         th:if="${!sectors.isEmpty()}"
-        style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px"
+        th:action="@{/companies}"
+        method="get"
+        style="
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          margin-bottom: 28px;
+          padding-bottom: 20px;
+          border-bottom: 1px solid var(--border);
+        "
       >
-        <a
-          th:href="@{/companies}"
-          th:style="${activeSector == null}
-                 ? 'padding:6px 16px; border-radius:20px; font-size:13px; font-weight:700; background:#111; color:#fff; border:1px solid #111; text-decoration:none;'
-                 : 'padding:6px 16px; border-radius:20px; font-size:13px; font-weight:700; background:#fff; color:#333; border:1px solid var(--border); text-decoration:none;'"
+        <label
+          for="sectorFilter"
+          style="
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+          "
+          >Sector</label
         >
-          All Sectors
-        </a>
-        <a
-          th:each="sec : ${sectors}"
-          th:href="@{/companies(sector=${sec})}"
-          th:text="${sec}"
-          th:style="${activeSector == sec}
-                 ? 'padding:6px 16px; border-radius:20px; font-size:13px; font-weight:700; background:#111; color:#fff; border:1px solid #111; text-decoration:none;'
-                 : 'padding:6px 16px; border-radius:20px; font-size:13px; font-weight:700; background:#fff; color:#333; border:1px solid var(--border); text-decoration:none;'"
+        <select
+          id="sectorFilter"
+          name="sector"
+          onchange="this.form.submit()"
+          style="
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            border: 1px solid var(--border);
+            background: #fff;
+            color: #333;
+            cursor: pointer;
+          "
         >
-          Sector
-        </a>
-      </div>
+          <option value="" th:selected="${activeSector == null}">
+            All Sectors
+          </option>
+          <option
+            th:each="sec : ${sectors}"
+            th:value="${sec}"
+            th:text="${sec}"
+            th:selected="${activeSector == sec}"
+          >
+            Sector
+          </option>
+        </select>
+      </form>
 
       <!-- Company grid -->
       <div class="blog-grid" th:if="${!companies.content.isEmpty()}">
@@ -243,16 +272,11 @@
         No companies published yet.
       </p>
 
+      <!-- Pagination — preserves sector param (Thymeleaf omits it when null) -->
       <div class="pagination" th:if="${companies.totalPages > 1}">
         <a
-          th:if="${currentPage > 0 and activeSector != null}"
+          th:if="${currentPage > 0}"
           th:href="@{/companies(sector=${activeSector}, page=${currentPage - 1})}"
-        >
-          &larr; Prev
-        </a>
-        <a
-          th:if="${currentPage > 0 and activeSector == null}"
-          th:href="@{/companies(page=${currentPage - 1})}"
         >
           &larr; Prev
         </a>
@@ -263,14 +287,8 @@
           1
         </span>
         <a
-          th:if="${currentPage + 1 < companies.totalPages and activeSector != null}"
+          th:if="${currentPage + 1 < companies.totalPages}"
           th:href="@{/companies(sector=${activeSector}, page=${currentPage + 1})}"
-        >
-          Next &rarr;
-        </a>
-        <a
-          th:if="${currentPage + 1 < companies.totalPages and activeSector == null}"
-          th:href="@{/companies(page=${currentPage + 1})}"
         >
           Next &rarr;
         </a>
