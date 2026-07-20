@@ -1606,7 +1606,7 @@ img {
 /* ── Generic content page ────────────────────────── */
 .page-content {
   max-width: 780px;
-  padding: 40px 0 60px;
+  /* padding: 40px 0 60px; */
 }
 .page-content h1 {
   font-family: var(--serif);
@@ -1625,6 +1625,71 @@ img {
   font-family: var(--serif);
   font-size: 22px;
   margin: 28px 0 12px;
+}
+.page-content h3 {
+  font-family: var(--serif);
+  font-size: 17px;
+  color: var(--black);
+  margin: 8px 0 14px;
+}
+
+/* ── About page: "What We Cover" content-type grid ── */
+.coverage-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin: 22px 0 36px;
+}
+.coverage-item {
+  display: block;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 20px 18px;
+  background: var(--white);
+  transition:
+    box-shadow 0.2s,
+    transform 0.2s,
+    border-color 0.2s;
+}
+.coverage-item:hover {
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+  border-color: var(--black);
+  color: inherit;
+}
+.coverage-item i {
+  font-size: 19px;
+  color: var(--black);
+  margin-bottom: 12px;
+  display: block;
+}
+.coverage-item h4 {
+  font-family: var(--serif);
+  font-size: 16px;
+  color: var(--black);
+  margin-bottom: 6px;
+}
+.coverage-item p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--muted);
+  margin: 0;
+}
+.coverage-topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 28px;
+}
+@media (max-width: 900px) {
+  .coverage-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 480px) {
+  .coverage-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ── About page: hero banner ─────────────────────── */
@@ -1739,16 +1804,19 @@ img {
   padding: 8px 0 56px;
 }
 .faq-list {
-  max-width: 860px;
   display: flex;
   flex-direction: column;
 }
 .faq-item {
+  position: relative;
   border-bottom: 1px solid var(--border);
   padding: 18px 0;
 }
 .faq-item:first-child {
   padding-top: 0;
+}
+.faq-item p {
+  max-width: 860px;
 }
 .faq-item summary {
   font-family: var(--serif);
@@ -1757,7 +1825,7 @@ img {
   color: var(--black);
   cursor: pointer;
   list-style: none;
-  position: relative;
+  max-width: 860px;
   padding-right: 32px;
 }
 .faq-item summary::-webkit-details-marker {
@@ -1767,7 +1835,7 @@ img {
   content: "+";
   position: absolute;
   right: 4px;
-  top: -2px;
+  top: 18px;
   font-size: 22px;
   font-weight: 400;
   color: var(--muted);

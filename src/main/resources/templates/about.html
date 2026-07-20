@@ -78,14 +78,73 @@
     </div>
   </div>
 
-  <div class="page-content">
+  <div class="page-content" style="max-width: 100%">
     <h2>What We Cover</h2>
-    <ul style="line-height:2.2; font-size:15px; color:#444; padding-left:20px;">
-      <li><strong>Leadership</strong> — Habits, frameworks and stories from leaders who've built something real.</li>
-      <li><strong>Technology</strong> — Tools and trends reshaping how business gets done.</li>
-      <li><strong>Startups</strong> — Founders, fundraising, and the realities of building from zero.</li>
-      <li><strong>Finance</strong> — Capital markets, investment strategy, and economic signal vs noise.</li>
-    </ul>
+    <p>
+      Decisions Insights spans every format our editorial team uses to bring
+      you business insight — browse by content type or jump straight to a
+      topic below.
+    </p>
+
+    <div class="coverage-grid">
+      <a class="coverage-item" th:href="@{/news}">
+        <i class="fa-solid fa-newspaper"></i>
+        <h4>News</h4>
+        <p>Breaking industry and market news as it happens.</p>
+      </a>
+      <a class="coverage-item" th:href="@{/interviews}">
+        <i class="fa-solid fa-comments"></i>
+        <h4>Interviews</h4>
+        <p>Conversations with the leaders and founders shaping business.</p>
+      </a>
+      <a class="coverage-item" th:href="@{/case-studies}">
+        <i class="fa-solid fa-chart-line"></i>
+        <h4>Case Studies</h4>
+        <p>Real challenges, solutions, and results from the field.</p>
+      </a>
+      <a class="coverage-item" th:href="@{/press-releases}">
+        <i class="fa-solid fa-bullhorn"></i>
+        <h4>Press Releases</h4>
+        <p>Company announcements organized by date and category.</p>
+      </a>
+      <a class="coverage-item" th:href="@{/blog}">
+        <i class="fa-solid fa-pen-nib"></i>
+        <h4>Articles &amp; Blog</h4>
+        <p>Editorial writing across leadership, tech, and finance.</p>
+      </a>
+      <a class="coverage-item" th:href="@{/videos}">
+        <i class="fa-solid fa-video"></i>
+        <h4>Videos</h4>
+        <p>Market trends and stories told on camera.</p>
+      </a>
+      <a class="coverage-item" th:href="@{/magazine}">
+        <i class="fa-solid fa-book-open"></i>
+        <h4>Magazine</h4>
+        <p>Our regular digital issue, organized by region.</p>
+      </a>
+      <a class="coverage-item" th:href="@{/companies}">
+        <i class="fa-solid fa-building"></i>
+        <h4>Companies</h4>
+        <p>A directory of the businesses we cover.</p>
+      </a>
+      <a class="coverage-item" th:href="@{/startups}">
+        <i class="fa-solid fa-rocket"></i>
+        <h4>Startups</h4>
+        <p>Founders, funding stages, and the startup landscape.</p>
+      </a>
+    </div>
+
+    <h3>Topics We Track</h3>
+    <div class="coverage-topics">
+      <a
+        th:each="cat : ${categories}"
+        th:href="@{/category/{slug}(slug=${cat.slug})}"
+        th:text="${cat.name}"
+        class="cat-pill"
+        >Topic</a
+      >
+    </div>
+
     <p>For editorial submissions, advertising, or partnerships, <a th:href="@{/contact}" style="color:var(--black); font-weight:600;">contact us here</a>.</p>
   </div>
 
