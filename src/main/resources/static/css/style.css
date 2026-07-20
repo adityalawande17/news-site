@@ -1692,8 +1692,8 @@ img {
   }
 }
 
-/* ── About page: hero banner ─────────────────────── */
-.about-hero {
+/* ── Reusable page hero banner (About, News, Magazine, etc.) ── */
+.page-hero {
   position: relative;
   background:
     linear-gradient(rgba(10, 10, 10, 0.78), rgba(10, 10, 10, 0.78)),
@@ -1701,10 +1701,10 @@ img {
       center/cover no-repeat;
   padding: 100px 0 76px;
 }
-.about-hero-content {
+.page-hero-content {
   max-width: 820px;
 }
-.about-hero-content h1 {
+.page-hero-content h1 {
   font-family: var(--serif);
   font-size: 44px;
   font-weight: 700;
@@ -1714,12 +1714,12 @@ img {
   margin-bottom: 22px;
   line-height: 1.2;
 }
-.about-hero-content p {
+.page-hero-content p {
   font-size: 17px;
   line-height: 1.9;
   color: rgba(255, 255, 255, 0.88);
 }
-.about-hero-content p strong {
+.page-hero-content p strong {
   color: var(--white);
   font-weight: 700;
 }
@@ -1778,10 +1778,10 @@ img {
   color: var(--mid);
 }
 @media (max-width: 700px) {
-  .about-hero {
+  .page-hero {
     padding: 64px 0 48px;
   }
-  .about-hero-content h1 {
+  .page-hero-content h1 {
     font-size: 32px;
   }
   .about-stack-card {

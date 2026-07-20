@@ -4,6 +4,10 @@
 <body>
 <th:block th:replace="~{fragments :: header(${categories}, ${featured})}"></th:block>
 
+<th:block
+  th:replace="~{fragments :: pageHero('All Articles', 'Every article we publish in one place — leadership, technology, startups, and finance coverage from across Decisions Insights, filterable by topic.')}"
+></th:block>
+
 <div class="container page-section">
   <div class="cat-pill-bar">
     <a th:href="@{/blog}" class="cat-pill active">All</a>

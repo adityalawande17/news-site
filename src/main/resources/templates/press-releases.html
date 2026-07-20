@@ -5,21 +5,11 @@
     <th:block th:replace="~{fragments :: header(${categories}, ${featured})}">
     </th:block>
 
-    <div class="container page-section">
-      <div class="section-header">
-        <h2>Press Releases</h2>
-      </div>
-      <p
-        style="
-          color: var(--muted);
-          font-size: 15px;
-          margin-top: -10px;
-          margin-bottom: 28px;
-        "
-      >
-        Official announcements from companies and institutions.
-      </p>
+    <th:block
+      th:replace="~{fragments :: pageHero('Press Releases', 'Official company announcements, product launches, and institutional news — the formal record of what businesses are telling the world, organized by date and category.')}"
+    ></th:block>
 
+    <div class="container page-section">
       <div th:if="${!pressReleases.content.isEmpty()}">
         <div
           th:each="pr : ${pressReleases.content}"

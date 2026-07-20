@@ -4,18 +4,16 @@
 <body>
 <th:block th:replace="~{fragments :: header(${categories}, ${featured})}"></th:block>
 
+<th:block th:with="heroDesc=${category.description} ?: ('Explore our latest coverage on ' + category.name + ' — articles, interviews, and analysis from the Decisions Insights editorial team.')">
+  <th:block th:replace="~{fragments :: pageHero(${category.name}, ${heroDesc})}"></th:block>
+</th:block>
+
 <div class="container page-section">
   <div class="cat-pill-bar">
     <a th:href="@{/blog}" class="cat-pill">All</a>
     <a th:each="cat : ${categories}" th:href="@{/category/{slug}(slug=${cat.slug})}"
        th:classappend="${cat.slug == category.slug} ? ' active' : ''" class="cat-pill" th:text="${cat.name}">Cat</a>
   </div>
-
-  <div class="section-header">
-    <h2 th:text="${category.name}">Category</h2>
-  </div>
-  <p th:if="${category.description}" th:text="${category.description}"
-     style="color:#777; font-size:15px; margin-top:-10px; margin-bottom:24px;">Desc</p>
 
   <div class="blog-grid" th:if="${!articles.content.isEmpty()}">
     <div class="art-card-img" th:each="art : ${articles.content}">

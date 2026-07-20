@@ -5,21 +5,11 @@
     <th:block th:replace="~{fragments :: header(${categories}, ${featured})}">
     </th:block>
 
-    <div class="container page-section">
-      <div class="section-header">
-        <h2>Videos</h2>
-      </div>
-      <p
-        style="
-          color: var(--muted);
-          font-size: 15px;
-          margin-top: -10px;
-          margin-bottom: 28px;
-        "
-      >
-        Talks, panels, and explainers from business leaders.
-      </p>
+    <th:block
+      th:replace="~{fragments :: pageHero('Videos', 'Talks, panel discussions, and explainers from business leaders — market trends and executive perspective brought to life on camera.')}"
+    ></th:block>
 
+    <div class="container page-section">
       <div class="blog-grid" th:if="${!videos.content.isEmpty()}">
         <div
           th:each="v : ${videos.content}"

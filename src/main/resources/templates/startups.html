@@ -5,21 +5,11 @@
     <th:block th:replace="~{fragments :: header(${categories}, ${featured})}">
     </th:block>
 
-    <div class="container page-section">
-      <div class="section-header">
-        <h2>Startup Listing</h2>
-      </div>
-      <p
-        style="
-          color: var(--muted);
-          font-size: 15px;
-          margin-top: -10px;
-          margin-bottom: 24px;
-        "
-      >
-        Discover India's most exciting early-stage companies.
-      </p>
+    <th:block
+      th:replace="~{fragments :: pageHero('Startups', 'Discover the early-stage companies and founders defining what\'s next — tracking funding stages, sectors, and the stories behind the businesses being built right now.')}"
+    ></th:block>
 
+    <div class="container page-section">
       <!-- Sector filter pills -->
       <div style="margin-bottom: 12px">
         <span

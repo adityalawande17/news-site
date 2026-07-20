@@ -5,11 +5,11 @@
     <th:block th:replace="~{fragments :: header(${categories}, ${featured})}">
     </th:block>
 
-    <div class="container page-section">
-      <div class="section-header">
-        <h2>Magazine</h2>
-      </div>
+    <th:block
+      th:replace="~{fragments :: pageHero('Magazine', 'Our regular digital issue gathers the best of Decisions Insights into one curated read — in-depth stories, interviews, and analysis organized by region.')}"
+    ></th:block>
 
+    <div class="container page-section">
       <!-- Region filter buttons -->
       <div
         style="

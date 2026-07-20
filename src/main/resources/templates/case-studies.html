@@ -5,21 +5,11 @@
     <th:block th:replace="~{fragments :: header(${categories}, ${featured})}">
     </th:block>
 
-    <div class="container page-section">
-      <div class="section-header">
-        <h2>Case Studies</h2>
-      </div>
-      <p
-        style="
-          color: var(--muted);
-          font-size: 15px;
-          margin-top: -10px;
-          margin-bottom: 28px;
-        "
-      >
-        Real problems. Real solutions. Real results.
-      </p>
+    <th:block
+      th:replace="~{fragments :: pageHero('Case Studies', 'Every case study breaks down a real business challenge, the solution that was applied, and the measurable result — practical insight for leaders solving similar problems.')}"
+    ></th:block>
 
+    <div class="container page-section">
       <div class="blog-grid" th:if="${!caseStudies.content.isEmpty()}">
         <div
           th:each="cs : ${caseStudies.content}"

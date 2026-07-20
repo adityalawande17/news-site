@@ -5,21 +5,11 @@
     <th:block th:replace="~{fragments :: header(${categories}, ${featured})}">
     </th:block>
 
-    <div class="container page-section">
-      <div class="section-header">
-        <h2>Company Profiles</h2>
-      </div>
-      <p
-        style="
-          color: var(--muted);
-          font-size: 15px;
-          margin-top: -10px;
-          margin-bottom: 24px;
-        "
-      >
-        In-depth profiles of the companies shaping business today.
-      </p>
+    <th:block
+      th:replace="~{fragments :: pageHero('Companies', 'A growing directory of the businesses shaping today\'s economy — in-depth profiles covering sector, leadership, and the story behind what they\'ve built.')}"
+    ></th:block>
 
+    <div class="container page-section">
       <!-- Sector filter pills -->
       <div
         th:if="${!sectors.isEmpty()}"
