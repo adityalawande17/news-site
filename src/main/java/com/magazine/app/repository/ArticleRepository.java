@@ -33,6 +33,15 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
         ArticleType articleType
     );
 
+    // Sort-direction-driven variants (sort order comes from the Pageable's Sort) — News listing
+    Page<Article> findByPublishedTrueAndArticleType(
+        ArticleType articleType, Pageable pageable
+    );
+
+    Page<Article> findByPublishedTrueAndArticleTypeAndCategory(
+        ArticleType articleType, Category category, Pageable pageable
+    );
+
     // Count by type — for admin dashboard stats
     long countByPublishedTrueAndArticleType(ArticleType articleType);
 }

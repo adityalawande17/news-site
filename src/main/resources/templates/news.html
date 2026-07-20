@@ -11,6 +11,98 @@
     ></th:block>
 
     <div class="container page-section">
+      <!-- Filter row: category + sort dropdowns (left) -->
+      <form
+        th:action="@{/news}"
+        method="get"
+        style="
+          display: flex;
+          align-items: center;
+          gap: 20px;
+          flex-wrap: wrap;
+          margin-bottom: 28px;
+          padding-bottom: 20px;
+          border-bottom: 1px solid var(--border);
+        "
+      >
+        <div style="display: flex; align-items: center; gap: 8px">
+          <label
+            for="categoryFilter"
+            style="
+              font-size: 13px;
+              font-weight: 700;
+              color: var(--muted);
+              text-transform: uppercase;
+              letter-spacing: 0.4px;
+            "
+            >Category</label
+          >
+          <select
+            id="categoryFilter"
+            name="category"
+            onchange="this.form.submit()"
+            style="
+              padding: 7px 14px;
+              border-radius: 20px;
+              font-size: 13px;
+              font-weight: 700;
+              border: 1px solid var(--border);
+              background: #fff;
+              color: #333;
+              cursor: pointer;
+            "
+          >
+            <option value="" th:selected="${activeCategory == null}">
+              All Categories
+            </option>
+            <option
+              th:each="cat : ${categories}"
+              th:value="${cat.slug}"
+              th:text="${cat.name}"
+              th:selected="${activeCategory != null and activeCategory.slug == cat.slug}"
+            >
+              Category
+            </option>
+          </select>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 8px">
+          <label
+            for="sortFilter"
+            style="
+              font-size: 13px;
+              font-weight: 700;
+              color: var(--muted);
+              text-transform: uppercase;
+              letter-spacing: 0.4px;
+            "
+            >Sort</label
+          >
+          <select
+            id="sortFilter"
+            name="sort"
+            onchange="this.form.submit()"
+            style="
+              padding: 7px 14px;
+              border-radius: 20px;
+              font-size: 13px;
+              font-weight: 700;
+              border: 1px solid var(--border);
+              background: #fff;
+              color: #333;
+              cursor: pointer;
+            "
+          >
+            <option value="desc" th:selected="${activeSort == 'desc'}">
+              Latest First
+            </option>
+            <option value="asc" th:selected="${activeSort == 'asc'}">
+              Oldest First
+            </option>
+          </select>
+        </div>
+      </form>
+
       <!-- News grid — 3 cols on desktop, 1 on mobile -->
       <div class="blog-grid" th:if="${!newsList.content.isEmpty()}">
         <div class="art-card-img" th:each="n : ${newsList.content}">
@@ -104,14 +196,18 @@
         th:if="${newsList.content.isEmpty()}"
         style="text-align: center; padding: 60px 0; color: var(--muted)"
       >
-        No news articles published yet.
+        No news articles published
+        <span
+          th:text="${activeCategory != null ? ' in ' + activeCategory.name : ''} + ' yet.'"
+          >yet.</span
+        >
       </p>
 
-      <!-- Pagination -->
+      <!-- Pagination — preserves category/sort params (Thymeleaf omits null ones) -->
       <div class="pagination" th:if="${newsList.totalPages > 1}">
         <a
           th:if="${currentPage > 0}"
-          th:href="@{/news(page=${currentPage - 1})}"
+          th:href="@{/news(category=${activeCategory != null ? activeCategory.slug : null}, sort=${activeSort}, page=${currentPage - 1})}"
           >&larr; Prev</a
         >
         <span
@@ -121,7 +217,7 @@
         >
         <a
           th:if="${currentPage + 1 < newsList.totalPages}"
-          th:href="@{/news(page=${currentPage + 1})}"
+          th:href="@{/news(category=${activeCategory != null ? activeCategory.slug : null}, sort=${activeSort}, page=${currentPage + 1})}"
           >Next &rarr;</a
         >
       </div>

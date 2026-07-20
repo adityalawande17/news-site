@@ -50,6 +50,14 @@ public class ArticleService {
             );
     }
 
+    // Type, optionally + category, with an explicit sort direction — e.g. /news?sort=asc
+    public Page<Article> getByTypeSorted(ArticleType type, Category category, int page, int size, Sort.Direction sortDir) {
+        PageRequest pageable = PageRequest.of(page, size, Sort.by(sortDir, "createdAt"));
+        return category != null
+            ? articleRepository.findByPublishedTrueAndArticleTypeAndCategory(type, category, pageable)
+            : articleRepository.findByPublishedTrueAndArticleType(type, pageable);
+    }
+
     // For homepage sections — get latest 3 of any type
     public List<Article> getLatestByType(ArticleType type, int limit) {
         return articleRepository

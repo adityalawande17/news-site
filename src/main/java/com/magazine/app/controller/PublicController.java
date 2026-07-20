@@ -118,8 +118,22 @@ public class PublicController {
 
     // ── News public listing ─────────────────────────────
     @GetMapping("/news")
-    public String news(@RequestParam(defaultValue = "0") int page, Model model) {
-        model.addAttribute("newsList",    articleService.getByType(ArticleType.NEWS, page, 12));
+    public String news(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(required = false) String category,
+            @RequestParam(defaultValue = "desc") String sort,
+            Model model) {
+
+        Category activeCategory = category != null
+            ? categoryService.getBySlug(category).orElse(null) : null;
+        Sort.Direction sortDir = "asc".equalsIgnoreCase(sort)
+            ? Sort.Direction.ASC : Sort.Direction.DESC;
+
+        model.addAttribute("newsList",
+            articleService.getByTypeSorted(ArticleType.NEWS, activeCategory, page, 12, sortDir));
+
+        model.addAttribute("activeCategory", activeCategory);
+        model.addAttribute("activeSort",  sortDir == Sort.Direction.ASC ? "asc" : "desc");
         model.addAttribute("currentPage", page);
         model.addAttribute("categories",  categoryService.getAll());
         model.addAttribute("featured",    articleService.getFeaturedArticles());
