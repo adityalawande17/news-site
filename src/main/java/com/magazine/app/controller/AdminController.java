@@ -459,6 +459,7 @@ public String saveMagazine(
         BindingResult result,
         @RequestParam(value = "articleIds", required = false) List<Long> articleIds,
         @RequestParam(value = "coverImageFile", required = false) MultipartFile coverImageFile,
+        @RequestParam(value = "pdfFile", required = false) MultipartFile pdfFile,
         Model model,
         RedirectAttributes redirectAttributes) {
 
@@ -482,6 +483,14 @@ public String saveMagazine(
     } else if (magazine.getId() != null) {
         magazineService.getById(magazine.getId())
             .ifPresent(ex -> magazine.setCoverImageUrl(ex.getCoverImageUrl()));
+    }
+
+    if (pdfFile != null && !pdfFile.isEmpty()) {
+        try {
+            magazine.setPdfUrl(fileStorageService.store(pdfFile));
+        } catch (IOException e) {
+            redirectAttributes.addFlashAttribute("error", "PDF upload failed.");
+        }
     }
 
     magazineService.save(magazine, articleIds);

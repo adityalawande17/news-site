@@ -151,9 +151,28 @@
               </div>
               <div class="form-group">
                 <label
+                  >Upload PDF
+                  <span style="color: #999; font-weight: 400">
+                    — powers the flip-through reader on the issue page
+                  </span>
+                </label>
+                <a
+                  th:if="${magazine.pdfUrl}"
+                  th:href="${magazine.pdfUrl}"
+                  target="_blank"
+                  style="font-size: 12px; display: block; margin-bottom: 6px"
+                  >Current file: <span th:text="${magazine.pdfUrl}"></span
+                ></a>
+                <input type="file" name="pdfFile" accept="application/pdf" />
+                <p style="font-size: 12px; color: #888; margin: 5px 0 0">
+                  Leave blank on edit to keep the current file. Max 50MB.
+                </p>
+              </div>
+              <div class="form-group">
+                <label
                   >PDF Download URL
                   <span style="color: #999; font-weight: 400">
-                    — Google Drive, Dropbox, or direct link
+                    — used instead of an upload, e.g. Google Drive/Dropbox
                   </span>
                 </label>
                 <input
@@ -162,7 +181,8 @@
                   placeholder="https://drive.google.com/..."
                 />
                 <p style="font-size: 12px; color: #888; margin: 5px 0 0">
-                  Leave blank if no PDF is available yet.
+                  Leave blank if no PDF is available yet. An uploaded file
+                  above will override this.
                 </p>
               </div>
             </div>
