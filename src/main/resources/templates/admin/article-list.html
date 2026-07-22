@@ -8,13 +8,44 @@
     <main class="admin-main">
         <div class="admin-topbar">
             <h1>Articles</h1>
-            <a th:href="@{/admin/articles/new}" class="btn btn-primary">+ New Article</a>
+            <div style="display:flex; gap:8px;">
+                <a th:href="@{/admin/articles/trash}" class="btn btn-secondary">&#128465; Trash</a>
+                <a th:href="@{/admin/articles/new}" class="btn btn-primary">+ New Article</a>
+            </div>
         </div>
 
         <div class="alert alert-success" th:if="${successMessage}" th:text="${successMessage}">Success</div>
         <div th:if="${success}" class="alert alert-success" th:text="${success}">OK</div>
 
         <div class="admin-card">
+            <form method="get" th:action="@{/admin/articles}"
+                  style="display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:16px;">
+                <input type="text" name="q" placeholder="Search by title&hellip;" th:value="${q}"
+                       style="flex:1; min-width:180px; padding:8px 10px; border:1px solid #ddd; border-radius:4px;"/>
+
+                <select name="type" onchange="this.form.submit()">
+                    <option value="">All Types</option>
+                    <option th:each="t : ${articleTypes}" th:value="${t}" th:text="${t}"
+                            th:selected="${t == selectedType}"></option>
+                </select>
+
+                <select name="categoryId" onchange="this.form.submit()">
+                    <option value="">All Categories</option>
+                    <option th:each="c : ${categories}" th:value="${c.id}" th:text="${c.name}"
+                            th:selected="${c.id == selectedCategoryId}"></option>
+                </select>
+
+                <select name="status" onchange="this.form.submit()">
+                    <option value="">All Statuses</option>
+                    <option value="published" th:selected="${selectedStatus == 'published'}">Published</option>
+                    <option value="draft" th:selected="${selectedStatus == 'draft'}">Draft</option>
+                </select>
+
+                <button type="submit" class="btn btn-secondary btn-sm">Search</button>
+                <a th:href="@{/admin/articles}" class="btn btn-secondary btn-sm"
+                   th:if="${q != null or selectedType != null or selectedCategoryId != null or selectedStatus != null}">Clear</a>
+            </form>
+
             <table>
                 <thead>
                     <tr>
@@ -43,20 +74,37 @@
                         <td th:text="${art.views}">0</td>
                         <td th:text="${#temporals.format(art.createdAt, 'MMM dd')}">Date</td>
                         <td style="display:flex; gap:6px;">
-                            <a th:href="@{/article/{slug}(slug=${art.slug})}" class="btn btn-secondary btn-sm" target="_blank">View</a>
+                            <a th:if="${art.published}" th:href="@{/article/{slug}(slug=${art.slug})}" class="btn btn-secondary btn-sm" target="_blank">View</a>
                             <a th:href="@{/admin/articles/edit/{id}(id=${art.id})}" class="btn btn-secondary btn-sm">Edit</a>
                             <form method="post" th:action="@{/admin/articles/delete/{id}(id=${art.id})}"
-                                  onsubmit="return confirm('Delete this article?')">
+                                  onsubmit="return confirm('Move this article to trash? It can be restored from Trash later.')">
                                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                                <button type="submit" class="btn btn-danger btn-sm">Del</button>
+                                <button type="submit" class="btn btn-danger btn-sm">Trash</button>
                             </form>
                         </td>
                     </tr>
                 </tbody>
             </table>
-            <p th:if="${articles.isEmpty()}" style="text-align:center; color:#888; padding: 30px 0;">
+            <p th:if="${articles.isEmpty() and q == null and selectedType == null and selectedCategoryId == null and selectedStatus == null}"
+               style="text-align:center; color:#888; padding: 30px 0;">
                 No articles yet. <a th:href="@{/admin/articles/new}" style="color:#c0392b;">Create one now.</a>
             </p>
+            <p th:if="${articles.isEmpty() and (q != null or selectedType != null or selectedCategoryId != null or selectedStatus != null)}"
+               style="text-align:center; color:#888; padding: 30px 0;">
+                No articles match your search/filters.
+            </p>
+
+            <div th:if="${articles.totalPages > 1}"
+                 style="display:flex; justify-content:center; align-items:center; gap:14px; margin-top:18px;">
+                <a th:if="${articles.number > 0}"
+                   th:href="@{/admin/articles(q=${q}, type=${selectedType}, categoryId=${selectedCategoryId}, status=${selectedStatus}, page=${articles.number - 1})}"
+                   class="btn btn-secondary btn-sm">&larr; Prev</a>
+                <span style="font-size:13px; color:#777;"
+                      th:text="${articles.number + 1} + ' of ' + ${articles.totalPages}">1 of 1</span>
+                <a th:if="${articles.number + 1 < articles.totalPages}"
+                   th:href="@{/admin/articles(q=${q}, type=${selectedType}, categoryId=${selectedCategoryId}, status=${selectedStatus}, page=${articles.number + 1})}"
+                   class="btn btn-secondary btn-sm">Next &rarr;</a>
+            </div>
         </div>
     </main>
 </div>

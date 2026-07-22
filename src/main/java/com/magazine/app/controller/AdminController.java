@@ -68,10 +68,47 @@ public class AdminController {
     }
 
     // ── Articles (all types) ────────────────────────
+    private static final int ADMIN_PAGE_SIZE = 15;
+
     @GetMapping("/articles")
-    public String listArticles(Model model) {
-        model.addAttribute("articles", articleService.getAllArticles());
+    public String listArticles(
+            @RequestParam(value = "q", required = false) String q,
+            @RequestParam(value = "type", required = false) ArticleType type,
+            @RequestParam(value = "categoryId", required = false) Long categoryId,
+            @RequestParam(value = "status", required = false) String status,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            Model model) {
+        Boolean published = "published".equals(status) ? Boolean.TRUE
+            : "draft".equals(status) ? Boolean.FALSE : null;
+
+        model.addAttribute("articles", articleService.searchAdmin(q, type, categoryId, published, page, ADMIN_PAGE_SIZE));
+        model.addAttribute("categories", categoryService.getAll());
+        model.addAttribute("articleTypes", ArticleType.values());
+        model.addAttribute("q", q);
+        model.addAttribute("selectedType", type);
+        model.addAttribute("selectedCategoryId", categoryId);
+        model.addAttribute("selectedStatus", status);
         return "admin/article-list";
+    }
+
+    @GetMapping("/articles/trash")
+    public String articleTrash(@RequestParam(value = "page", defaultValue = "0") int page, Model model) {
+        model.addAttribute("articles", articleService.getTrash(page, ADMIN_PAGE_SIZE));
+        return "admin/article-trash";
+    }
+
+    @PostMapping("/articles/restore/{id}")
+    public String restoreArticle(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        articleService.restore(id);
+        redirectAttributes.addFlashAttribute("success", "Article restored.");
+        return "redirect:/admin/articles/trash";
+    }
+
+    @PostMapping("/articles/delete-forever/{id}")
+    public String deleteArticleForever(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        articleService.deletePermanently(id);
+        redirectAttributes.addFlashAttribute("success", "Article permanently deleted.");
+        return "redirect:/admin/articles/trash";
     }
 
     @GetMapping("/articles/new")
@@ -155,15 +192,19 @@ public class AdminController {
     @PostMapping("/articles/delete/{id}")
     public String deleteArticle(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         articleService.delete(id);
-        redirectAttributes.addFlashAttribute("success", "Article deleted.");
+        redirectAttributes.addFlashAttribute("success", "Article moved to trash.");
         return "redirect:/admin/articles";
     }
 
     // ── Interviews (dedicated admin section) ────────
     @GetMapping("/interviews")
-    public String listInterviews(Model model) {
-        model.addAttribute("interviews",
-            articleService.getByType(ArticleType.INTERVIEW, 0, 100).getContent());
+    public String listInterviews(
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "company", required = false) String company,
+            Model model) {
+        model.addAttribute("interviews", articleService.searchInterviews(name, company));
+        model.addAttribute("name", name);
+        model.addAttribute("company", company);
         return "admin/interview-list";
     }
 
@@ -190,7 +231,7 @@ public class AdminController {
     @PostMapping("/interviews/delete/{id}")
     public String deleteInterview(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         articleService.delete(id);
-        redirectAttributes.addFlashAttribute("success", "Interview deleted.");
+        redirectAttributes.addFlashAttribute("success", "Interview moved to trash.");
         return "redirect:/admin/interviews";
     }
 
@@ -266,7 +307,7 @@ public class AdminController {
     @PostMapping("/news/delete/{id}")
         public String deleteNews(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         articleService.delete(id);
-        redirectAttributes.addFlashAttribute("success", "News article deleted.");
+        redirectAttributes.addFlashAttribute("success", "News article moved to trash.");
         return "redirect:/admin/news";
     }
 
@@ -304,7 +345,7 @@ public String editCaseStudyForm(@PathVariable Long id, Model model) {
 public String deleteCaseStudy(@PathVariable Long id,
                                RedirectAttributes redirectAttributes) {
     articleService.delete(id);
-    redirectAttributes.addFlashAttribute("success", "Case study deleted.");
+    redirectAttributes.addFlashAttribute("success", "Case study moved to trash.");
     return "redirect:/admin/case-studies";
 }
 
@@ -340,7 +381,7 @@ public String editPressReleaseForm(@PathVariable Long id, Model model) {
 public String deletePressRelease(@PathVariable Long id,
                                   RedirectAttributes redirectAttributes) {
     articleService.delete(id);
-    redirectAttributes.addFlashAttribute("success", "Press release deleted.");
+    redirectAttributes.addFlashAttribute("success", "Press release moved to trash.");
     return "redirect:/admin/press-releases";
 }
 

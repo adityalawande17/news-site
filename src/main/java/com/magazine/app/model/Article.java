@@ -77,6 +77,14 @@ public class Article {
 
     private boolean featured = false;
 
+    // Soft-delete: trashed articles are hidden from admin lists and (via the
+    // published flag also being cleared on delete) from the public site, but
+    // stay in the DB so they can be restored instead of lost to a misclick.
+    // columnDefinition gives existing rows a default when this column is added
+    // to the table via ddl-auto=update, avoiding a NOT NULL violation.
+    @Column(columnDefinition = "boolean default false", nullable = false)
+    private boolean deleted = false;
+
     private long views = 0;
 
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -137,6 +145,9 @@ public class Article {
 
     public boolean isFeatured() { return featured; }
     public void setFeatured(boolean featured) { this.featured = featured; }
+
+    public boolean isDeleted() { return deleted; }
+    public void setDeleted(boolean deleted) { this.deleted = deleted; }
 
     public long getViews() { return views; }
     public void setViews(long views) { this.views = views; }

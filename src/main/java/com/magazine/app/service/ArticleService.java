@@ -58,6 +58,15 @@ public class ArticleService {
             : articleRepository.findByPublishedTrueAndArticleType(type, pageable);
     }
 
+    // Admin Interviews list — search by interviewee name and/or company (either may be blank/null)
+    public List<Article> searchInterviews(String name, String company) {
+        String normalizedName = (name == null || name.isBlank()) ? null : name.trim();
+        String normalizedCompany = (company == null || company.isBlank()) ? null : company.trim();
+        return articleRepository
+            .searchByIntervieweeAndCompany(ArticleType.INTERVIEW, normalizedName, normalizedCompany, PageRequest.of(0, 100))
+            .getContent();
+    }
+
     // For homepage sections — get latest 3 of any type
     public List<Article> getLatestByType(ArticleType type, int limit) {
         return articleRepository
@@ -68,8 +77,10 @@ public class ArticleService {
     }
 
     // ── Slug and slug lookup ────────────────────────
+    // Public-facing lookup — excludes drafts and trashed articles, so an
+    // unpublished/deleted article 404s like a missing slug would.
     public Optional<Article> getBySlug(String slug) {
-        return articleRepository.findBySlug(slug);
+        return articleRepository.findBySlugAndPublishedTrueAndDeletedFalse(slug);
     }
 
     public void incrementViews(Article article) {
@@ -83,7 +94,13 @@ public class ArticleService {
 
     // ── Admin operations ────────────────────────────
     public List<Article> getAllArticles() {
-        return articleRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
+        return articleRepository.findByDeletedFalseOrderByCreatedAtDesc();
+    }
+
+    // Admin list search + filter — any/all of these may be null (no filter applied)
+    public Page<Article> searchAdmin(String keyword, ArticleType type, Long categoryId, Boolean published, int page, int size) {
+        String normalizedKeyword = (keyword == null || keyword.isBlank()) ? null : keyword.trim();
+        return articleRepository.searchAdmin(normalizedKeyword, type, categoryId, published, PageRequest.of(page, size));
     }
 
     public Optional<Article> getById(Long id) {
@@ -98,7 +115,32 @@ public class ArticleService {
         return articleRepository.save(article);
     }
 
+    // ── Trash (soft delete) ──────────────────────────
+    public Page<Article> getTrash(int page, int size) {
+        return articleRepository.findByDeletedTrue(
+            PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "updatedAt"))
+        );
+    }
+
+    // Moves to trash and unpublishes, so it also disappears from the public site
     public void delete(Long id) {
+        articleRepository.findById(id).ifPresent(article -> {
+            article.setDeleted(true);
+            article.setPublished(false);
+            article.setUpdatedAt(LocalDateTime.now());
+            articleRepository.save(article);
+        });
+    }
+
+    public void restore(Long id) {
+        articleRepository.findById(id).ifPresent(article -> {
+            article.setDeleted(false);
+            article.setUpdatedAt(LocalDateTime.now());
+            articleRepository.save(article);
+        });
+    }
+
+    public void deletePermanently(Long id) {
         articleRepository.deleteById(id);
     }
 

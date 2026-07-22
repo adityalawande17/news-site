@@ -14,6 +14,17 @@
     <div th:if="${success}" class="alert alert-success" th:text="${success}">OK</div>
 
     <div class="admin-card">
+      <form method="get" th:action="@{/admin/interviews}"
+            style="display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:16px;">
+        <input type="text" name="name" placeholder="Search by interviewee name&hellip;" th:value="${name}"
+               style="flex:1; min-width:180px; padding:8px 10px; border:1px solid #ddd; border-radius:4px;"/>
+        <input type="text" name="company" placeholder="Search by company&hellip;" th:value="${company}"
+               style="flex:1; min-width:180px; padding:8px 10px; border:1px solid #ddd; border-radius:4px;"/>
+        <button type="submit" class="btn btn-secondary btn-sm">Search</button>
+        <a th:href="@{/admin/interviews}" class="btn btn-secondary btn-sm"
+           th:if="${name != null or company != null}">Clear</a>
+      </form>
+
       <table>
         <thead>
           <tr>
@@ -80,10 +91,14 @@
         </tbody>
       </table>
 
-      <p th:if="${interviews.isEmpty()}"
+      <p th:if="${interviews.isEmpty() and name == null and company == null}"
          style="text-align:center; color:#888; padding:40px 0;">
         No interviews yet.
         <a th:href="@{/admin/interviews/new}" style="color:#c0392b;">Add the first one.</a>
+      </p>
+      <p th:if="${interviews.isEmpty() and (name != null or company != null)}"
+         style="text-align:center; color:#888; padding:40px 0;">
+        No interviews match your search.
       </p>
     </div>
   </main>

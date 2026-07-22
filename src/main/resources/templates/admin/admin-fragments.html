@@ -4,18 +4,20 @@
     <th:block th:fragment="head(title)">
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title th:text="${title} + ' | Decisions Insights Admin'">Decisions Insights Admin</title>
+      <title th:text="${title} + ' | Decisions Insights Admin'">
+        Decisions Insights Admin
+      </title>
       <link rel="stylesheet" th:href="@{/css/admin.css}" />
     </th:block>
 
     <aside th:fragment="sidebar(active)" class="admin-sidebar">
-      <div class="brand">&#9670; Decisions Insights</div>
+      <div class="brand">Decisions Insights</div>
 
       <a
         th:href="@{/admin/dashboard}"
         th:classappend="${active == 'dashboard'} ? ' active' : ''"
       >
-        &#128202; Dashboard
+        Dashboard
       </a>
 
       <div class="sidebar-section-label">Content</div>
@@ -24,58 +26,58 @@
         th:href="@{/admin/articles}"
         th:classappend="${active == 'articles'} ? ' active' : ''"
       >
-        &#128196; Articles
+        Articles
       </a>
 
       <a
         th:href="@{/admin/interviews}"
         th:classappend="${active == 'interviews'} ? ' active' : ''"
       >
-        &#127908; Interviews
+        Interviews
       </a>
 
       <a
         th:href="@{/admin/news}"
         th:classappend="${active == 'news'} ? ' active' : ''"
       >
-        &#128240; News
+        News
       </a>
       <a
         th:href="@{/admin/case-studies}"
         th:classappend="${active == 'case-studies'} ? ' active' : ''"
       >
-        &#128202; Case Studies
+        Case Studies
       </a>
       <a
         th:href="@{/admin/press-releases}"
         th:classappend="${active == 'press-releases'} ? ' active' : ''"
       >
-        &#128228; Press Releases
+        Press Releases
       </a>
       <a
         th:href="@{/admin/videos}"
         th:classappend="${active == 'videos'} ? ' active' : ''"
       >
-        &#9654; Videos
+        Videos
       </a>
 
       <a
         th:href="@{/admin/magazine}"
         th:classappend="${active == 'magazine'} ? ' active' : ''"
       >
-        &#128218; Magazine
+        Magazine
       </a>
       <a
         th:href="@{/admin/companies}"
         th:classappend="${active == 'companies'} ? ' active' : ''"
       >
-        &#127970; Companies
+        Companies
       </a>
       <a
         th:href="@{/admin/startups}"
         th:classappend="${active == 'startups'} ? ' active' : ''"
       >
-        &#128640; Startups
+        Startups
       </a>
 
       <div class="sidebar-section-label">Site</div>
@@ -84,10 +86,10 @@
         th:href="@{/admin/categories}"
         th:classappend="${active == 'categories'} ? ' active' : ''"
       >
-        &#127991; Categories
+        Categories
       </a>
 
-      <a th:href="@{/}" target="_blank"> &#127758; View Site </a>
+      <a th:href="@{/}" target="_blank"> View Site </a>
 
       <form method="post" th:action="@{/admin/logout}" style="margin-top: auto">
         <input
