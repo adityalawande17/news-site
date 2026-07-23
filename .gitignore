@@ -18,3 +18,6 @@ Thumbs.db
 
 # H2 database lock file (runtime-only; data/*.mv.db is intentionally tracked)
 data/*.lock.db
+
+src/main/resources/static/uploads
+CLAUDE.md
