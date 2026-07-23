@@ -33,6 +33,7 @@
           <div class="brand-strip-tagline">
             Business<br />&amp; Market<br />Insights
           </div>
+          <div class="brand-strip-date" id="brandStripDate"></div>
         </div>
       </div>
 
@@ -137,6 +138,14 @@
         document.addEventListener("keydown", (e) => {
           if (e.key === "Escape") closeCategoryDrawer();
         });
+
+        const brandStripDateEl = document.getElementById("brandStripDate");
+        if (brandStripDateEl) {
+          brandStripDateEl.textContent = new Date().toLocaleDateString(
+            "en-US",
+            { weekday: "long", year: "numeric", month: "long", day: "numeric" },
+          );
+        }
       </script>
     </th:block>
 
@@ -154,103 +163,102 @@
 
     <!-- FOOTER -->
     <th:block th:fragment="footer">
-      <!-- Newsletter card — floats over the footer below -->
-      <div class="container">
-        <div class="newsletter-card">
-          <div class="newsletter-card-content">
-            <div class="newsletter-card-text">
-              <h3>Subscribe for Latest Updates</h3>
-              <p>Get the latest business insights delivered to your inbox.</p>
-            </div>
-            <form
-              class="newsletter-card-form"
-              th:action="@{/contact}"
-              method="get"
-            >
-              <input
-                type="email"
-                name="email"
-                placeholder="Enter your email address"
-                required
-              />
-              <button type="submit">Subscribe</button>
-            </form>
-          </div>
-        </div>
-      </div>
-
       <footer class="site-footer">
-        <div class="container">
-          <div class="footer-grid">
-            <div>
-              <div class="footer-brand">Decisions Insights</div>
-              <p>
-                A digital publication for ambitious professionals — covering
-                leadership, technology, startups, and finance through in-depth
-                articles, executive interviews, case studies, press releases,
-                videos, and our regular digital magazine.
-              </p>
-              <address class="footer-address">
-                <strong>Address:</strong> Prasanna Pride, Satawadi, Hadapsar,<br />
-                Pune, Maharashtra, India
-              </address>
-              <a
-                href="mailto:company@decisionsinsights.com"
-                class="footer-email"
-                >company@decisionsinsights.com</a
-              >
-              <div class="footer-social">
-                <a href="#" aria-label="Facebook"
-                  ><i class="fa-brands fa-facebook-f"></i
-                ></a>
-                <a href="#" aria-label="X"
-                  ><i class="fa-brands fa-x-twitter"></i
-                ></a>
-                <a href="#" aria-label="LinkedIn"
-                  ><i class="fa-brands fa-linkedin-in"></i
-                ></a>
-                <a href="#" aria-label="Instagram"
-                  ><i class="fa-brands fa-instagram"></i
-                ></a>
-                <a href="#" aria-label="YouTube"
-                  ><i class="fa-brands fa-youtube"></i
-                ></a>
-              </div>
+        <!-- Light tier: link columns + inline newsletter signup -->
+        <div class="footer-top">
+          <div class="container footer-top-inner">
+            <div class="footer-top-col">
+              <h5>Company</h5>
+              <a th:href="@{/about}">About Decisions Insights</a>
+              <a th:href="@{/contact}">Contact Us</a>
+              <a th:href="@{/contact}">Advertise</a>
+              <a th:href="@{/contact}">Write for Us</a>
+              <a th:href="@{/admin/login}">Admin Login</a>
             </div>
-            <div>
-              <h5>Navigate</h5>
-              <a th:href="@{/}">Home</a>
+            <div class="footer-top-col">
+              <h5>Offerings</h5>
+              <a th:href="@{/magazine}">Magazine</a>
               <a th:href="@{/news}">News</a>
               <a th:href="@{/interviews}">Interviews</a>
               <a th:href="@{/case-studies}">Case Studies</a>
               <a th:href="@{/press-releases}">Press Releases</a>
               <a th:href="@{/videos}">Videos</a>
-              <a th:href="@{/magazine}">Magazine</a>
             </div>
-            <div>
-              <h5>Topics</h5>
+            <div class="footer-top-col">
+              <h5>Quick Links</h5>
+              <a th:href="@{/}">Home</a>
+              <a th:href="@{/companies}">Companies</a>
+              <a th:href="@{/startups}">Startups</a>
               <a
                 th:each="cat, i : ${categories}"
-                th:if="${i.index < 6}"
+                th:if="${i.index < 4 and !#strings.equalsIgnoreCase(cat.name, 'Startups')}"
                 th:href="@{/category/{slug}(slug=${cat.slug})}"
                 th:text="${cat.name}"
                 >Category</a
               >
             </div>
-            <div>
-              <h5>Company</h5>
-              <a th:href="@{/about}">About Decisions Insights</a>
-              <a th:href="@{/companies}">Companies</a>
-              <a th:href="@{/startups}">Startups</a>
-              <a th:href="@{/contact}">Advertise</a>
-              <a th:href="@{/contact}">Write for Us</a>
-              <a th:href="@{/admin/login}">Admin Login</a>
+            <div class="footer-newsletter-inline">
+              <h3><span class="accent">Newsletter</span> <em>Sign Up</em></h3>
+              <form th:action="@{/contact}" method="get">
+                <input type="email" name="email" placeholder="Email" required />
+                <button type="submit">Sign Up</button>
+              </form>
             </div>
           </div>
         </div>
-        <div class="footer-bottom">
-          &copy; <span id="footerYear">2026</span> Decisions Insights &mdash;
-          All rights reserved.
+
+        <!-- Dark tier: brand · subscribe CTA · decorative cover stack -->
+        <div class="footer-bottom-dark">
+          <div class="container footer-bottom-inner">
+            <div>
+              <div class="footer-wordmark2">Decisions Insights</div>
+              <p class="footer-desc">
+                A digital publication for ambitious professionals — covering
+                leadership, technology, startups, and finance through in-depth
+                articles, executive interviews, case studies, press releases,
+                videos, and our regular digital magazine.
+              </p>
+              <div class="footer-connect">
+                <span>Connect With Us:</span>
+                <div class="footer-social">
+                  <a href="#" aria-label="LinkedIn"
+                    ><i class="fa-brands fa-linkedin-in"></i
+                  ></a>
+                  <a href="#" aria-label="Facebook"
+                    ><i class="fa-brands fa-facebook-f"></i
+                  ></a>
+                  <a href="#" aria-label="Instagram"
+                    ><i class="fa-brands fa-instagram"></i
+                  ></a>
+                  <a href="#" aria-label="X"
+                    ><i class="fa-brands fa-x-twitter"></i
+                  ></a>
+                  <a href="#" aria-label="YouTube"
+                    ><i class="fa-brands fa-youtube"></i
+                  ></a>
+                </div>
+              </div>
+            </div>
+            <div class="footer-cta">
+              <p>Subscribe to get access to our exclusive insights and reports.</p>
+              <a th:href="@{/contact}" class="footer-cta-btn">Subscribe Now</a>
+              <a
+                href="mailto:company@decisionsinsights.com"
+                class="footer-cta-email"
+                >Email Us: company@decisionsinsights.com</a
+              >
+            </div>
+            <div class="footer-cover-stack" aria-hidden="true">
+              <div class="cover cover-1"></div>
+              <div class="cover cover-2">
+                <span>2026</span>
+              </div>
+            </div>
+          </div>
+          <div class="footer-bottom-copyright">
+            &copy; <span id="footerYear">2026</span> Decisions Insights &mdash;
+            All rights reserved.
+          </div>
         </div>
       </footer>
 
