@@ -13,11 +13,17 @@
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
       />
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap"
+      />
     </th:block>
 
     <!-- HEADER -->
     <th:block th:fragment="header(categories, featured)">
-      <!-- Top bar: hamburger · brand · socials -->
+      <!-- Utility bar: hamburger · nav links · search · socials -->
       <div class="nav-top">
         <div class="container inner">
           <button
@@ -28,7 +34,25 @@
           >
             <i class="fa-solid fa-bars"></i>
           </button>
-          <a th:href="@{/}" class="brand-mark">DECISIONS INSIGHTS</a>
+          <div class="nav-links">
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/news}">News</a>
+            <a th:href="@{/magazine}">Magazines</a>
+            <a th:href="@{/interviews}">Interviews</a>
+            <a th:href="@{/companies}">Companies</a>
+            <a th:href="@{/startups}">Startups</a>
+            <a th:href="@{/case-studies}">Case Studies</a>
+            <a th:href="@{/press-releases}">Press Releases</a>
+            <a th:href="@{/videos}">Videos</a>
+            <a th:href="@{/about}">About Us</a>
+            <a th:href="@{/contact}">Contact Us</a>
+          </div>
+          <form class="nav-search" th:action="@{/search}" method="get">
+            <input type="text" name="q" placeholder="Search..." />
+            <button type="submit">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+          </form>
           <div class="social-icons">
             <a href="#" aria-label="LinkedIn"
               ><i class="fa-brands fa-linkedin-in"></i
@@ -52,31 +76,16 @@
         </div>
       </div>
 
-      <!-- Primary nav — links · search -->
-      <nav class="primary-nav">
+      <!-- Brand strip: big bold wordmark + tagline -->
+      <div class="brand-strip">
         <div class="container inner">
-          <div class="nav-links">
-            <a th:href="@{/}">Home</a>
-            <a th:href="@{/news}">News</a>
-            <a th:href="@{/magazine}">Magazines</a>
-            <a th:href="@{/interviews}">Interviews</a>
-            <a th:href="@{/companies}">Companies</a>
-            <a th:href="@{/startups}">Startups</a>
-            <a th:href="@{/case-studies}">Case Studies</a>
-            <a th:href="@{/press-releases}">Press Releases</a>
-            <a th:href="@{/videos}">Videos</a>
-            <a th:href="@{/blog}">All Articles</a>
-            <a th:href="@{/about}">About Us</a>
-            <a th:href="@{/contact}">Contact Us</a>
+          <a th:href="@{/}" class="brand-wordmark">Decisions Insights</a>
+          <div class="brand-strip-divider"></div>
+          <div class="brand-strip-tagline">
+            Business<br />&amp; Market<br />Insights
           </div>
-          <form class="nav-search" th:action="@{/search}" method="get">
-            <input type="text" name="q" placeholder="Search..." />
-            <button type="submit">
-              <i class="fa-solid fa-magnifying-glass"></i>
-            </button>
-          </form>
         </div>
-      </nav>
+      </div>
 
       <!-- Category drawer — opened from the hamburger button -->
       <div
