@@ -24,6 +24,18 @@
     <!-- HEADER -->
     <th:block th:fragment="header(categories, featured)">
       <!-- Utility bar: hamburger · nav links · search · socials -->
+
+      <!-- Brand strip: big bold wordmark + tagline -->
+      <div class="brand-strip">
+        <div class="container inner">
+          <a th:href="@{/}" class="brand-wordmark">Decisions Insights</a>
+          <div class="brand-strip-divider"></div>
+          <div class="brand-strip-tagline">
+            Business<br />&amp; Market<br />Insights
+          </div>
+        </div>
+      </div>
+
       <div class="nav-top">
         <div class="container inner">
           <button
@@ -34,18 +46,18 @@
           >
             <i class="fa-solid fa-bars"></i>
           </button>
-          <div class="nav-links">
-            <a th:href="@{/}">Home</a>
-            <a th:href="@{/news}">News</a>
-            <a th:href="@{/magazine}">Magazines</a>
-            <a th:href="@{/interviews}">Interviews</a>
-            <a th:href="@{/companies}">Companies</a>
-            <a th:href="@{/startups}">Startups</a>
-            <a th:href="@{/case-studies}">Case Studies</a>
-            <a th:href="@{/press-releases}">Press Releases</a>
-            <a th:href="@{/videos}">Videos</a>
-            <a th:href="@{/about}">About Us</a>
-            <a th:href="@{/contact}">Contact Us</a>
+          <div class="nav-links" th:with="uri=${currentUri}">
+            <a th:href="@{/}" th:classappend="${uri == '/'} ? 'active'">Home</a>
+            <a th:href="@{/news}" th:classappend="${uri == '/news'} ? 'active'">News</a>
+            <a th:href="@{/magazine}" th:classappend="${uri == '/magazine'} ? 'active'">Magazines</a>
+            <a th:href="@{/interviews}" th:classappend="${uri == '/interviews'} ? 'active'">Interviews</a>
+            <a th:href="@{/companies}" th:classappend="${uri == '/companies'} ? 'active'">Companies</a>
+            <a th:href="@{/startups}" th:classappend="${uri == '/startups'} ? 'active'">Startups</a>
+            <a th:href="@{/case-studies}" th:classappend="${uri == '/case-studies'} ? 'active'">Case Studies</a>
+            <a th:href="@{/press-releases}" th:classappend="${uri == '/press-releases'} ? 'active'">Press Releases</a>
+            <a th:href="@{/videos}" th:classappend="${uri == '/videos'} ? 'active'">Videos</a>
+            <a th:href="@{/about}" th:classappend="${uri == '/about'} ? 'active'">About Us</a>
+            <a th:href="@{/contact}" th:classappend="${uri == '/contact'} ? 'active'">Contact Us</a>
           </div>
           <form class="nav-search" th:action="@{/search}" method="get">
             <input type="text" name="q" placeholder="Search..." />
@@ -72,17 +84,6 @@
             <a href="#" aria-label="YouTube"
               ><i class="fa-brands fa-youtube"></i
             ></a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Brand strip: big bold wordmark + tagline -->
-      <div class="brand-strip">
-        <div class="container inner">
-          <a th:href="@{/}" class="brand-wordmark">Decisions Insights</a>
-          <div class="brand-strip-divider"></div>
-          <div class="brand-strip-tagline">
-            Business<br />&amp; Market<br />Insights
           </div>
         </div>
       </div>
