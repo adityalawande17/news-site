@@ -44,11 +44,8 @@ public class MagazineService {
     }
 
     // ── Admin ────────────────────────────────────────
-    public List<Magazine> getAll() {
-        return magazineRepository.findAll(
-            Sort.by(Sort.Direction.DESC, "year")
-                .and(Sort.by(Sort.Direction.DESC, "issueNumber"))
-        );
+    public Page<Magazine> getAll(int page, int size) {
+        return magazineRepository.findAll(PageRequest.of(page, size, yearSort(Sort.Direction.DESC)));
     }
 
     public Optional<Magazine> getById(Long id) {

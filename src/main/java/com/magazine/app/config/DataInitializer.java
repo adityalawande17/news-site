@@ -456,10 +456,6 @@ articleRepository.save(news3);
     // Adds 5 more interviews (with cover + interviewee photos) so the homepage
     // slideshow (latest 3) and stacked list (next 3) both have content to show.
     private void seedExtraInterviews() {
-        if (articleRepository.countByPublishedTrueAndArticleType(ArticleType.INTERVIEW) >= 6) {
-            return; // already topped up
-        }
-
         Category leadership = categoryRepository.findBySlug("leadership").orElse(null);
         Category tech       = categoryRepository.findBySlug("technology").orElse(null);
         Category startups   = categoryRepository.findBySlug("startups").orElse(null);
@@ -467,6 +463,7 @@ articleRepository.save(news3);
 
         LocalDateTime now = LocalDateTime.now();
 
+        if (articleRepository.findBySlug("scaling-enterprise-cloud-david-kessler").isEmpty())
         save(interviewWithPhoto(
             "\"The Playbook for Scaling Enterprise Cloud Infrastructure\" — David Kessler, CTO of Meridian Cloud",
             "scaling-enterprise-cloud-david-kessler",
@@ -481,6 +478,7 @@ articleRepository.save(news3);
             true, now.minusHours(1)
         ));
 
+        if (articleRepository.findBySlug("200m-turnaround-marcus-whitfield-ashford").isEmpty())
         save(interviewWithPhoto(
             "\"Inside the $200M Turnaround\" — Marcus Whitfield, CEO of Ashford Capital Group",
             "200m-turnaround-marcus-whitfield-ashford",
@@ -495,6 +493,7 @@ articleRepository.save(news3);
             false, now.minusHours(2)
         ));
 
+        if (articleRepository.findBySlug("reimagining-patient-care-elena-torres").isEmpty())
         save(interviewWithPhoto(
             "\"Reimagining Patient Care Through Data\" — Dr. Elena Torres, COO of Meridian Health Network",
             "reimagining-patient-care-elena-torres",
@@ -509,6 +508,7 @@ articleRepository.save(news3);
             false, now.minusHours(3)
         ));
 
+        if (articleRepository.findBySlug("building-memorable-brands-nadia-farouk").isEmpty())
         save(interviewWithPhoto(
             "\"Building Brands People Actually Remember\" — Nadia Farouk, CMO of Lumen Creative Co.",
             "building-memorable-brands-nadia-farouk",
@@ -523,6 +523,7 @@ articleRepository.save(news3);
             false, now.minusHours(4)
         ));
 
+        if (articleRepository.findBySlug("garage-to-series-c-jordan-reyes-pathfinder").isEmpty())
         save(interviewWithPhoto(
             "\"From Garage to Series C in 18 Months\" — Jordan Reyes, Founder & CEO of Pathfinder Robotics",
             "garage-to-series-c-jordan-reyes-pathfinder",

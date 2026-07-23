@@ -58,12 +58,12 @@ public class ArticleService {
             : articleRepository.findByPublishedTrueAndArticleType(type, pageable);
     }
 
-    // Admin Interviews list — search by interviewee name and/or company (either may be blank/null)
-    public List<Article> searchInterviews(String name, String company) {
+    // Admin Interviews list — search by interviewee name and/or company and/or category (any may be blank/null)
+    public List<Article> searchInterviews(String name, String company, Long categoryId) {
         String normalizedName = (name == null || name.isBlank()) ? null : name.trim();
         String normalizedCompany = (company == null || company.isBlank()) ? null : company.trim();
         return articleRepository
-            .searchByIntervieweeAndCompany(ArticleType.INTERVIEW, normalizedName, normalizedCompany, PageRequest.of(0, 100))
+            .searchByIntervieweeAndCompany(ArticleType.INTERVIEW, normalizedName, normalizedCompany, categoryId, PageRequest.of(0, 100))
             .getContent();
     }
 

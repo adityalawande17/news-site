@@ -137,6 +137,18 @@
               Create the first issue.
             </a>
           </p>
+
+          <div th:if="${magazines.totalPages > 1}"
+               style="display:flex; justify-content:center; align-items:center; gap:14px; margin-top:18px;">
+            <a th:if="${magazines.number > 0}"
+               th:href="@{/admin/magazine(page=${magazines.number - 1})}"
+               class="btn btn-secondary btn-sm">&larr; Prev</a>
+            <span style="font-size:13px; color:#777;"
+                  th:text="${magazines.number + 1} + ' of ' + ${magazines.totalPages}">1 of 1</span>
+            <a th:if="${magazines.number + 1 < magazines.totalPages}"
+               th:href="@{/admin/magazine(page=${magazines.number + 1})}"
+               class="btn btn-secondary btn-sm">Next &rarr;</a>
+          </div>
         </div>
       </main>
     </div>

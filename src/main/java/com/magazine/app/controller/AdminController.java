@@ -201,10 +201,13 @@ public class AdminController {
     public String listInterviews(
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "company", required = false) String company,
+            @RequestParam(value = "categoryId", required = false) Long categoryId,
             Model model) {
-        model.addAttribute("interviews", articleService.searchInterviews(name, company));
+        model.addAttribute("interviews", articleService.searchInterviews(name, company, categoryId));
+        model.addAttribute("categories", categoryService.getAll());
         model.addAttribute("name", name);
         model.addAttribute("company", company);
+        model.addAttribute("selectedCategoryId", categoryId);
         return "admin/interview-list";
     }
 
@@ -279,9 +282,15 @@ public class AdminController {
     }
 
     @GetMapping("/news")
-    public String listNews(Model model) {
+    public String listNews(
+            @RequestParam(value = "q", required = false) String q,
+            @RequestParam(value = "categoryId", required = false) Long categoryId,
+            Model model) {
         model.addAttribute("newsList",
-            articleService.getByType(ArticleType.NEWS, 0, 100).getContent());
+            articleService.searchAdmin(q, ArticleType.NEWS, categoryId, true, 0, 100).getContent());
+        model.addAttribute("categories", categoryService.getAll());
+        model.addAttribute("q", q);
+        model.addAttribute("selectedCategoryId", categoryId);
         return "admin/news-list";
     }
 
@@ -471,8 +480,8 @@ public String deleteVideo(@PathVariable Long id,
 
 // ── Magazine ─────────────────────────────────────────
 @GetMapping("/magazine")
-public String listMagazines(Model model) {
-    model.addAttribute("magazines", magazineService.getAll());
+public String listMagazines(@RequestParam(value = "page", defaultValue = "0") int page, Model model) {
+    model.addAttribute("magazines", magazineService.getAll(page, ADMIN_PAGE_SIZE));
     return "admin/magazine-list";
 }
 

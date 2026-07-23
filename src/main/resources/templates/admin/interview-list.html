@@ -20,9 +20,14 @@
                style="flex:1; min-width:180px; padding:8px 10px; border:1px solid #ddd; border-radius:4px;"/>
         <input type="text" name="company" placeholder="Search by company&hellip;" th:value="${company}"
                style="flex:1; min-width:180px; padding:8px 10px; border:1px solid #ddd; border-radius:4px;"/>
+        <select name="categoryId" onchange="this.form.submit()">
+          <option value="">All Categories</option>
+          <option th:each="c : ${categories}" th:value="${c.id}" th:text="${c.name}"
+                  th:selected="${c.id == selectedCategoryId}"></option>
+        </select>
         <button type="submit" class="btn btn-secondary btn-sm">Search</button>
         <a th:href="@{/admin/interviews}" class="btn btn-secondary btn-sm"
-           th:if="${name != null or company != null}">Clear</a>
+           th:if="${name != null or company != null or selectedCategoryId != null}">Clear</a>
       </form>
 
       <table>
@@ -91,12 +96,12 @@
         </tbody>
       </table>
 
-      <p th:if="${interviews.isEmpty() and name == null and company == null}"
+      <p th:if="${interviews.isEmpty() and name == null and company == null and selectedCategoryId == null}"
          style="text-align:center; color:#888; padding:40px 0;">
         No interviews yet.
         <a th:href="@{/admin/interviews/new}" style="color:#c0392b;">Add the first one.</a>
       </p>
-      <p th:if="${interviews.isEmpty() and (name != null or company != null)}"
+      <p th:if="${interviews.isEmpty() and (name != null or company != null or selectedCategoryId != null)}"
          style="text-align:center; color:#888; padding:40px 0;">
         No interviews match your search.
       </p>

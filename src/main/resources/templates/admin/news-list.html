@@ -22,6 +22,50 @@
         </div>
 
         <div class="admin-card">
+          <form
+            method="get"
+            th:action="@{/admin/news}"
+            style="
+              display: flex;
+              flex-wrap: wrap;
+              gap: 10px;
+              align-items: center;
+              margin-bottom: 16px;
+            "
+          >
+            <input
+              type="text"
+              name="q"
+              placeholder="Search by title&hellip;"
+              th:value="${q}"
+              style="
+                flex: 1;
+                min-width: 180px;
+                padding: 8px 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+              "
+            />
+            <select name="categoryId" onchange="this.form.submit()">
+              <option value="">All Categories</option>
+              <option
+                th:each="c : ${categories}"
+                th:value="${c.id}"
+                th:text="${c.name}"
+                th:selected="${c.id == selectedCategoryId}"
+              ></option>
+            </select>
+            <button type="submit" class="btn btn-secondary btn-sm">
+              Search
+            </button>
+            <a
+              th:href="@{/admin/news}"
+              class="btn btn-secondary btn-sm"
+              th:if="${q != null or selectedCategoryId != null}"
+              >Clear</a
+            >
+          </form>
+
           <table>
             <thead>
               <tr>
@@ -104,13 +148,19 @@
           </table>
 
           <p
-            th:if="${newsList.isEmpty()}"
+            th:if="${newsList.isEmpty() and q == null and selectedCategoryId == null}"
             style="text-align: center; color: #888; padding: 40px 0"
           >
             No news articles yet.
             <a th:href="@{/admin/news/new}" style="color: #c0392b"
               >Add the first one.</a
             >
+          </p>
+          <p
+            th:if="${newsList.isEmpty() and (q != null or selectedCategoryId != null)}"
+            style="text-align: center; color: #888; padding: 40px 0"
+          >
+            No news articles match your search/filters.
           </p>
         </div>
       </main>

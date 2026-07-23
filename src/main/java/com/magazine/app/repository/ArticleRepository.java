@@ -72,7 +72,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
         Pageable pageable
     );
 
-    // ── Admin: Interviews search by interviewee name / company (both optional) ─
+    // ── Admin: Interviews search by interviewee name / company / category (all optional) ─
     @Query("""
         SELECT a FROM Article a
         WHERE a.deleted = false
@@ -80,12 +80,14 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
           AND a.articleType = :type
           AND (:name IS NULL OR LOWER(a.intervieweeName) LIKE LOWER(CONCAT('%', :name, '%')))
           AND (:company IS NULL OR LOWER(a.intervieweeCompany) LIKE LOWER(CONCAT('%', :company, '%')))
+          AND (:categoryId IS NULL OR a.category.id = :categoryId)
         ORDER BY a.createdAt DESC
         """)
     Page<Article> searchByIntervieweeAndCompany(
         @Param("type") ArticleType type,
         @Param("name") String name,
         @Param("company") String company,
+        @Param("categoryId") Long categoryId,
         Pageable pageable
     );
 }
