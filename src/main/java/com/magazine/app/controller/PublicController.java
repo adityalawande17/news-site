@@ -75,6 +75,8 @@ public class PublicController {
         // Map of region → latest 4 issue covers for homepage buttons
         model.addAttribute("latestPerRegion", magazineService.getLatest4PerRegion());
         model.addAttribute("regions",         MagazineRegion.values());
+        // Decorative cover collage behind the magazine showcase banner
+        model.addAttribute("magazineBgCovers", magazineService.getRecentCoverUrls(20));
         model.addAttribute("featuredCompanies", companyService.getFeatured());
         // Startup Spotlight — latest 6 added, not just featured=true ones
         model.addAttribute("featuredStartups", startupService.getLatest(6));

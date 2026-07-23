@@ -138,4 +138,14 @@ public Map<MagazineRegion, List<Magazine>> getLatest4PerRegion() {
     }
     return map;
 }
+
+// Recent cover images (most recent issues first) — decorative backdrop for the homepage magazine showcase
+public List<String> getRecentCoverUrls(int limit) {
+    return magazineRepository.findAll(yearSort(Sort.Direction.DESC)).stream()
+        .filter(Magazine::isPublished)
+        .map(Magazine::getCoverImageUrl)
+        .filter(url -> url != null && !url.isBlank())
+        .limit(limit)
+        .collect(java.util.stream.Collectors.toList());
+}
 }

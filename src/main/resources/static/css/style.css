@@ -1293,6 +1293,210 @@ img {
   }
 }
 
+/* ── Homepage: Magazine showcase — full-bleed dark banner, cover collage backdrop, region carousel ── */
+.magazine-hero {
+  position: relative;
+  overflow: hidden;
+  background: #0b0b0d;
+  padding: 64px 0;
+}
+.magazine-hero-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.magazine-hero-bg-grid {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 170%;
+  height: 170%;
+  transform: translate(-50%, -50%) rotate(-8deg);
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 10px;
+}
+.magazine-hero-bg-grid img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: 4px;
+  filter: grayscale(0.4) brightness(0.55);
+}
+.magazine-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    rgba(8, 8, 10, 0.271) 0%,
+    rgba(8, 8, 10, 0.297) 32%,
+    rgba(8, 8, 10, 0.6) 60%,
+    rgba(8, 8, 10, 0.234) 100%
+  );
+}
+.magazine-hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 56px;
+}
+.magazine-hero-text {
+  flex: 0 0 340px;
+}
+.magazine-hero-text h2 {
+  font-family: var(--serif);
+  font-size: 34px;
+  line-height: 1.2;
+  color: #fff;
+  margin-bottom: 16px;
+}
+.magazine-hero-text p {
+  font-size: 15px;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 26px;
+}
+.magazine-hero-btn {
+  display: inline-block;
+  background: var(--red-dark);
+  color: #fff;
+  padding: 12px 28px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border-radius: 3px;
+  transition:
+    background 0.2s,
+    transform 0.2s;
+}
+.magazine-hero-btn:hover {
+  background: #b30000;
+  transform: translateY(-1px);
+}
+.magazine-hero-covers {
+  flex: 1;
+  min-width: 0;
+}
+.magazine-hero-tabs {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.magazine-hero-tabs button {
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.magazine-hero-track-wrap {
+  overflow: hidden;
+  border-radius: 6px;
+}
+.magazine-hero-track {
+  display: flex;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.magazine-hero-slide {
+  min-width: 100%;
+}
+.magazine-hero-slide-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+.magazine-hero-cover {
+  display: block;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.118);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: transform 0.3s ease;
+}
+.magazine-hero-cover:hover {
+  transform: translateY(-6px);
+}
+.magazine-hero-cover img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+}
+.magazine-hero-empty {
+  padding: 40px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+}
+.magazine-hero-empty .icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+.magazine-hero-empty .title {
+  font-family: var(--serif);
+  font-size: 18px;
+  color: #fff;
+  margin-bottom: 6px;
+}
+.magazine-hero-empty .desc {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 16px;
+}
+.magazine-hero-empty a {
+  display: inline-block;
+  background: #fff;
+  color: var(--black);
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 4px;
+}
+.magazine-hero-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+.magazine-hero-dots span {
+  display: inline-block;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+@media (max-width: 900px) {
+  .magazine-hero-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 32px;
+  }
+  .magazine-hero-text {
+    flex: none;
+  }
+  .magazine-hero-tabs {
+    justify-content: flex-start;
+  }
+}
+@media (max-width: 640px) {
+  .magazine-hero-slide-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .magazine-hero-text h2 {
+    font-size: 26px;
+  }
+}
+
 /* ── 3rd banner promo banner ──────────────────────────── */
 .third-banner-promo {
   display: block;

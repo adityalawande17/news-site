@@ -189,268 +189,224 @@
           })();
         </script>
       </div>
+    </div>
 
-      <!-- Magazine Carousel Section -->
-      <div class="cat-section">
-        <div class="section-header">
-          <h2>Magazine</h2>
-          <a th:href="@{/magazine}" class="view-all">All Issues &rarr;</a>
+    <!-- ── Magazine showcase — full-bleed, dark, region carousel ─── -->
+    <div class="magazine-hero">
+      <div class="magazine-hero-bg" aria-hidden="true">
+        <div class="magazine-hero-bg-grid">
+          <img
+            th:each="cover : ${magazineBgCovers}"
+            th:src="${cover}"
+            loading="lazy"
+            alt=""
+          />
+          <img
+            th:each="cover : ${magazineBgCovers}"
+            th:src="${cover}"
+            loading="lazy"
+            alt=""
+          />
+        </div>
+      </div>
+      <div class="magazine-hero-overlay"></div>
+
+      <div class="magazine-hero-inner">
+        <div class="magazine-hero-text">
+          <h2>Latest Magazines</h2>
+          <p>
+            Get exclusive business insights from our digital magazine issues,
+            featuring the boldest leaders and ideas shaping industries all
+            around the world.
+          </p>
+          <a th:href="@{/magazine}" class="magazine-hero-btn">View All</a>
         </div>
 
-        <!-- Region tab buttons -->
-        <div style="display: flex; gap: 6px; margin-bottom: 20px">
-          <button
-            th:each="reg, iter : ${regions}"
-            th:text="${reg.label}"
-            th:id="'btn-' + ${reg}"
-            th:attr="onclick='goToRegion(' + ${iter.index} + ', this)'"
-            th:style="${iter.index == 0}
-          ? 'flex:1; padding:10px 16px; border-radius:50px; font-size:13px; font-weight:700; border:1px solid #111; background:#fff; color:#111; cursor:pointer; transition:all 0.2s;'
-          : 'flex:1; padding:10px 16px; border-radius:50px; font-size:13px; font-weight:700; border:1px solid #111; background:#111; color:#fff; cursor:pointer; transition:all 0.2s;'"
-          >
-            Region
-          </button>
-        </div>
-
-        <!-- Carousel track wrapper -->
-        <div style="overflow: hidden; border-radius: 6px">
-          <div
-            id="magazineTrack"
-            style="
-              display: flex;
-              transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            "
-          >
-            <!-- One slide per region -->
-            <div
-              th:each="entry : ${latestPerRegion}"
-              style="min-width: 100%; transition: opacity 0.5s ease"
+        <div class="magazine-hero-covers">
+          <!-- Region tab buttons -->
+          <div class="magazine-hero-tabs">
+            <button
+              th:each="reg, iter : ${regions}"
+              th:text="${reg.label}"
+              th:id="'btn-' + ${reg}"
+              th:attr="onclick='goToRegion(' + ${iter.index} + ', this)'"
+              th:style="${iter.index == 0}
+              ? 'background:#fff; color:#111; border:1px solid #fff;'
+              : 'background:transparent; color:#fff; border:1px solid rgba(255,255,255,0.35);'"
             >
-              <!-- Has published issues -->
-              <div
-                th:if="${!entry.value.isEmpty()}"
-                style="
-                  display: grid;
-                  grid-template-columns: repeat(4, 1fr);
-                  gap: 20px;
-                "
-              >
-                <a
-                  th:each="mag : ${entry.value}"
-                  th:href="@{/magazine/{slug}(slug=${mag.slug})}"
-                  style="display: block"
-                >
-                  <img
-                    th:src="${mag.coverImageUrl}
-                 ?: 'https://images.unsplash.com/photo-1495020689067-958852a7765e?w=300'"
-                    th:alt="${mag.title}"
-                    loading="lazy"
-                    style="
-                      width: 100%;
-                      aspect-ratio: 3 / 4;
-                      object-fit: cover;
-                      border-radius: 6px;
-                      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-                      transition: transform 0.3s ease;
-                    "
-                    onmouseover="this.style.transform = 'scale(1.03)'"
-                    onmouseout="this.style.transform = 'scale(1)'"
-                  />
-                </a>
-              </div>
+              Region
+            </button>
+          </div>
 
-              <!-- No issue for this region yet -->
+          <!-- Carousel track wrapper -->
+          <div class="magazine-hero-track-wrap">
+            <div id="magazineTrack" class="magazine-hero-track">
+              <!-- One slide per region -->
               <div
-                th:if="${entry.value.isEmpty()}"
-                style="
-                  padding: 40px;
-                  text-align: center;
-                  border: 1px solid var(--border);
-                  border-radius: 6px;
-                  background: var(--white);
-                "
+                th:each="entry : ${latestPerRegion}"
+                class="magazine-hero-slide"
               >
-                <div style="font-size: 32px; margin-bottom: 12px">
-                  &#128218;
-                </div>
+                <!-- Has published issues -->
                 <div
-                  style="
-                    font-family: var(--serif);
-                    font-size: 18px;
-                    color: var(--black);
-                    margin-bottom: 6px;
-                  "
+                  th:if="${!entry.value.isEmpty()}"
+                  class="magazine-hero-slide-grid"
                 >
-                  <span th:text="${entry.key.label}">Region</span> Edition
+                  <a
+                    th:each="mag : ${entry.value}"
+                    th:href="@{/magazine/{slug}(slug=${mag.slug})}"
+                    class="magazine-hero-cover"
+                  >
+                    <img
+                      th:src="${mag.coverImageUrl}
+                     ?: 'https://images.unsplash.com/photo-1495020689067-958852a7765e?w=300'"
+                      th:alt="${mag.title}"
+                      loading="lazy"
+                    />
+                  </a>
                 </div>
+
+                <!-- No issue for this region yet -->
                 <div
-                  style="
-                    font-size: 14px;
-                    color: var(--muted);
-                    margin-bottom: 16px;
-                  "
+                  th:if="${entry.value.isEmpty()}"
+                  class="magazine-hero-empty"
                 >
-                  No issues published for this region yet.
+                  <div class="icon">&#128218;</div>
+                  <div class="title">
+                    <span th:text="${entry.key.label}">Region</span> Edition
+                  </div>
+                  <div class="desc">
+                    No issues published for this region yet.
+                  </div>
+                  <a th:href="@{/magazine}">Browse All Issues &rarr;</a>
                 </div>
-                <a
-                  th:href="@{/magazine}"
-                  style="
-                    background: var(--black);
-                    color: #fff;
-                    padding: 8px 18px;
-                    font-size: 13px;
-                    font-weight: 700;
-                    border-radius: 4px;
-                    text-decoration: none;
-                  "
-                >
-                  Browse All Issues &rarr;
-                </a>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Dot indicators -->
-        <div
-          style="
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 14px;
-          "
-          id="magazineDots"
-        >
-          <span
-            th:each="entry, iter : ${latestPerRegion}"
-            th:id="'dot-' + ${iter.index}"
-            th:onclick="'goToRegion(' + ${iter.index} + ')'"
-            style="
-              width: 8px;
-              height: 8px;
-              border-radius: 50%;
-              cursor: pointer;
-              transition: all 0.3s;
-              display: inline-block;
-            "
-            th:style="${iter.index == 0}
-                    ? 'width:24px; height:8px; border-radius:4px; background:var(--red); cursor:pointer; transition:all 0.3s; display:inline-block;'
-                    : 'width:8px; height:8px; border-radius:50%; background:var(--border); cursor:pointer; transition:all 0.3s; display:inline-block;'"
-          >
-          </span>
+          <!-- Dot indicators -->
+          <div class="magazine-hero-dots" id="magazineDots">
+            <span
+              th:each="entry, iter : ${latestPerRegion}"
+              th:id="'dot-' + ${iter.index}"
+              th:onclick="'goToRegion(' + ${iter.index} + ')'"
+              th:style="${iter.index == 0}
+                        ? 'width:24px; height:8px; border-radius:4px; background:#fff;'
+                        : 'width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,0.3);'"
+            >
+            </span>
+          </div>
         </div>
       </div>
+    </div>
 
-      <script>
-        const track = document.getElementById("magazineTrack");
-        const totalSlides = track ? track.children.length : 0;
-        const autoDelay = 4000; // ms per slide
-        let current = 0;
-        let timer = null;
+    <script>
+      const track = document.getElementById("magazineTrack");
+      const totalSlides = track ? track.children.length : 0;
+      const autoDelay = 4000; // ms per slide
+      let current = 0;
+      let timer = null;
 
-        function goToRegion(index, btn) {
-          if (!track || totalSlides === 0) return;
+      function goToRegion(index, btn) {
+        if (!track || totalSlides === 0) return;
 
-          current = ((index % totalSlides) + totalSlides) % totalSlides;
+        current = ((index % totalSlides) + totalSlides) % totalSlides;
 
-          // Slide the track
-          track.style.transform = "translateX(-" + current * 100 + "%)";
+        // Slide the track
+        track.style.transform = "translateX(-" + current * 100 + "%)";
 
-          // Update region buttons
-          // Update region buttons
-          document.querySelectorAll('[id^="btn-"]').forEach((b, i) => {
-            if (i === current) {
-              // Active button - white background, black text
-              b.style.background = "#fff";
-              b.style.color = "#111";
-              b.style.border = "1px solid #111";
-            } else {
-              // Inactive buttons - black background, white text
-              b.style.background = "#111";
-              b.style.color = "#fff";
-              b.style.border = "1px solid #111";
-            }
-          });
-
-          // Update dot indicators
-          document.querySelectorAll('[id^="dot-"]').forEach((dot, i) => {
-            if (i === current) {
-              dot.style.width = "24px";
-              dot.style.borderRadius = "4px";
-              dot.style.background = "var(--red)";
-            } else {
-              dot.style.width = "8px";
-              dot.style.borderRadius = "50%";
-              dot.style.background = "var(--border)";
-            }
-          });
-        }
-
-        function nextSlide() {
-          goToRegion(current + 1);
-        }
-
-        function startAuto() {
-          clearInterval(timer);
-          timer = setInterval(nextSlide, autoDelay);
-        }
-
-        function stopAuto() {
-          clearInterval(timer);
-        }
-
-        // Pause on hover, resume on leave
-        if (track) {
-          track.parentElement.addEventListener("mouseenter", stopAuto);
-          track.parentElement.addEventListener("mouseleave", startAuto);
-        }
-
-        // Touch/swipe support for mobile
-        let touchStartX = 0;
-        if (track) {
-          track.addEventListener(
-            "touchstart",
-            (e) => {
-              touchStartX = e.touches[0].clientX;
-              stopAuto();
-            },
-            { passive: true },
-          );
-
-          track.addEventListener(
-            "touchend",
-            (e) => {
-              const diff = touchStartX - e.changedTouches[0].clientX;
-              if (Math.abs(diff) > 50) {
-                goToRegion(diff > 0 ? current + 1 : current - 1);
-              }
-              startAuto();
-            },
-            { passive: true },
-          );
-        }
-
-        // Keyboard arrow key support
-        document.addEventListener("keydown", (e) => {
-          if (e.key === "ArrowRight") {
-            goToRegion(current + 1);
-            startAuto();
-          }
-          if (e.key === "ArrowLeft") {
-            goToRegion(current - 1);
-            startAuto();
+        // Update region buttons
+        document.querySelectorAll('[id^="btn-"]').forEach((b, i) => {
+          if (i === current) {
+            // Active button - white background, black text
+            b.style.background = "#fff";
+            b.style.color = "#111";
+            b.style.border = "1px solid #fff";
+          } else {
+            // Inactive buttons - outlined, white text
+            b.style.background = "transparent";
+            b.style.color = "#fff";
+            b.style.border = "1px solid rgba(255,255,255,0.35)";
           }
         });
 
-        // Kick off
-        if (totalSlides > 0) {
-          goToRegion(0);
+        // Update dot indicators
+        document.querySelectorAll('[id^="dot-"]').forEach((dot, i) => {
+          if (i === current) {
+            dot.style.width = "24px";
+            dot.style.borderRadius = "4px";
+            dot.style.background = "#fff";
+          } else {
+            dot.style.width = "8px";
+            dot.style.borderRadius = "50%";
+            dot.style.background = "rgba(255,255,255,0.3)";
+          }
+        });
+      }
+
+      function nextSlide() {
+        goToRegion(current + 1);
+      }
+
+      function startAuto() {
+        clearInterval(timer);
+        timer = setInterval(nextSlide, autoDelay);
+      }
+
+      function stopAuto() {
+        clearInterval(timer);
+      }
+
+      // Pause on hover, resume on leave
+      if (track) {
+        track.parentElement.addEventListener("mouseenter", stopAuto);
+        track.parentElement.addEventListener("mouseleave", startAuto);
+      }
+
+      // Touch/swipe support for mobile
+      let touchStartX = 0;
+      if (track) {
+        track.addEventListener(
+          "touchstart",
+          (e) => {
+            touchStartX = e.touches[0].clientX;
+            stopAuto();
+          },
+          { passive: true },
+        );
+
+        track.addEventListener(
+          "touchend",
+          (e) => {
+            const diff = touchStartX - e.changedTouches[0].clientX;
+            if (Math.abs(diff) > 50) {
+              goToRegion(diff > 0 ? current + 1 : current - 1);
+            }
+            startAuto();
+          },
+          { passive: true },
+        );
+      }
+
+      // Keyboard arrow key support
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight") {
+          goToRegion(current + 1);
           startAuto();
         }
-      </script>
-    </div>
+        if (e.key === "ArrowLeft") {
+          goToRegion(current - 1);
+          startAuto();
+        }
+      });
 
-    <!-- ── About promo banner — full-bleed ─────────────── -->
+      // Kick off
+      if (totalSlides > 0) {
+        goToRegion(0);
+        startAuto();
+      }
+    </script>
+
+    <!-- ── About promo banner — full-bleed ───────────────
     <a th:href="@{/about}" class="about-promo">
       <div class="about-promo-content">
         <h2>
@@ -464,7 +420,7 @@
         </p>
         <span class="about-promo-btn">Read More &raquo;</span>
       </div>
-    </a>
+    </a> -->
 
     <div class="container">
       <!-- ── Interviews section ────────────────────────── -->
