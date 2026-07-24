@@ -34,38 +34,6 @@
             Business<br />&amp; Market<br />Insights
           </div>
           <div class="brand-strip-date" id="brandStripDate"></div>
-        </div>
-      </div>
-
-      <div class="nav-top">
-        <div class="container inner">
-          <button
-            type="button"
-            class="nav-hamburger-btn"
-            onclick="toggleCategoryDrawer()"
-            aria-label="Open categories menu"
-          >
-            <i class="fa-solid fa-bars"></i>
-          </button>
-          <div class="nav-links" th:with="uri=${currentUri}">
-            <a th:href="@{/}" th:classappend="${uri == '/'} ? 'active'">Home</a>
-            <a th:href="@{/news}" th:classappend="${uri == '/news'} ? 'active'">News</a>
-            <a th:href="@{/magazine}" th:classappend="${uri == '/magazine'} ? 'active'">Magazines</a>
-            <a th:href="@{/interviews}" th:classappend="${uri == '/interviews'} ? 'active'">Interviews</a>
-            <a th:href="@{/companies}" th:classappend="${uri == '/companies'} ? 'active'">Companies</a>
-            <a th:href="@{/startups}" th:classappend="${uri == '/startups'} ? 'active'">Startups</a>
-            <a th:href="@{/case-studies}" th:classappend="${uri == '/case-studies'} ? 'active'">Case Studies</a>
-            <a th:href="@{/press-releases}" th:classappend="${uri == '/press-releases'} ? 'active'">Press Releases</a>
-            <a th:href="@{/videos}" th:classappend="${uri == '/videos'} ? 'active'">Videos</a>
-            <a th:href="@{/about}" th:classappend="${uri == '/about'} ? 'active'">About Us</a>
-            <a th:href="@{/contact}" th:classappend="${uri == '/contact'} ? 'active'">Contact Us</a>
-          </div>
-          <form class="nav-search" th:action="@{/search}" method="get">
-            <input type="text" name="q" placeholder="Search..." />
-            <button type="submit">
-              <i class="fa-solid fa-magnifying-glass"></i>
-            </button>
-          </form>
           <div class="social-icons">
             <a href="#" aria-label="LinkedIn"
               ><i class="fa-brands fa-linkedin-in"></i
@@ -86,6 +54,76 @@
               ><i class="fa-brands fa-youtube"></i
             ></a>
           </div>
+        </div>
+      </div>
+
+      <div class="nav-top">
+        <div class="container inner">
+          <button
+            type="button"
+            class="nav-hamburger-btn"
+            onclick="toggleCategoryDrawer()"
+            aria-label="Open categories menu"
+          >
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="nav-links" th:with="uri=${currentUri}">
+            <a th:href="@{/}" th:classappend="${uri == '/'} ? 'active'">Home</a>
+            <a th:href="@{/news}" th:classappend="${uri == '/news'} ? 'active'"
+              >News</a
+            >
+            <a
+              th:href="@{/magazine}"
+              th:classappend="${uri == '/magazine'} ? 'active'"
+              >Magazines</a
+            >
+            <a
+              th:href="@{/interviews}"
+              th:classappend="${uri == '/interviews'} ? 'active'"
+              >Interviews</a
+            >
+            <a
+              th:href="@{/companies}"
+              th:classappend="${uri == '/companies'} ? 'active'"
+              >Companies</a
+            >
+            <a
+              th:href="@{/startups}"
+              th:classappend="${uri == '/startups'} ? 'active'"
+              >Startups</a
+            >
+            <a
+              th:href="@{/case-studies}"
+              th:classappend="${uri == '/case-studies'} ? 'active'"
+              >Case Studies</a
+            >
+            <a
+              th:href="@{/press-releases}"
+              th:classappend="${uri == '/press-releases'} ? 'active'"
+              >Press Releases</a
+            >
+            <a
+              th:href="@{/videos}"
+              th:classappend="${uri == '/videos'} ? 'active'"
+              >Videos</a
+            >
+            <a
+              th:href="@{/about}"
+              th:classappend="${uri == '/about'} ? 'active'"
+              >About Us</a
+            >
+            <a
+              th:href="@{/contact}"
+              th:classappend="${uri == '/contact'} ? 'active'"
+              >Contact Us</a
+            >
+          </div>
+          <form class="nav-search" th:action="@{/search}" method="get">
+            <input type="text" name="q" placeholder="Search..." />
+            <button type="submit">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+          </form>
         </div>
       </div>
 
@@ -240,7 +278,9 @@
               </div>
             </div>
             <div class="footer-cta">
-              <p>Subscribe to get access to our exclusive insights and reports.</p>
+              <p>
+                Subscribe to get access to our exclusive insights and reports.
+              </p>
               <a th:href="@{/contact}" class="footer-cta-btn">Subscribe Now</a>
               <a
                 href="mailto:company@decisionsinsights.com"

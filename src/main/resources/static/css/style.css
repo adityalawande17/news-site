@@ -175,14 +175,15 @@ img {
   justify-content: flex-end;
 }
 .social-icons a {
-  color: #fff;
+  color: var(--black);
   font-size: 15px;
   padding: 6px;
   border-radius: 4px;
   transition: background 0.15s;
 }
 .social-icons a:hover {
-  background: rgba(255, 255, 255, 0.18);
+  background: var(--navy-tint);
+  color: var(--navy);
 }
 .nav-links {
   flex: 1;
@@ -253,7 +254,8 @@ img {
 
 /* ── Brand strip: big bold wordmark + tagline ─────── */
 .brand-strip {
-  background: #f1f0f0;
+  /* background: #f1f0f0; */
+  background: #ffffff;
   padding: 30px 0 0;
 }
 .brand-strip .inner {
@@ -300,6 +302,7 @@ img {
   }
   .brand-strip .inner {
     padding-bottom: 20px;
+    flex-wrap: wrap;
   }
   .brand-wordmark {
     font-size: 30px;
@@ -309,6 +312,9 @@ img {
   }
   .brand-strip-date {
     display: none;
+  }
+  .social-icons {
+    margin-left: auto;
   }
   .nav-top .inner {
     height: auto;
