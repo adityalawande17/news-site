@@ -58,6 +58,11 @@ public class ArticleService {
             : articleRepository.findByPublishedTrueAndArticleType(type, pageable);
     }
 
+    // Top 5 most-viewed articles of a type — for "Trending" sidebar widgets
+    public List<Article> getTrendingByType(ArticleType type) {
+        return articleRepository.findTop5ByPublishedTrueAndArticleTypeOrderByViewsDesc(type);
+    }
+
     // Admin Interviews list — search by interviewee name and/or company and/or category (any may be blank/null)
     public List<Article> searchInterviews(String name, String company, Long categoryId) {
         String normalizedName = (name == null || name.isBlank()) ? null : name.trim();

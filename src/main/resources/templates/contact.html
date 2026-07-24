@@ -72,7 +72,7 @@
                 <label>Country</label>
                 <input
                   type="text"
-                  name="name"
+                  name="country"
                   placeholder="Country Name"
                   required
                 />
@@ -81,14 +81,33 @@
               <div class="form-group">
                 <label>Contact no.</label>
                 <input
-                  type="email"
-                  name="email"
+                  type="tel"
+                  name="phone"
                   placeholder="Contact number"
                   required
                 />
               </div>
             </div>
 
+            <div class="form-group">
+              <label>What are you contacting us about?</label>
+              <select name="inquiryType">
+                <option value="">Select a topic&hellip;</option>
+                <option value="General Inquiry">General Inquiry</option>
+                <option value="News">News</option>
+                <option value="Magazine">Magazine</option>
+                <option value="Interviews">Interviews</option>
+                <option value="Companies">Companies</option>
+                <option value="Startups">Startups</option>
+                <option value="Case Studies">Case Studies</option>
+                <option value="Press Releases">Press Releases</option>
+                <option value="Videos">Videos</option>
+                <option value="Advertising / Partnership">
+                  Advertising / Partnership
+                </option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
             <div class="form-group">
               <label>Subject</label>
               <input

@@ -147,6 +147,7 @@ public class PublicController {
         model.addAttribute("currentPage", page);
         model.addAttribute("categories",  categoryService.getAll());
         model.addAttribute("featured",    articleService.getFeaturedArticles());
+        model.addAttribute("trendingNews", articleService.getTrendingByType(ArticleType.NEWS));
         return "news";
     }
 
@@ -369,10 +370,14 @@ public String startupDetail(@PathVariable String slug, Model model) {
     @PostMapping("/contact")
     public String contactSubmit(@RequestParam String name,
                                 @RequestParam String email,
+                                @RequestParam(required = false) String country,
+                                @RequestParam(required = false) String phone,
+                                @RequestParam(required = false) String inquiryType,
                                 @RequestParam(required = false) String subject,
                                 @RequestParam String message,
                                 RedirectAttributes redirectAttributes) {
-        System.out.printf("Contact: %s (%s) — %s%n", name, email, message);
+        System.out.printf("Contact: %s (%s, %s, %s) — [%s] %s — %s%n",
+            name, email, country, phone, inquiryType, subject, message);
         redirectAttributes.addFlashAttribute("contactSuccess",
             "Thanks " + name + "! We'll be in touch soon.");
         return "redirect:/contact";

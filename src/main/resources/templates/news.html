@@ -11,6 +11,8 @@
     ></th:block>
 
     <div class="container page-section">
+    <div class="article-layout">
+    <div>
       <!-- Filter row: category + sort dropdowns (left) -->
       <form
         th:action="@{/news}"
@@ -221,6 +223,68 @@
           >Next &rarr;</a
         >
       </div>
+    </div>
+
+    <aside>
+      <div class="sidebar-widget">
+        <h4>Trending Now</h4>
+        <div class="sidebar-art" th:each="t : ${trendingNews}">
+          <a th:href="@{/article/{slug}(slug=${t.slug})}">
+            <img
+              th:src="${t.imageUrl}
+             ?: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=200&auto=format&fit=crop'"
+              th:alt="${t.title}"
+              loading="lazy"
+            />
+          </a>
+          <h5>
+            <a
+              th:href="@{/article/{slug}(slug=${t.slug})}"
+              th:text="${t.title}"
+              >Title</a
+            >
+          </h5>
+        </div>
+        <p
+          th:if="${trendingNews.isEmpty()}"
+          style="font-size: 13px; color: var(--muted)"
+        >
+          No trending news yet.
+        </p>
+      </div>
+
+      <div class="sidebar-widget">
+        <h4>Topics</h4>
+        <a
+          th:each="cat : ${categories}"
+          th:href="@{/category/{slug}(slug=${cat.slug})}"
+          class="sidebar-cat-link"
+          th:text="${cat.name}"
+          >Category</a
+        >
+      </div>
+
+      <div class="sidebar-widget">
+        <h4>Newsletter</h4>
+        <p class="sidebar-newsletter-text">
+          Get the latest news delivered straight to your inbox.
+        </p>
+        <form
+          class="sidebar-newsletter-form"
+          th:action="@{/contact}"
+          method="get"
+        >
+          <input
+            type="email"
+            name="email"
+            placeholder="Email address"
+            required
+          />
+          <button type="submit">Subscribe</button>
+        </form>
+      </div>
+    </aside>
+    </div>
     </div>
 
     <th:block th:replace="~{fragments :: footer}"></th:block>

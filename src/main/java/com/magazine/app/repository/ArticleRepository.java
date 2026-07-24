@@ -48,6 +48,9 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     // Count by type — for admin dashboard stats
     long countByPublishedTrueAndArticleType(ArticleType articleType);
 
+    // Most-viewed articles of a type — for "Trending" sidebar widgets
+    List<Article> findTop5ByPublishedTrueAndArticleTypeOrderByViewsDesc(ArticleType articleType);
+
     // ── Admin: active list (excludes trashed) ────────
     List<Article> findByDeletedFalseOrderByCreatedAtDesc();
 
